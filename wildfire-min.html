@@ -59,11 +59,11 @@ var mygeojson = {
 "geometry": { "type": "MultiPolygon",
 "coordinates": [
 [
-	[[ -117.6, 48 ],
-	[ -117.3, 48 ],
-	[ -117.3, 47 ],
-	[ -117.6, 47 ],
-	[ -117.6, 48 ]]
+	[[ -124.1026, 41.6558 ],
+	[ -124.1026, 41.8558 ],
+	[ -124.3026, 41.8558 ],
+	[ -124.3026, 41.6558 ],
+	[ -124.2026, 41.7558 ]]
 ]
 ] } },
 {"type": "Feature",
@@ -120,7 +120,6 @@ function main(json) {
 
 		var pathproj = d3.geoPath().projection(googleMapProjection);
 
-
 		// drawing routine
 		overlay.draw = function () {
 			var projection = this.getProjection();
@@ -131,9 +130,14 @@ function main(json) {
 		overlay.update = function() {
 			firePerims.selectAll("path")
 				.data(json.features)
+				.attr("d", null);
+			firePerims.selectAll("path")
+				.data(json.features)
+				.attr("d", pathproj) 
 				.enter()
 				.append("path")
 				.attr("d", pathproj)
+				.attr("class", function(d) { return "fire" + d.OBJECTID; })
 		}
 	}
 
