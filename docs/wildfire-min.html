@@ -92,7 +92,7 @@
 	  // google map background
 	  var map = new google.maps.Map(document.getElementById('map'), {
 	  	zoom: 7,
-	  	center: new google.maps.LatLng(41.739671,235.79781-360),
+	  	center: new google.maps.LatLng(47.4,-120.5),
 	  	mapTypeId: google.maps.MapTypeId.ROADMAP,
 	  	styles:[{"stylers": [{"lightness": 40}]}],
 	  	mapTypeControl: false,
@@ -105,10 +105,14 @@
 
 		// overlay geojson multipolygons on map
 		var overlay = new google.maps.OverlayView();
+		
 		overlay.onAdd = function () {
-			var layer = d3.select(this.getPanes().overlayMouseTarget).append("div").attr("class", "SvgOverlay");
+			var layer = d3.select(this.getPanes().overlayMouseTarget)
+				.append("div")
+				.attr("class", "SvgOverlay");
 			var svg = layer.append("svg");
-			var firePerims = svg.append("g").attr("class", "FirePerims");
+			var firePerims = svg.append("g")
+				.attr("class", "FirePerims");
 			var overlayProjection = this.getProjection();
 
 			// turn google map projection into d3 projection
@@ -126,17 +130,19 @@
 				this.update();
 			};
 
-			// d3 add paths for each multipolyon
 			overlay.update = function() {
-				firePerims.selectAll("path")
-				.attr("d", null);
-				firePerims.selectAll("path")
-				.data(json.features)
-				.attr("d", pathproj)
-				.enter()
-				.append("path")
-				.attr("class", function(d) { return "fire" + d.OBJECTID; })
+			
+				firePerims.selectAll(".mypoly")
+					.attr("fill",(Math.random()>.5?"red":"blue"));
+				
+				firePerims.selectAll(".mypoly")
+					.data(json.features)
+					.attr("d", pathproj)
+					.enter()
+					.append("path")
+					.attr("class", "mypoly")
 			}
+			// d3 add paths for each multipolyon
 		}
 
 		overlay.setMap(map);
