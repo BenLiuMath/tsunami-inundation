@@ -41,10 +41,10 @@
 
 	#individualfocus {
 		position:absolute;
-		top:10%;
+		top:20%;
 		left:10%;
 		width:80%;
-		height:80%;
+		height:60%;
 		border:2px solid black;
 	}
 	
@@ -52,14 +52,23 @@
 		position:absolute; top:0px; left:0px;
 		width:100%;
 		height:100%;
-		background:white;
-		opacity:0.5;
+		background:yellow;
+		opacity:0.8;
+	}
+	
+	#smallmultiplescontainer {
+		position:absolute;
+		top:0;
+		left:0;
+		width:100%;
+		height:100%;
 	}
 	
 	.smallmultiple {
 		margin:3%;
 		width:27%;
-		height:44%;
+		height:41%;
+		border:1px solid black;
 		background:red;
 		display:inline-block;
 		}
@@ -73,7 +82,8 @@
 
 		<div id="map"></div>
 		<div id="individualfocus">
-			<div class="backdrop"</div>
+			<div class="backdrop"></div>
+			<div id="smallmultiplescontainer"></div>
 		</div>
 
 	</div>
@@ -347,11 +357,11 @@ var styledMapType = new google.maps.StyledMapType(
 			center: {lat:41.7509671, lng:-124.19219},
 			zoom: 14,
 			styles:[{"stylers": [{"lightness": 100}]}],
+			mapTypeControl: false,
+			streetViewControl: false,
+			fullscreenControl: false,
 			mapTypeControlOptions: {
-				mapTypeIds: ['roadmap', 'styled_map'],
-				mapTypeControl: false,
-				streetViewControl: false,
-				fullscreenControl: true}
+				mapTypeIds: ['roadmap', 'styled_map']}
 			//gestureHandling: "none",
 			//zoomControl: false,
 			//draggableCursor: 'arrow'
@@ -403,33 +413,34 @@ var styledMapType = new google.maps.StyledMapType(
 
 		overlay.setMap(map);
 		
-		var indFocus = document.getElementById("individualfocus");
+		var multcontainer = document.getElementById("smallmultiplescontainer");
 		
 		for(var ii=0; ii<6; ii++) {
 			var mymult = document.createElement("div");
 				mymult.classList.add("smallmultiple");
 				mymult.innerHTML = "a";
-				indFocus.appendChild(mymult);
+				multcontainer.appendChild(mymult);
+			multMaker(mymult,json);
 		}
 	}
 
 	
-function multMaker(containerDiv) {
+function multMaker(containerDiv,json) {
 
 	// google map background
-	var map = new google.maps.Map(containerDiv, {
-		center: {lat:41.7509671, lng:-124.19219},
-		zoom: 14,
-		styles:[{"stylers": [{"lightness": 100}]}],
-		mapTypeControlOptions: {
-			mapTypeIds: ['roadmap', 'styled_map'],
+		var map = new google.maps.Map(containerDiv, {
+			// center: new google.maps.LatLng(47.4,-120.5),
+			//center: new google.maps.LatLng(41.759671,-124.20219),
+			center: {lat:41.7509671, lng:-124.19219},
+			zoom: 14,
+			styles:[{"stylers": [{"lightness": 100}]}],
 			mapTypeControl: false,
 			streetViewControl: false,
-			fullscreenControl: true},
-		gestureHandling: "none",
-		zoomControl: false
-		//draggableCursor: 'arrow'
-	});
+			fullscreenControl: false,
+			zoomControl:false,
+			mapTypeControlOptions: {
+				mapTypeIds: ['roadmap', 'styled_map']}
+		});
 
 	map.mapTypes.set('styled_map', styledMapType);
 	map.setMapTypeId('styled_map');
