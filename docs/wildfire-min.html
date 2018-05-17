@@ -49,11 +49,20 @@
 	}
 	
 	.backdrop {
+		position:absolute; top:0px; left:0px;
 		width:100%;
 		height:100%;
 		background:white;
-		opacity:0.8;
+		opacity:0.5;
 	}
+	
+	.smallmultiple {
+		margin:3%;
+		width:27%;
+		height:44%;
+		background:red;
+		display:inline-block;
+		}
 </style>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyJ45cnv6HeZr69pu26XSsUF-OMC6cNRU"></script>
 <script type="text/javascript" src="https://d3js.org/d3.v4.min.js" ></script>
@@ -331,7 +340,7 @@ var styledMapType = new google.maps.StyledMapType(
 	
 	function main(json) {
 
-	  // google map background
+		// google map background
 		var map = new google.maps.Map(document.getElementById('map'), {
 			// center: new google.maps.LatLng(47.4,-120.5),
 			//center: new google.maps.LatLng(41.759671,-124.20219),
@@ -365,8 +374,7 @@ var styledMapType = new google.maps.StyledMapType(
 
 			// turn google map projection into d3 projection
 			var googleMapProjection = d3.geoTransform({point: function(x, y) {
-				d = new google.maps.LatLng(y, x);
-				d = overlayProjection.fromLatLngToDivPixel(d);
+				d = overlayProjection.fromLatLngToDivPixel( new google.maps.LatLng(y, x) );
 				this.stream.point(d.x + 4000, d.y + 4000);
 			}});
 
@@ -394,8 +402,81 @@ var styledMapType = new google.maps.StyledMapType(
 		}
 
 		overlay.setMap(map);
+		
+		var indFocus = document.getElementById("individualfocus");
+		
+		for(var ii=0; ii<6; ii++) {
+			var mymult = document.createElement("div");
+				mymult.classList.add("smallmultiple");
+				mymult.innerHTML = "a";
+				indFocus.appendChild(mymult);
+		}
 	}
 
+	
+function multMaker(containerDiv) {
+
+	// google map background
+	var map = new google.maps.Map(containerDiv, {
+		center: {lat:41.7509671, lng:-124.19219},
+		zoom: 14,
+		styles:[{"stylers": [{"lightness": 100}]}],
+		mapTypeControlOptions: {
+			mapTypeIds: ['roadmap', 'styled_map'],
+			mapTypeControl: false,
+			streetViewControl: false,
+			fullscreenControl: true},
+		gestureHandling: "none",
+		zoomControl: false
+		//draggableCursor: 'arrow'
+	});
+
+	map.mapTypes.set('styled_map', styledMapType);
+	map.setMapTypeId('styled_map');
+	
+	// overlay geojson multipolygons on map
+	var overlay = new google.maps.OverlayView();
+	
+	overlay.onAdd = function () {
+		var layer = d3.select(this.getPanes().overlayMouseTarget)
+			.append("div")
+			.attr("class", "SvgOverlay");
+		var svg = layer.append("svg");
+		var firePerims = svg.append("g")
+			.attr("class", "FirePerims");
+		var overlayProjection = this.getProjection();
+
+		// turn google map projection into d3 projection
+		var googleMapProjection = d3.geoTransform({point: function(x, y) {
+			d = overlayProjection.fromLatLngToDivPixel( new google.maps.LatLng(y, x) );
+			this.stream.point(d.x + 4000, d.y + 4000);
+		}});
+
+		var pathproj = d3.geoPath().projection(googleMapProjection);
+
+		// drawing routine
+		overlay.draw = function () {
+			var projection = this.getProjection();
+			this.update();
+		};
+
+		overlay.update = function() {
+					
+			firePerims.selectAll(".mypoly")
+				.data(json.features)
+				.attr("d", pathproj)
+				.enter()
+				.append("path")
+				.attr("class", "mypoly")
+		}
+		// d3 add paths for each multipolyon
+	}
+
+	overlay.setMap(map);
+}
+
+var indFocus = document.getElementById("individualfocus");
+indFocus.addEventListener("click",function() { indFocus.style.display ="none"; });
 </script>
 </body>
 </html>
