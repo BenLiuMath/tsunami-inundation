@@ -46,6 +46,7 @@
 		width:80%;
 		height:60%;
 		border:2px solid black;
+		display:none;
 	}
 
 	.backdrop {
@@ -349,12 +350,39 @@ var styledMapType = new google.maps.StyledMapType(
 
 <!-- Make the map!  -->
 <script>
+	var cityCenter = {'x':-124.2026, 'y':41.7558};
+	
+	var perimInner = [];
+	var perimOuter = [];
+	
+	var N = 100;
+	function makePerim(t) {
+		var perim = [];
+		var sc = .0075+.0025*Math.sin(t);
+		for(var tt=0; tt<N+1; tt++) {
+			var xx = cityCenter.x + sc*Math.cos(tt*2*Math.PI/N);
+			var yy = cityCenter.y + sc*Math.sin(tt*2*Math.PI/N);
+			perim.push([xx,yy]);
+		}
+		return perim;
+	}
+	
+	function packagePolygons(multipolygon) {
+		var features = [
+			{"type": "Feature",
+			"geometry": { "type": "MultiPolygon",
+			"coordinates": multipolygon}
+			}
+		]
+		return features;
+	}
+	
 	// load geojson data
 	// d3.json("../ptha_tutorial/DataFiles/Events/CSZa/contours.geojson", main);
 
 	// alternative for hard-coded data
+	var mults = [];
 	main(mygeojson);
-
 	function main(json) {
 
 		// google map background
@@ -403,24 +431,31 @@ var styledMapType = new google.maps.StyledMapType(
 
 			var pathproj = d3.geoPath().projection(googleMapProjection);
 
+			// put the elements on the page
+			firePerims.selectAll(".mypoly")
+				.data(json.features)
+				.attr("d", pathproj)
+				.enter()
+				.append("path")
+				.attr("class", "mypoly")
+				
 			// drawing routine
 			overlay.draw = function () {
-				var projection = this.getProjection();
 				this.update();
-			};
-
-			overlay.update = function() {
-
-				// firePerims.selectAll(".mypoly")
-				// 	.attr("fill",(Math.random()>.5?"red":"blue"));
-
-				firePerims.selectAll(".mypoly")
-					.data(json.features)
-					.attr("d", pathproj)
-					.enter()
-					.append("path")
-					.attr("class", "mypoly")
 			}
+			overlay.update = function() {
+				firePerims.selectAll(".mypoly")
+					.attr("d", pathproj)
+			}
+			
+			var time = 0;
+			function anim() {
+				d3.select(".mypoly")
+					.data(packagePolygons([[makePerim(time)]]))
+					.attr("d", pathproj);
+				time += .1;
+			}
+			setInterval(anim, 30);
 			// d3 add paths for each multipolyon
 		}
 
@@ -431,14 +466,26 @@ var styledMapType = new google.maps.StyledMapType(
 		var multcontainer = document.getElementById("smallmultiplescontainer");
 
 		for(var ii=0; ii<6; ii++) {
-			var mymult = document.createElement("div");
-				mymult.classList.add("smallmultiple");
-				mymult.innerHTML = "a";
-				multcontainer.appendChild(mymult);
-			multMaker(mymult,json);
+			var mymultDiv = document.createElement("div");
+				mymultDiv.classList.add("smallmultiple");
+				mymultDiv.innerHTML = "a";
+				multcontainer.appendChild(mymultDiv);
+			var mymult = multMaker(mymultDiv,json);
+			mults.push(mymult);
 		}
+		
+		function gogogo() {
+			panMultiples(41.7409671,-124.19219);
+		}
+		setTimeout(gogogo, 1000);
 	}
 
+function panMultiples(plat,plng) {
+	for(var ii=0; ii<mults.length; ii++) {
+		mults[ii].map.panTo({lat:plat, lng:plng});
+	}
+}
+	
 function multMaker(containerDiv,json) {
 
 	// google map background
@@ -498,6 +545,7 @@ function multMaker(containerDiv,json) {
 	}
 
 	overlay.setMap(map);
+	return {'map':map}; // in the future, this returned object may contain references to other things associated with the small multiple, such as a label field.
 }
 
 var indFocus = document.getElementById("individualfocus");
