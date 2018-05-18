@@ -351,9 +351,8 @@ var styledMapType = new google.maps.StyledMapType(
 <!-- Make the map!  -->
 <script>
 	var cityCenter = {'x':-124.2026, 'y':41.7558};
+	var indFocus = document.getElementById("individualfocus");
 
-	var perimInner = [];
-	var perimOuter = [];
 
 	var N = 100;
 	function makePerim(t) {
@@ -381,7 +380,9 @@ var styledMapType = new google.maps.StyledMapType(
 	// d3.json("../ptha_tutorial/DataFiles/Events/CSZa/contours.geojson", main);
 
 	// alternative for hard-coded data
-	var mults = [];
+	
+	var mults = []; // array of small multiples
+	
 	main(mygeojson);
 	function main(json) {
 
@@ -408,12 +409,16 @@ var styledMapType = new google.maps.StyledMapType(
 			//draggableCursor: 'arrow'
 		});
 
-		// zoom in and recenter when user clicks on a point
-		map.addListener('click', function(e) {
-					map.panTo(e.latLng);
-					map.setZoom(15);
+		function focusArea(e) {
+			//map.panTo(e.latLng);
+			//map.setZoom(15);
+			indFocus.style.display = "block";
+			panMultiples(e.latLng);
           // map.setCenter(marker.getPosition());
-        });
+        }
+		
+		// zoom in and recenter when user clicks on a point
+		map.addListener('click', focusArea);
 
 		map.mapTypes.set('styled_map', styledMapType);
         map.setMapTypeId('styled_map');
@@ -426,8 +431,8 @@ var styledMapType = new google.maps.StyledMapType(
 				.append("div")
 				.attr("class", "SvgOverlay");
 			var svg = layer.append("svg");
-			var firePerims = svg.append("g")
-				.attr("class", "FirePerims");
+			var contours = svg.append("g")
+				.attr("class", "contours");
 			var overlayProjection = this.getProjection();
 
 			// turn google map projection into d3 projection
@@ -439,7 +444,7 @@ var styledMapType = new google.maps.StyledMapType(
 			var pathproj = d3.geoPath().projection(googleMapProjection);
 
 			// put the elements on the page
-			firePerims.selectAll(".mypoly")
+			contours.selectAll(".mypoly")
 				.data(json.features)
 				.attr("d", pathproj)
 				.enter()
@@ -451,7 +456,7 @@ var styledMapType = new google.maps.StyledMapType(
 				this.update();
 			}
 			overlay.update = function() {
-				firePerims.selectAll(".mypoly")
+				contours.selectAll(".mypoly")
 					.attr("d", pathproj)
 			}
 
@@ -462,7 +467,7 @@ var styledMapType = new google.maps.StyledMapType(
 					.attr("d", pathproj);
 				time += .1;
 			}
-			setInterval(anim, 30);
+			//setInterval(anim, 30);
 			// d3 add paths for each multipolyon
 		}
 
@@ -482,14 +487,14 @@ var styledMapType = new google.maps.StyledMapType(
 		}
 
 		function gogogo() {
-			panMultiples(41.7409671,-124.19219);
+			panMultiples({lat:41.7409671, lng:-124.19219});
 		}
 		setTimeout(gogogo, 1000);
 	}
 
-function panMultiples(plat,plng) {
+function panMultiples(latLng) {
 	for(var ii=0; ii<mults.length; ii++) {
-		mults[ii].map.panTo({lat:plat, lng:plng});
+		mults[ii].map.panTo(latLng);
 	}
 }
 
@@ -521,8 +526,8 @@ function multMaker(containerDiv,json) {
 			.append("div")
 			.attr("class", "SvgOverlay");
 		var svg = layer.append("svg");
-		var firePerims = svg.append("g")
-			.attr("class", "FirePerims");
+		var contours = svg.append("g")
+			.attr("class", "contours");
 		var overlayProjection = this.getProjection();
 
 		// turn google map projection into d3 projection
@@ -541,7 +546,7 @@ function multMaker(containerDiv,json) {
 
 		overlay.update = function() {
 
-			firePerims.selectAll(".mypoly")
+			contours.selectAll(".mypoly")
 				.data(json.features)
 				.attr("d", pathproj)
 				.enter()
@@ -555,7 +560,6 @@ function multMaker(containerDiv,json) {
 	return {'map':map}; // in the future, this returned object may contain references to other things associated with the small multiple, such as a label field.
 }
 
-var indFocus = document.getElementById("individualfocus");
 indFocus.addEventListener("click",function() { indFocus.style.display ="none"; });
 </script>
 </body>
