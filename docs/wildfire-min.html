@@ -351,10 +351,10 @@ var styledMapType = new google.maps.StyledMapType(
 <!-- Make the map!  -->
 <script>
 	var cityCenter = {'x':-124.2026, 'y':41.7558};
-	
+
 	var perimInner = [];
 	var perimOuter = [];
-	
+
 	var N = 100;
 	function makePerim(t) {
 		var perim = [];
@@ -366,7 +366,7 @@ var styledMapType = new google.maps.StyledMapType(
 		}
 		return perim;
 	}
-	
+
 	function packagePolygons(multipolygon) {
 		var features = [
 			{"type": "Feature",
@@ -376,7 +376,7 @@ var styledMapType = new google.maps.StyledMapType(
 		]
 		return features;
 	}
-	
+
 	// load geojson data
 	// d3.json("../ptha_tutorial/DataFiles/Events/CSZa/contours.geojson", main);
 
@@ -408,6 +408,13 @@ var styledMapType = new google.maps.StyledMapType(
 			//draggableCursor: 'arrow'
 		});
 
+		// zoom in and recenter when user clicks on a point
+		map.addListener('click', function(e) {
+					map.panTo(e.latLng);
+					map.setZoom(15);
+          // map.setCenter(marker.getPosition());
+        });
+
 		map.mapTypes.set('styled_map', styledMapType);
         map.setMapTypeId('styled_map');
 
@@ -438,7 +445,7 @@ var styledMapType = new google.maps.StyledMapType(
 				.enter()
 				.append("path")
 				.attr("class", "mypoly")
-				
+
 			// drawing routine
 			overlay.draw = function () {
 				this.update();
@@ -447,7 +454,7 @@ var styledMapType = new google.maps.StyledMapType(
 				firePerims.selectAll(".mypoly")
 					.attr("d", pathproj)
 			}
-			
+
 			var time = 0;
 			function anim() {
 				d3.select(".mypoly")
@@ -473,7 +480,7 @@ var styledMapType = new google.maps.StyledMapType(
 			var mymult = multMaker(mymultDiv,json);
 			mults.push(mymult);
 		}
-		
+
 		function gogogo() {
 			panMultiples(41.7409671,-124.19219);
 		}
@@ -485,7 +492,7 @@ function panMultiples(plat,plng) {
 		mults[ii].map.panTo({lat:plat, lng:plng});
 	}
 }
-	
+
 function multMaker(containerDiv,json) {
 
 	// google map background
