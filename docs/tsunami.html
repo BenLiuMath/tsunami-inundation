@@ -1,30 +1,30 @@
 <!DOCTYPE HTML>
 <html xml:lang="en" lang="en">
 <head>
-	<title>stripped-down wildfires code</title>
+	<title>Tsunami Hazard Visualizer</title>
 	<style>
 	* { padding: 0; margin: 0; }
 
 	body {
 		margin: 0 auto 0 auto;
 		padding: 0;
-		max-width: 1200px;
+		max-width: 100%;
 		font-family: "Avenir", "Avenir Next", Helvetica Neue, Arial;
 		font-size: 0.95em;
 	}
 
 	#map {
 		margin:auto;
-		width: 800px;
-		height: 500px;
-		border: 3px solid black;
+		display:block;
+		width: 100%;
+		height: 900px;
 		padding: 0px;
 	}
 
 	.SvgOverlay {
 		position: relative;
-		width: 800px;
-		height: 500px;
+		width: 100%;
+		height: 100%;
 	}
 	.SvgOverlay svg {
 		position: absolute;
@@ -38,7 +38,7 @@
 		stroke-width: 1px;
 		fill-opacity: .3;
 	}
-
+/*
 	#individualfocus {
 		position:absolute;
 		top:20%;
@@ -46,14 +46,23 @@
 		width:80%;
 		height:60%;
 		border:2px solid black;
-		display:none;
+		display:block;
+	}
+*/
+	#individualfocus {
+		position:absolute;
+		top:0%;
+		left:50%;
+		width:50%;
+		height:100%;
+		display:block;
 	}
 
 	.backdrop {
 		position:absolute; top:0px; left:0px;
 		width:100%;
 		height:100%;
-		background:yellow;
+		background:#cccc99;
 		opacity:0.8;
 	}
 
@@ -76,7 +85,7 @@
 
 	.smallmultiple {
 		margin:3%;
-		width:27%;
+		width:26%;
 		height:41%;
 		border:1px solid black;
 		background:red;
@@ -99,33 +108,22 @@
 	</div>
 <script src="CSZ_geojson.js"></script>
 <script>
-	// var mygeojson = {
-	// 	"type": "FeatureCollection",
-	// 	"features": [
-	// 	{"type": "Feature",
-	// 	"geometry": { "type": "MultiPolygon",
-	// 	"coordinates": [
-	// 	[
-	// 	[[ -124.1026, 41.6558 ],
-	// 	[ -124.1026, 41.8558 ],
-	// 	[ -124.3026, 41.8558 ],
-	// 	[ -124.3026, 41.6558 ],
-	// 	[ -124.2026, 41.7558 ]]
-	// 	]
-	// 	] } },
-	// 	{"type": "Feature",
-	// 	"geometry": { "type": "MultiPolygon",
-	// 	"coordinates": [
-	// 	[
-	// 	[[ -117.5260, 47.7588 ],
-	// 	[ -117.5260, 47.5588 ],
-	// 	[ -117.3260, 47.5588 ],
-	// 	[ -117.3260, 47.7588 ],
-	// 	[ -117.4260, 47.6588 ]]
-	// 	]
-	// 	] } }
-	// 	]
-	// };
+	var testjson = {
+		"type": "FeatureCollection",
+		"features": [
+		{"type": "Feature",
+		"geometry": { "type": "MultiPolygon",
+		"coordinates": [
+		[
+		[[ -124.1026, 41.6558 ],
+		[ -124.1026, 41.8558 ],
+		[ -124.3026, 41.8558 ],
+		[ -124.3026, 41.6558 ],
+		[ -124.2026, 41.7558 ]]
+		]
+		] } }
+		]
+	};
 </script>
 
 <!-- Styled map specifications -->
@@ -296,7 +294,7 @@ var styledMapType = new google.maps.StyledMapType(
 <!-- Make the map!  -->
 <script>
 	var cityCenter = {'x':-124.2026, 'y':41.7558};
-	var indFocus = document.getElementById("individualfocus");
+	var individualView = document.getElementById("individualfocus");
 
 
 	var N = 100;
@@ -328,15 +326,13 @@ var styledMapType = new google.maps.StyledMapType(
 	
 	var mults = []; // array of small multiples
 	
-	main(CSZc);
+	main(CSZEvents[6]);
 	function main(json) {
 
 		// google map background
 		var map = new google.maps.Map(document.getElementById('map'), {
-			// center: new google.maps.LatLng(47.4,-120.5),
-			//center: new google.maps.LatLng(41.759671,-124.20219),
-			center: {lat:41.7509671, lng:-124.19219},
-			zoom: 14,
+			center: {lat:41.7509671, lng:-124.17219},
+			zoom: 15,
 			// styles:[{"stylers": [{"lightness": 100}]}],
 			styles:[
 				{
@@ -348,16 +344,14 @@ var styledMapType = new google.maps.StyledMapType(
 			streetViewControl: false,
 			fullscreenControl: false,
 			mapTypeControlOptions: {
-				mapTypeIds: ['styled_map', 'terrain']}
-			//gestureHandling: "none",
-			//zoomControl: false,
-			//draggableCursor: 'arrow'
+				//mapTypeIds: ['styled_map']
+				mapTypeIds: []}
 		});
 
 		function focusArea(e) {
 			//map.panTo(e.latLng);
 			//map.setZoom(15);
-			indFocus.style.display = "block";
+			individualView.style.display = "block";
 			panMultiples(e.latLng);
           // map.setCenter(marker.getPosition());
         }
@@ -371,12 +365,13 @@ var styledMapType = new google.maps.StyledMapType(
 		// overlay geojson multipolygons on map
 		var overlay = new google.maps.OverlayView();
 
+		var contours, pathproj;
 		overlay.onAdd = function () {
 			var layer = d3.select(this.getPanes().overlayMouseTarget)
 				.append("div")
 				.attr("class", "SvgOverlay");
 			var svg = layer.append("svg");
-			var contours = svg.append("g")
+			contours = svg.append("g")
 				.attr("class", "contours");
 			var overlayProjection = this.getProjection();
 
@@ -385,38 +380,36 @@ var styledMapType = new google.maps.StyledMapType(
 				d = overlayProjection.fromLatLngToDivPixel( new google.maps.LatLng(y, x) );
 				this.stream.point(d.x + 4000, d.y + 4000);
 			}});
+			pathproj = d3.geoPath().projection(googleMapProjection);
 
-			var pathproj = d3.geoPath().projection(googleMapProjection);
-
-			// put the elements on the page
+			// put the initial contours on the page
 			contours.selectAll(".mypoly")
 				.data(json.features)
-				.attr("d", pathproj)
 				.enter()
 				.append("path")
+				.attr("d", pathproj)
 				.attr("class", "mypoly")
-
-			// drawing routine
-			overlay.draw = function () {
-				this.update();
-			}
-			overlay.update = function() {
-				contours.selectAll(".mypoly")
-					.attr("d", pathproj)
-			}
-
-			var time = 0;
-			function anim() {
-				d3.select(".mypoly")
-					.data(packagePolygons([[makePerim(time)]]))
-					.attr("d", pathproj);
-				time += .1;
-			}
-			//setInterval(anim, 30);
-			// d3 add paths for each multipolyon
+		}
+		overlay.setMap(map);
+		
+		overlay.draw = function () {
+			this.update();
+		}
+		overlay.update = function() {
+			contours.selectAll(".mypoly")
+				.attr("d", pathproj)
 		}
 
-		overlay.setMap(map);
+		var time = 0;
+		function anim() {
+			d3.select(".mypoly")
+				.data(packagePolygons([[makePerim(time)]]))
+				.attr("d", pathproj);
+			time += .1;
+		}
+		//setInterval(anim, 30);
+		// d3 add paths for each multipolyon
+		
 
 
 		// For drawing small multiples
@@ -430,35 +423,50 @@ var styledMapType = new google.maps.StyledMapType(
 			var mymult = multMaker(mymultDiv,json);
 			mults.push(mymult);
 		}
-
+		
+		function gogo() {
+			for(var ii=0; ii<6; ii++ ) {
+				mults[ii].setGeojson(CSZEvents[ii]);
+			}
+		}
+		setTimeout(gogo, 2000);
+		
 		function gogogo() {
 			panMultiples({lat:41.7409671, lng:-124.19219});
+			setMultGeojson(mults[0],CSZa);
 		}
-		setTimeout(gogogo, 1000);
+		//setTimeout(gogogo, 1000);
 	}
 
-function panMultiples(latLng) {
+function panMultiples(latLng,zoom) {
+	if(!zoom) {
+		zoom = 15;
+	}
 	for(var ii=0; ii<mults.length; ii++) {
+		mults[ii].map.setZoom(zoom);
 		mults[ii].map.panTo(latLng);
 	}
 }
 
 function multMaker(containerDiv,json) {
-
 	// google map background
-		var map = new google.maps.Map(containerDiv, {
-			// center: new google.maps.LatLng(47.4,-120.5),
-			//center: new google.maps.LatLng(41.759671,-124.20219),
-			center: {lat:41.7509671, lng:-124.19219},
-			zoom: 14,
-			styles:[{"stylers": [{"lightness": 100}]}],
-			mapTypeControl: false,
-			streetViewControl: false,
-			fullscreenControl: false,
-			zoomControl:false,
-			mapTypeControlOptions: {
-				mapTypeIds: ['roadmap', 'styled_map']}
-		});
+	var map = new google.maps.Map(containerDiv, {
+		// center: new google.maps.LatLng(47.4,-120.5),
+		//center: new google.maps.LatLng(41.759671,-124.20219),
+		center: {lat:41.7509671, lng:-124.19219},
+		zoom: 14,
+		disableDoubleClickZoom:true,
+		draggable: false,
+		scrollwheel: false,
+		panControl: false,
+		styles:[{"stylers": [{"lightness": 100}]}],
+		mapTypeControl: false,
+		streetViewControl: false,
+		fullscreenControl: false,
+		zoomControl:false,
+		mapTypeControlOptions: {
+			mapTypeIds: ['roadmap', 'styled_map']}
+	});
 
 	map.mapTypes.set('styled_map', styledMapType);
 	map.setMapTypeId('styled_map');
@@ -466,12 +474,13 @@ function multMaker(containerDiv,json) {
 	// overlay geojson multipolygons on map
 	var overlay = new google.maps.OverlayView();
 
+	var contours, pathproj;
 	overlay.onAdd = function () {
 		var layer = d3.select(this.getPanes().overlayMouseTarget)
 			.append("div")
 			.attr("class", "SvgOverlay");
 		var svg = layer.append("svg");
-		var contours = svg.append("g")
+		contours = svg.append("g")
 			.attr("class", "contours");
 		var overlayProjection = this.getProjection();
 
@@ -481,31 +490,60 @@ function multMaker(containerDiv,json) {
 			this.stream.point(d.x + 4000, d.y + 4000);
 		}});
 
-		var pathproj = d3.geoPath().projection(googleMapProjection);
+		pathproj = d3.geoPath().projection(googleMapProjection);
 
-		// drawing routine
-		overlay.draw = function () {
-			var projection = this.getProjection();
-			this.update();
-		};
-
-		overlay.update = function() {
-
-			contours.selectAll(".mypoly")
-				.data(json.features)
-				.attr("d", pathproj)
-				.enter()
-				.append("path")
-				.attr("class", "mypoly")
-		}
-		// d3 add paths for each multipolyon
+		// put the initial contours on the page
+		contours.selectAll(".mypoly")
+			.data(json.features)
+			.enter()
+			.append("path")
+			.attr("d", pathproj)
+			.attr("class", "mypoly")
 	}
-
 	overlay.setMap(map);
-	return {'map':map, 'label':label}; // in the future, this returned object may contain references to other things associated with the small multiple, such as a label field.
+
+	// drawing routine
+	overlay.draw = function () {
+		this.update();
+	};
+
+	overlay.update = function() {
+		contours.selectAll(".mypoly")
+			.attr("d", pathproj)
+	}
+	var mult = {'map':map};
+	
+	mult.setGeojson = function(json) {
+		contours.selectAll(".mypoly")
+			.attr("class","remove")
+			.remove();
+		contours.selectAll(".mypoly")
+			.data(json.features)
+			.enter()
+			.append("path")
+			.attr("d", pathproj)
+			.attr("class", "mypoly")
+		/*
+		polys = contours.selectAll(".mypoly")
+			.data(json.features)
+		polys.attr("d", pathproj);
+		polys.enter()
+			.append("path")
+			.attr("class", "mypoly")
+			.attr("d", pathproj);
+		polys.exit()
+			.remove();
+			*/
+	}
+	//setTimeout(gogo,1000);
+		
+	return mult; // in the future, this returned object may contain references to other things associated with the small multiple, such as a label field.
 }
 
-indFocus.addEventListener("click",function() { indFocus.style.display ="none"; });
+function setMultGeojson(mult,json) {
+}
+
+//individualView.addEventListener("click",function() { individualView.style.display ="none"; });
 </script>
 
 
