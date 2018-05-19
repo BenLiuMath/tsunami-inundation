@@ -400,6 +400,34 @@ var styledMapType = new google.maps.StyledMapType(
 				.attr("d", pathproj)
 		}
 
+		function setGeojson(json) {
+			contours.selectAll(".mypoly")
+				.attr("class","remove")
+				.remove();
+			contours.selectAll(".mypoly")
+				.data(json.features)
+				.enter()
+				.append("path")
+				.attr("d", pathproj)
+				.attr("class", "mypoly")
+			/*
+			polys = contours.selectAll(".mypoly")
+				.data(json.features)
+			polys.attr("d", pathproj);
+			polys.enter()
+				.append("path")
+				.attr("class", "mypoly")
+				.attr("d", pathproj);
+			polys.exit()
+				.remove();
+				*/
+		}
+		
+		function go() {
+			setGeojson(CSZb);
+		}
+		setTimeout(go,2000);
+		
 		var time = 0;
 		function anim() {
 			d3.select(".mypoly")
@@ -407,9 +435,8 @@ var styledMapType = new google.maps.StyledMapType(
 				.attr("d", pathproj);
 			time += .1;
 		}
-		//setInterval(anim, 30);
-		// d3 add paths for each multipolyon
-		
+		//setInterval(anim, 1000);
+			
 
 
 		// For drawing small multiples
@@ -429,7 +456,7 @@ var styledMapType = new google.maps.StyledMapType(
 				mults[ii].setGeojson(CSZEvents[ii]);
 			}
 		}
-		setTimeout(gogo, 2000);
+		setTimeout(gogo, 50);
 		
 		function gogogo() {
 			panMultiples({lat:41.7409671, lng:-124.19219});
@@ -449,6 +476,7 @@ function panMultiples(latLng,zoom) {
 }
 
 function multMaker(containerDiv,json) {
+	var mult = {};
 	// google map background
 	var map = new google.maps.Map(containerDiv, {
 		// center: new google.maps.LatLng(47.4,-120.5),
@@ -489,16 +517,7 @@ function multMaker(containerDiv,json) {
 			d = overlayProjection.fromLatLngToDivPixel( new google.maps.LatLng(y, x) );
 			this.stream.point(d.x + 4000, d.y + 4000);
 		}});
-
 		pathproj = d3.geoPath().projection(googleMapProjection);
-
-		// put the initial contours on the page
-		contours.selectAll(".mypoly")
-			.data(json.features)
-			.enter()
-			.append("path")
-			.attr("d", pathproj)
-			.attr("class", "mypoly")
 	}
 	overlay.setMap(map);
 
@@ -511,7 +530,7 @@ function multMaker(containerDiv,json) {
 		contours.selectAll(".mypoly")
 			.attr("d", pathproj)
 	}
-	var mult = {'map':map};
+	mult.map = map;
 	
 	mult.setGeojson = function(json) {
 		contours.selectAll(".mypoly")
