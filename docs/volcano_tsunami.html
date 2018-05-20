@@ -31,7 +31,7 @@ function doit(error, volcano) {
 		.enter()
 		.append("path")
 		.attr("class","contour")
-		.attr("d", d3.geoPath(d3.geoIdentity().scale(width / volcano.width)) )
+		.attr("d", d3.geoPath(d3.geoIdentity().scale(.5*width / volcano.width)) )
 		.attr("fill", function(d) { return color(d.value); })
 		.attr("stroke-width",1)
 		.attr("stroke","black");
