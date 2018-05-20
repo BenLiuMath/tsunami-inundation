@@ -13,12 +13,52 @@
 		font-size: 0.95em;
 	}
 
+	h1, h2, h3, h4, h5 {
+		color: #492a7c;
+		background-color: inherit;
+		font-weight: normal;
+		padding: 0 0 5px 0;
+		margin: 15px 0 0 0;
+		border: none;
+		clear: right;
+	}
+	h1 { font-size: 20pt; margin:  5px 0 10px 0; line-height: 28px; }
+	h2 { font-size: 14pt; margin: 30px 0 15px 0; letter-spacing: 0.01em; border-bottom: 1px solid #ccc;  line-height: 20px;}
+	h3 { font-size: 13pt; }
+	h4 { font-size: 12pt; }
+	h5 { font-size: 10pt; }
+	p { margin: 0 0 10px 0; }
+
+	#header {
+		position:absolute;
+		top:0px;
+		height:20%;
+		font-family: "Avenir Next";
+		/* font-size: 1.8em; */
+		padding: 10px;
+	}
+
+	#supplemental {
+		position:absolute;
+		top:100%;
+		height:200px;
+		font-family: "Avenir Next";
+		/* font-size: 1.8em; */
+		padding: 10px;
+	}
+
 	#map {
-		margin:auto;
+		position:absolute;
+		top:100px;
+		/* left:50%; */
+		width:100%;
+		height:80%;
+		display:block;
+		/* margin:auto;
 		display:block;
 		width: 100%;
-		height: 900px;
-		padding: 0px;
+		height: 600px;
+		padding: 0px; */
 	}
 
 	.SvgOverlay {
@@ -52,10 +92,10 @@
 */
 	#individualfocus {
 		position:absolute;
-		top:0%;
+		top:100px;
 		left:50%;
 		width:50%;
-		height:100%;
+		height:65%;
 		display:block;
 	}
 
@@ -91,12 +131,12 @@
 		border:1px solid black;
 		display:inline-block;
 	}
-	
+
 	.simLabel {
 		height:1.5em;
 		text-align:center;
 	}
-	
+
 	.smallMultipleMap {
 		margin:none;
 		display:block;
@@ -112,10 +152,31 @@
 <body>
 	<div class="content">
 
+		<div id="header">
+			<h1>Tsunami Inundation Maps</h1>
+			<p>Choose <a href="#supplemental">near-field</a> (Cascadia) or <a href="#supplemental">far-field</a> events.
+				A single-click on the large map will focus the small maps (corresponding to different simulations) on that spot.
+			</p>
+
+		</div>
+
 		<div id="map"></div>
 		<div id="individualfocus">
 			<div class="backdrop"></div>
 			<div id="smallmultiplescontainer"></div>
+		</div>
+
+		<div id="supplemental">
+			<h3>Background &amp; Context</h3>
+
+			<p><i>Near-field</i> events originate nearby, in Cascadia.
+				They occur less frequently, but because they originate nearby, they can be extremely damaging. </p>
+
+			<p><i>Far-field</i> events originate farther away (e.g. Alaska, East Asia, Chile).
+				Because of this, they are often less damaging, and people have more warning time to evacuate.
+				However, they can still cause significant damage, and they are much more likely than near-field events to occur
+				(since there are more places they can originate).</p>
+
 		</div>
 
 	</div>
@@ -336,16 +397,16 @@ var styledMapType = new google.maps.StyledMapType(
 	// d3.json("../ptha_tutorial/DataFiles/Events/CSZa/contours.geojson", main);
 
 	// alternative for hard-coded data
-	
+
 	var mults = []; // array of small multiples
-	
+
 	main(CSZEvents[2]);
 	function main(json) {
 
 		// google map background
 		var map = new google.maps.Map(document.getElementById('map'), {
-			center: {lat:41.7509671, lng:-124.17219},
-			zoom: 15,
+			center: {lat:(cityCenter.y-0.005), lng:(cityCenter.x+.035)},
+			zoom: 14,
 			// styles:[{"stylers": [{"lightness": 100}]}],
 			styles:[
 				{
@@ -368,7 +429,7 @@ var styledMapType = new google.maps.StyledMapType(
 			panMultiples(e.latLng);
           // map.setCenter(marker.getPosition());
         }
-		
+
 		// zoom in and recenter when user clicks on a point
 		map.addListener('click', focusArea);
 
@@ -406,7 +467,7 @@ var styledMapType = new google.maps.StyledMapType(
 				*/
 		}
 		overlay.setMap(map);
-		
+
 		overlay.draw = function () {
 			this.update();
 		}
@@ -437,7 +498,7 @@ var styledMapType = new google.maps.StyledMapType(
 				.remove();
 				*/
 		}
-		
+
 		var kk = 0;
 		var nPileup = 1;
 		var fadeDuration = 500;
@@ -464,10 +525,10 @@ var styledMapType = new google.maps.StyledMapType(
 				.append("path")
 				.attr("d", pathproj)
 				.attr("class", "mypoly")
-				
+
 		}
-		setInterval(flipBook,500);
-					
+		setInterval(flipBook,1500);
+
 
 
 		// For drawing small multiples
@@ -480,7 +541,7 @@ var styledMapType = new google.maps.StyledMapType(
 			var mymult = multMaker(mymultDiv);
 			mults.push(mymult);
 		}
-		
+
 		function populateMultiples() {
 			for(var ii=0; ii<6; ii++ ) {
 				mults[ii].setGeojson(CSZEvents[ii]);
@@ -488,7 +549,7 @@ var styledMapType = new google.maps.StyledMapType(
 			}
 		}
 		setTimeout(populateMultiples, 50);
-		
+
 	}
 
 function panMultiples(latLng,zoom) {
@@ -504,20 +565,20 @@ function panMultiples(latLng,zoom) {
 function multMaker(containerDiv) {
 
 	var mult = {};
-	
+
 	var myLabel = document.createElement("div");
 		myLabel.classList.add("simLabel");
 		//myLabel.appendChild(document.createTextNode("label"))
 		myLabel.innerText = "a";
 	containerDiv.appendChild(myLabel);
-	
+
 	var mapContainer = document.createElement("div");
 	mapContainer.classList.add("smallMultipleMap");
 	containerDiv.appendChild(mapContainer);
 	mult.setLabel = function(text) {
 		myLabel.innerText = text;
 	}
-	
+
 	// google map background
 	var map = new google.maps.Map(mapContainer, {
 		// center: new google.maps.LatLng(47.4,-120.5),
@@ -572,7 +633,7 @@ function multMaker(containerDiv) {
 			.attr("d", pathproj)
 	}
 	mult.map = map;
-	
+
 	mult.setGeojson = function(json) {
 		contours.selectAll(".mypoly")
 			.attr("class","remove")
@@ -596,7 +657,7 @@ function multMaker(containerDiv) {
 			*/
 	}
 	//setTimeout(gogo,1000);
-		
+
 	return mult; // in the future, this returned object may contain references to other things associated with the small multiple, such as a label field.
 }
 
@@ -605,7 +666,6 @@ function setMultGeojson(mult,json) {
 
 //individualView.addEventListener("click",function() { individualView.style.display ="none"; });
 </script>
-
 
 </body>
 </html>
