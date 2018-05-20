@@ -32,11 +32,12 @@
 		left: -4000px;
 		width: 8000px;
 		height: 8000px;
+		opacity: 1.0;
 	}
 	.SvgOverlay path {
 		stroke: black;
 		stroke-width: 1px;
-		fill-opacity: .3;
+		fill-opacity: 0.3;
 	}
 /*
 	#individualfocus {
@@ -74,12 +75,12 @@
 		height:100%;
 	}
 
-	.mypoly{
+	.mypoly {
 		fill:blue;
-		opacity:0.8;
+		opacity:1.0;
 	}
 
-	.MapBounds{
+	.MapBounds {
 		color:red;
 	}
 
@@ -88,9 +89,21 @@
 		width:26%;
 		height:41%;
 		border:1px solid black;
-		background:red;
 		display:inline-block;
-		}
+	}
+	
+	.simLabel {
+		height:1.5em;
+		text-align:center;
+	}
+	
+	.smallMultipleMap {
+		margin:none;
+		display:block;
+		width: 100%;
+		height: calc(100% - 1.5em);
+		padding: 0px;
+	}
 </style>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyJ45cnv6HeZr69pu26XSsUF-OMC6cNRU"></script>
 <script type="text/javascript" src="https://d3js.org/d3.v4.min.js" ></script>
@@ -326,7 +339,7 @@ var styledMapType = new google.maps.StyledMapType(
 	
 	var mults = []; // array of small multiples
 	
-	main(CSZEvents[6]);
+	main(CSZEvents[2]);
 	function main(json) {
 
 		// google map background
@@ -365,12 +378,12 @@ var styledMapType = new google.maps.StyledMapType(
 		// overlay geojson multipolygons on map
 		var overlay = new google.maps.OverlayView();
 
-		var contours, pathproj;
+		var contours, svg, pathproj;
 		overlay.onAdd = function () {
 			var layer = d3.select(this.getPanes().overlayMouseTarget)
 				.append("div")
 				.attr("class", "SvgOverlay");
-			var svg = layer.append("svg");
+			svg = layer.append("svg");
 			contours = svg.append("g")
 				.attr("class", "contours");
 			var overlayProjection = this.getProjection();
@@ -383,12 +396,14 @@ var styledMapType = new google.maps.StyledMapType(
 			pathproj = d3.geoPath().projection(googleMapProjection);
 
 			// put the initial contours on the page
+			/*
 			contours.selectAll(".mypoly")
 				.data(json.features)
 				.enter()
 				.append("path")
 				.attr("d", pathproj)
 				.attr("class", "mypoly")
+				*/
 		}
 		overlay.setMap(map);
 		
@@ -396,10 +411,10 @@ var styledMapType = new google.maps.StyledMapType(
 			this.update();
 		}
 		overlay.update = function() {
-			contours.selectAll(".mypoly")
+			svg.selectAll(".mypoly")
 				.attr("d", pathproj)
 		}
-
+		// This method doesn't work for now! The flipbook animation has supplanted the single dataset paradigm (for now)
 		function setGeojson(json) {
 			contours.selectAll(".mypoly")
 				.attr("class","remove")
@@ -423,20 +438,33 @@ var styledMapType = new google.maps.StyledMapType(
 				*/
 		}
 		
-		function go() {
-			setGeojson(CSZb);
+		var kk = 0;
+		var nPileup = 3;
+		var fadeDuration = 500;
+		function flipBook() {
+			var json = CSZEvents[kk];
+			kk++;
+			kk = kk%6;
+			var contourContainer = svg.append("g");
+			contourContainer.attr("opacity",0)
+				.transition()
+				.duration(fadeDuration)
+				.attr("opacity",1.0)
+				.transition()
+				.delay(nPileup*2*fadeDuration-fadeDuration)
+				.duration(fadeDuration)
+				.attr("opacity",0)
+				.remove();
+			contourContainer.selectAll(".mypoly")
+				.data(json.features)
+				.enter()
+				.append("path")
+				.attr("d", pathproj)
+				.attr("class", "mypoly")
+				
 		}
-		setTimeout(go,2000);
-		
-		var time = 0;
-		function anim() {
-			d3.select(".mypoly")
-				.data(packagePolygons([[makePerim(time)]]))
-				.attr("d", pathproj);
-			time += .1;
-		}
-		//setInterval(anim, 1000);
-			
+		setInterval(flipBook,2*fadeDuration);
+					
 
 
 		// For drawing small multiples
@@ -445,15 +473,15 @@ var styledMapType = new google.maps.StyledMapType(
 		for(var ii=0; ii<6; ii++) {
 			var mymultDiv = document.createElement("div");
 				mymultDiv.classList.add("smallmultiple");
-				mymultDiv.innerHTML = "a";
 				multcontainer.appendChild(mymultDiv);
-			var mymult = multMaker(mymultDiv,json);
+			var mymult = multMaker(mymultDiv);
 			mults.push(mymult);
 		}
 		
 		function gogo() {
 			for(var ii=0; ii<6; ii++ ) {
 				mults[ii].setGeojson(CSZEvents[ii]);
+				mults[ii].setLabel(CSZEventNameDecodes[ii]);
 			}
 		}
 		setTimeout(gogo, 50);
@@ -475,10 +503,25 @@ function panMultiples(latLng,zoom) {
 	}
 }
 
-function multMaker(containerDiv,json) {
+function multMaker(containerDiv) {
+
 	var mult = {};
+	
+	var myLabel = document.createElement("div");
+		myLabel.classList.add("simLabel");
+		//myLabel.appendChild(document.createTextNode("label"))
+		myLabel.innerText = "a";
+	containerDiv.appendChild(myLabel);
+	
+	var mapContainer = document.createElement("div");
+	mapContainer.classList.add("smallMultipleMap");
+	containerDiv.appendChild(mapContainer);
+	mult.setLabel = function(text) {
+		myLabel.innerText = text;
+	}
+	
 	// google map background
-	var map = new google.maps.Map(containerDiv, {
+	var map = new google.maps.Map(mapContainer, {
 		// center: new google.maps.LatLng(47.4,-120.5),
 		//center: new google.maps.LatLng(41.759671,-124.20219),
 		center: {lat:41.7509671, lng:-124.19219},
