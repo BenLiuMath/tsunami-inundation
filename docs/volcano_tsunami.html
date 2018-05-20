@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!-- Example taken from https://bl.ocks.org/mbostock/4241134 -->
+
+<svg width="960" height="673" stroke="#fff" stroke-width="0.5"></svg>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-hsv.v0.1.min.js"></script>
+<script src="https://d3js.org/d3-contour.v1.min.js"></script>
+<script src="CSZ_eta.js"></script>
+<script src="CSZ_geojson.js"></script>
+
+<script>
+
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
+
+var i0 = d3.interpolateHsvLong(d3.hsv(120, 1, 0.65), d3.hsv(60, 1, 0.90));
+var color = d3.scaleSequential(i0).domain([0, 15]);
+
+function doit(error, volcano) {
+	if (error) throw error;
+
+	
+	svg.selectAll(".contour")
+		.data(d3.contours()
+			.size([volcano.width, volcano.height])
+			.thresholds(d3.range(0,20,2))
+			//.thresholds([0.000001,0.00001,0.0001,0.001,0.01,0.02,0.04,0.1])
+			//.thresholds(d3.range(90, 195, 5))
+			(volcano.values))
+		.enter()
+		.append("path")
+		.attr("class","contour")
+		.attr("d", d3.geoPath(d3.geoIdentity().scale(width / volcano.width)) )
+		.attr("fill", function(d) { return color(d.value); })
+		.attr("stroke-width",1)
+		.attr("stroke","black");
+		
+}
+doit(null, eta_CSZa);
+</script>
+
