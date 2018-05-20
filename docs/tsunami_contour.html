@@ -141,12 +141,17 @@
 		]
 	};
 	
-	var testcontourdata = {"width":6,"height":6,"values":[0,1,2,3,4,5,
-	0,1,2,3,4,5,
-	0,1,2,3,4,5,
-	0,1,2,3,4,5,
-	0,1,2,3,4,5,
-	0,1,2,3,4,5]};
+	var testcontourdata = {"width":11,"height":11,"values":[0,1,2,3,4,5,6,7,8,9,10,
+	0,1,2,3,4,5,6,7,8,9,10,
+	0,1,2,3,4,5,6,7,8,9,10,
+	0,1,2,3,4,5,6,7,8,9,10,
+	0,1,2,3,4,5,6,7,8,9,10,
+	0,1,2,3,4,5,6,7,8,9,10,
+	0,1,2,3,4,5,6,7,8,9,10,
+	0,1,2,3,4,5,6,7,8,9,10,
+	0,1,2,3,4,5,6,7,8,9,10,
+	0,1,2,3,4,5,6,7,8,9,10,
+	0,1,2,3,4,5,6,7,8,9,10]};
 </script>
 
 <!-- Styled map specifications -->
@@ -355,7 +360,7 @@ var styledMapType = new google.maps.StyledMapType(
 		// google map background
 		var map = new google.maps.Map(document.getElementById('map'), {
 			center: {lat:41.7509671, lng:-124.17219},
-			zoom: 15,
+			zoom: 3, // 15
 			// styles:[{"stylers": [{"lightness": 100}]}],
 			styles:[
 				{
@@ -417,6 +422,7 @@ var styledMapType = new google.maps.StyledMapType(
 				.attr("class", "mypoly")
 				*/
 				
+			console.log(googleMapProjection);
 			
 			var aa = d3.contours()
 					.size([volcano.width, volcano.height])
@@ -430,14 +436,14 @@ var styledMapType = new google.maps.StyledMapType(
 			svg.selectAll(".mypoly2")
 				.data(d3.contours()
 					.size([volcano.width, volcano.height])
-					.thresholds(d3.range(0,20,2))
+					.thresholds(d3.range(0,20,1))
 					//.thresholds([0.000001,0.00001,0.0001,0.001,0.01,0.02,0.04,0.1])
 					//.thresholds(d3.range(90, 195, 5))
 					(volcano.values))
 				.enter()
 				.append("path")
 				.attr("class","mypoly2")
-				.attr("d", d3.geoPath(d3.geoIdentity().scale(100/volcano.width)).projection(googleMapProjection) )
+				.attr("d", d3.geoPath().projection(googleMapProjection) )
 				.attr("fill", function(d) { return color(d.value); })
 				.attr("stroke-width",1)
 				.attr("stroke","black");	
@@ -448,6 +454,7 @@ var styledMapType = new google.maps.StyledMapType(
 		overlay.draw = function () {
 			this.update();
 		}
+		
 		overlay.update = function() {
 			svg.selectAll(".mypoly")
 				.attr("d", pathproj)
