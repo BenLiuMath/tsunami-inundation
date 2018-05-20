@@ -36,7 +36,7 @@
 	}
 	.SvgOverlay path {
 		stroke: black;
-		stroke-width: 1px;
+		stroke-width: 0px;
 		fill-opacity: 0.3;
 	}
 /*
@@ -439,20 +439,23 @@ var styledMapType = new google.maps.StyledMapType(
 		}
 		
 		var kk = 0;
-		var nPileup = 3;
+		var nPileup = 1;
 		var fadeDuration = 500;
 		function flipBook() {
-			var json = CSZEvents[kk];
+			//var json = CSZEvents[3+kk];
+			var json = CSZEvents[Math.floor(Math.random()*7)];
 			kk++;
-			kk = kk%6;
+			kk = kk%4;
 			var contourContainer = svg.append("g");
 			contourContainer.attr("opacity",0)
 				.transition()
-				.duration(fadeDuration)
+				.ease(d3.easeSinInOut)
+				.duration(1000)
 				.attr("opacity",1.0)
 				.transition()
-				.delay(nPileup*2*fadeDuration-fadeDuration)
-				.duration(fadeDuration)
+				.delay(0)
+				.ease(d3.easeSinInOut)
+				.duration(1000)
 				.attr("opacity",0)
 				.remove();
 			contourContainer.selectAll(".mypoly")
@@ -463,7 +466,7 @@ var styledMapType = new google.maps.StyledMapType(
 				.attr("class", "mypoly")
 				
 		}
-		setInterval(flipBook,2*fadeDuration);
+		setInterval(flipBook,500);
 					
 
 
@@ -478,19 +481,14 @@ var styledMapType = new google.maps.StyledMapType(
 			mults.push(mymult);
 		}
 		
-		function gogo() {
+		function populateMultiples() {
 			for(var ii=0; ii<6; ii++ ) {
 				mults[ii].setGeojson(CSZEvents[ii]);
 				mults[ii].setLabel(CSZEventNameDecodes[ii]);
 			}
 		}
-		setTimeout(gogo, 50);
+		setTimeout(populateMultiples, 50);
 		
-		function gogogo() {
-			panMultiples({lat:41.7409671, lng:-124.19219});
-			setMultGeojson(mults[0],CSZa);
-		}
-		//setTimeout(gogogo, 1000);
 	}
 
 function panMultiples(latLng,zoom) {
