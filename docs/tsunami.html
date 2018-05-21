@@ -508,7 +508,7 @@ var styledMapType = new google.maps.StyledMapType(
 		var fadeDuration = 500;
 		function flipBook() {
 			//var json = CSZEvents[3+kk];
-			var json = CSZEvents[Math.floor(Math.random()*7)];
+			var json = CSZEvents[Math.floor(Math.random()*12)];
 			kk++;
 			kk = kk%4;
 			var contourContainer = svg.append("g");
@@ -530,14 +530,17 @@ var styledMapType = new google.maps.StyledMapType(
 				.append("path")
 				.attr("d", pathproj)
 				.attr("class", "mypoly")
-				.attr("fill-opacity",1.0)
+				.attr("fill-opacity",function(d) {
+                    return d.levelSetValue/10;
+                })
 				.attr("z-index", function(d) {
 					return Math.round(d.levelSetValue*100);
 				})
 				.attr("fill", function(d) {
 					//console.log(d.levelSetValue + ":"+ d.levelSetValue);
 					//return (d.levelSetValue < 0.5?"blue":"green");
-					return mycolors(d.levelSetValue);
+					//return mycolors(d.levelSetValue);
+                    return "blue";
 				});
 
 		}
@@ -658,6 +661,18 @@ function multMaker(containerDiv) {
 			.append("path")
 			.attr("d", pathproj)
 			.attr("class", "mypoly")
+            .attr("fill-opacity",function(d) {
+                return d.levelSetValue/10;
+            })
+            .attr("z-index", function(d) {
+                return Math.round(d.levelSetValue*100);
+            })
+            .attr("fill", function(d) {
+                //console.log(d.levelSetValue + ":"+ d.levelSetValue);
+                //return (d.levelSetValue < 0.5?"blue":"green");
+                //return mycolors(d.levelSetValue);
+                return "blue";
+            });
 		/*
 		polys = contours.selectAll(".mypoly")
 			.data(json.features)
