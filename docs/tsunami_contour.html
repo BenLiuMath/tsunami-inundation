@@ -37,7 +37,6 @@
 	.SvgOverlay path {
 		stroke: black;
 		stroke-width: 0px;
-		fill-opacity: 0.3;
 	}
 /*
 	#individualfocus {
@@ -359,8 +358,8 @@ var styledMapType = new google.maps.StyledMapType(
 
 		// google map background
 		var map = new google.maps.Map(document.getElementById('map'), {
-			center: {lat:41.7509671, lng:-124.17219},
-			zoom: 3, // 15
+			center: {lat:41.7509671, lng:-124.18219},
+			zoom: 15, // 15
 			// styles:[{"stylers": [{"lightness": 100}]}],
 			styles:[
 				{
@@ -393,7 +392,7 @@ var styledMapType = new google.maps.StyledMapType(
 		// overlay geojson multipolygons on map
 		var overlay = new google.maps.OverlayView();
 
-		var volcano = testcontourdata;
+		var volcano = eta_CSZa;
 			
 		var contours, svg, googleMapProjection, pathproj;
 		overlay.onAdd = function () {
@@ -410,6 +409,19 @@ var styledMapType = new google.maps.StyledMapType(
 				d = overlayProjection.fromLatLngToDivPixel( new google.maps.LatLng(y, x) );
 				this.stream.point(d.x + 4000, d.y + 4000);
 			}});
+            
+            var lat_low = 235.79781-360;
+            var lat_high = 235.82087-360;
+            var lng_low = 41.739671;
+            var lng_high = 41.762726;
+            
+            
+            googleMapProjection2 = d3.geoTransform({point: function(j,i) {
+                x = lat_low+i/volcano.width*(lat_high - lat_low);
+                y = lng_low+j/volcano.height*(lng_high-lng_low);
+				d = overlayProjection.fromLatLngToDivPixel( new google.maps.LatLng(y, x) );
+				this.stream.point(d.x + 4000, d.y + 4000);
+			}});
 			pathproj = d3.geoPath().projection(googleMapProjection);
 
 			// put the initial contours on the page
@@ -422,17 +434,22 @@ var styledMapType = new google.maps.StyledMapType(
 				.attr("class", "mypoly")
 				*/
 				
-			console.log(googleMapProjection);
+			//console.log(googleMapProjection);
 			
-			var aa = d3.contours()
+            var aa = d3.contours()
 					.size([volcano.width, volcano.height])
 					.thresholds(d3.range(0,5,1))
 					//.thresholds([0.000001,0.00001,0.0001,0.001,0.01,0.02,0.04,0.1])
 					//.thresholds(d3.range(90, 195, 5))
 					(volcano.values);
-			//console.log(JSON.stringify(aa));
-			var i0 = d3.interpolateHsvLong(d3.hsv(120, 1, 0.65), d3.hsv(60, 1, 0.90));
-			var color = d3.scaleSequential(i0).domain([0, 15]);
+            console.log(aa);
+            
+            
+			var i0 = d3.interpolateHsvLong(d3.hsv(150, 1, 0.5), d3.hsv(200, 1, 0.90));
+			var color = d3.scaleSequential(i0).domain([0, 10]);
+            
+            var myalpha = d3.scaleLinear().domain([0,20]).range([0,.5]);
+            
 			svg.selectAll(".mypoly2")
 				.data(d3.contours()
 					.size([volcano.width, volcano.height])
@@ -443,8 +460,14 @@ var styledMapType = new google.maps.StyledMapType(
 				.enter()
 				.append("path")
 				.attr("class","mypoly2")
-				.attr("d", d3.geoPath().projection(googleMapProjection) )
-				.attr("fill", function(d) { return color(d.value); })
+				//.attr("d", d3.geoPath().projection(googleMapProjection) )
+				//.attr("fill", function(d) { return color(d.value); })
+                .attr("fill","blue")
+				.attr("opacity", function(d) { 
+                console.log(d.value);
+                //return myalpha(d.value);
+                return .1;
+                })
 				.attr("stroke-width",1)
 				.attr("stroke","black");	
 				
@@ -456,10 +479,8 @@ var styledMapType = new google.maps.StyledMapType(
 		}
 		
 		overlay.update = function() {
-			svg.selectAll(".mypoly")
-				.attr("d", pathproj)
 			svg.selectAll(".mypoly2")
-				.attr("d", d3.geoPath().projection(googleMapProjection) )
+				.attr("d", d3.geoPath().projection(googleMapProjection2) )
 		}
 		// This method doesn't work for now! The flipbook animation has supplanted the single dataset paradigm (for now)
 		function setGeojson(json) {

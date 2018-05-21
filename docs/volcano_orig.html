@@ -280,7 +280,7 @@ svg.selectAll("path")
         .thresholds(d3.range(90, 195, 5))
       (volcano.values))
     .enter().append("path")
-      .attr("d", d3.geoPath(d3.geoIdentity().scale(width / volcano.width)))
+      .attr("d", d3.geoPath(d3.geoIdentity().scale(.5*width / volcano.width)))
       .attr("fill", function(d) { return color(d.value); });
 }
 doit(null, volcanojson);
