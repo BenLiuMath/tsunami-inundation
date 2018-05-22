@@ -401,6 +401,8 @@ var styledMapType = new google.maps.StyledMapType(
 
 	var mults = []; // array of small multiples
 
+	var markers = []; // array of markers currently on the maps
+
 	main(CSZEvents[2]);
 	function main(json) {
 
@@ -428,6 +430,9 @@ var styledMapType = new google.maps.StyledMapType(
 			//map.setZoom(15);
 			individualView.style.display = "block";
 			panMultiples(e.latLng);
+			deleteMarkers();
+			addMarker(e.latLng, map);
+			addMarkersMultiples(e.latLng);
           // map.setCenter(marker.getPosition());
         }
 
@@ -502,7 +507,7 @@ var styledMapType = new google.maps.StyledMapType(
 
 		var i0 = d3.interpolateHsvLong(d3.hsv(120, 1, 0.65), d3.hsv(10, 1, 0.90));
 		var mycolors = d3.scaleSequential(i0).domain([0, 5]);
-		
+
 		var kk = 0;
 		var nPileup = 1;
 		var fadeDuration = 500;
@@ -523,7 +528,7 @@ var styledMapType = new google.maps.StyledMapType(
 				.duration(1000)
 				.attr("opacity",0)
 				.remove();
-			
+
 			contourContainer.selectAll(".mypoly")
 				.data(json.features)
 				.enter()
@@ -569,6 +574,31 @@ var styledMapType = new google.maps.StyledMapType(
 
 	}
 
+	// BEGIN FUNCTIONS OUTSIDE OF MAIN
+
+	function deleteMarkers() {
+		for (var i = 0; i < markers.length; i++) {
+				markers[i].setMap(null);
+			}
+			markers = [];
+	}
+
+	function addMarker(latLng, map) {
+		// add the new marker to the given map
+		var marker = new google.maps.Marker({
+			position: latLng,
+			map: map
+		});
+		// record the marker
+		markers.push(marker);
+	}
+
+	function addMarkersMultiples(latLng) {
+		for(var ii=0; ii<mults.length; ii++) {
+			addMarker(latLng, mults[ii].map);
+		}
+	}
+
 function panMultiples(latLng,zoom) {
 	if(!zoom) {
 		zoom = 14;
@@ -578,6 +608,7 @@ function panMultiples(latLng,zoom) {
 		mults[ii].map.panTo(latLng);
 	}
 }
+
 
 function multMaker(containerDiv) {
 

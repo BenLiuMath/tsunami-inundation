@@ -1,10 +1,9 @@
 Tsunami to-do
 
 KELLIE: 
-1. Drop marker down when click on big map
+done 1. Drop marker down when click on big map
 2. Colors for maps. (darker for deeper water? maybe dark blue to cyan/green)
 3. Names of events for far-field events, just probability for near-field
-4. Slider or dropdown for selecting probability level
 5. Add some basic info about simulations to the landing page
 
 BRIAN:
@@ -13,7 +12,7 @@ BRIAN:
 2. Get website hosting set up
 
 ABE: 
-1. Figure out how to toggle between near-field and far-field (implementation side)
+1. Figure out how to toggle between near-field and far-field events, including slider or drop-down menu
 
 BEN:
 1. Move d3.contour() into tsunami.html 
