@@ -2,7 +2,7 @@ Tsunami to-do
 
 KELLIE: 
 done 1. Drop marker down when click on big map
-2. Colors for maps. (darker for deeper water? maybe dark blue to cyan/green)
+done 2. Colors for maps. (darker for deeper water? maybe dark blue to cyan/green)
 3. Names of events for far-field events, just probability for near-field
 5. Add some basic info about simulations to the landing page
 

@@ -38,15 +38,6 @@
 		padding: 10px;
 	}
 
-	#supplemental {
-		position:absolute;
-		top:100%;
-		height:200px;
-		font-family: "Avenir Next";
-		/* font-size: 1.8em; */
-		padding: 10px;
-	}
-
 	#map {
 		position:absolute;
 		top:100px;
@@ -144,11 +135,36 @@
 		height: calc(100% - 1.5em);
 		padding: 0px;
 	}
+
+	#legend {
+		position:absolute;
+		top:15px;
+		left:40%;
+		width:90%;
+		height:200px;
+		/*font-family: "Avenir Next";
+		 font-size: 1.8em;
+		padding: 10px; */
+	}
+
+	#supplemental {
+		position:absolute;
+		top:100%;
+		height:200px;
+		font-family: "Avenir Next";
+		/* font-size: 1.8em; */
+		padding: 10px;
+	}
 </style>
+
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyJ45cnv6HeZr69pu26XSsUF-OMC6cNRU"></script>
 <script type="text/javascript" src="https://d3js.org/d3.v4.min.js" ></script>
-	<script src="https://d3js.org/d3-hsv.v0.1.min.js"></script>
-	<script src="https://d3js.org/d3-contour.v1.min.js"></script>
+<script src="https://d3js.org/d3-contour.v1.min.js"></script>
+<script src="https://d3js.org/d3-hsv.v0.1.min.js"></script>
+<script src="https://d3js.org/d3-color.v1.min.js"></script>
+<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.js"></script>
 
 </head>
 <body>
@@ -167,6 +183,7 @@
 			<div class="backdrop"></div>
 			<div id="smallmultiplescontainer"></div>
 		</div>
+		<div id="legend"></div>
 
 		<div id="supplemental">
 			<h3>Background &amp; Context</h3>
@@ -434,8 +451,16 @@ var styledMapType = new google.maps.StyledMapType(
 	// alternative for hard-coded data
 
 	var mults = []; // array of small multiples
-
 	var markers = []; // array of markers currently on the maps
+
+// // Color scheme for the inundation levels
+// // var i0 = d3.interpolateHsvLong(d3.hsv(120, 1, 0.65), d3.hsv(10, 1, 0.90));
+// // var mycolors = d3.scaleSequential(i0).domain([0, 5]);
+var i0 = d3.interpolateCool;
+function interpolateReverse(t){
+	return i0(1-t);   // assumes [0,1] range
+}
+var mycolors = d3.scaleSequential(interpolateReverse).domain([0,12]);
 
 	main();
 	function main() {
@@ -443,7 +468,7 @@ var styledMapType = new google.maps.StyledMapType(
 		// google map background
 		var map = new google.maps.Map(document.getElementById('map'), {
 			center: {lat:(cityCenter.y-0.005), lng:(cityCenter.x+.03)},
-			zoom: 15,
+			zoom: 14,
 			// styles:[{"stylers": [{"lightness": 100}]}],
 			styles:[
 				{
@@ -516,18 +541,18 @@ var styledMapType = new google.maps.StyledMapType(
 		}
 		// This method doesn't work for now! The flipbook animation has supplanted the single dataset paradigm (for now)
 		function setContourData(surfData) {
-			
+
 			contData = d3.contours()
 					.size([surfData.width, surfData.height])
 					.thresholds(d3.range(1,21))
 					//.thresholds([1,2,3,4,5])
 					(surfData.values);
-					
+
 			console.log(contData);
-			
-			//var i0 = d3.interpolateHsvLong(d3.hsv(210, 1, 1), d3.hsv(235, 1, 0.25));
-			var i0 = d3.interpolateHsvLong(d3.hsv(0, .3, 1), d3.hsv(0, 1, .4));
-			var color = d3.scaleSequential(i0).domain([0, 10]);
+
+			// //var i0 = d3.interpolateHsvLong(d3.hsv(210, 1, 1), d3.hsv(235, 1, 0.25));
+			// var i0 = d3.interpolateHsvLong(d3.hsv(0, .3, 1), d3.hsv(0, 1, .4));
+			// var color = d3.scaleSequential(i0).domain([0, 10]);
 
 			contourGroup.selectAll(".mypoly")
 				.attr("class","remove")
@@ -538,10 +563,11 @@ var styledMapType = new google.maps.StyledMapType(
 				.append("path")
 				.attr("d", d3.geoPath().projection(surfDataProjection))
 				.attr("class", "mypoly")
-                .attr("fill", function(d) { return color(d.value); });
+                .attr("fill", function(d) { return mycolors(d.value); });
 		}
+
 		function gogogo() {
-			setContourData(near_field_eta_ps[6]);
+			setContourData(near_field_eta_ps[4]);
 		}
 		setTimeout(gogogo, 1000);
 
@@ -564,6 +590,34 @@ var styledMapType = new google.maps.StyledMapType(
 			}
 		}
 		setTimeout(populateMultiples, 50);
+
+		// draw the legend
+		var legWidth = 800;
+		var legHeight = 200;
+
+		var svg = d3.select("#legend")
+				.append("svg")
+				.attr("width", legWidth)
+				.attr("height", legHeight);
+
+		svg.append("g")
+		.attr("class", "legendSequential")
+		.attr("transform", "translate(20,0)");
+
+		svg.append("text")
+		.attr("x", 345)
+		.attr("y", 32)
+		.text("meters of water above normal");
+
+		var legendSequential = d3.legendColor()
+			.shapeWidth(30)
+			.shapePadding(5)
+			.cells(9)
+			.orient("horizontal")
+			.scale(mycolors)
+
+		svg.select(".legendSequential")
+		.call(legendSequential);
 
 	}
 
@@ -662,7 +716,7 @@ function multMaker(containerDiv) {
 			this.stream.point(d.x + 4000, d.y + 4000);
 		}});
 		pathproj = d3.geoPath().projection(googleMapProjection);
-		
+
 		var surfData = far_field_eta_ps[5];
 		surfDataProjection = d3.geoTransform({point: function(j,i) {
 			x = lat_low+i/surfData.width*(lat_high - lat_low);
@@ -698,33 +752,34 @@ function multMaker(containerDiv) {
 			.append("path")
 			.attr("d", pathproj)
 			.attr("class", "mypoly")
-            .attr("fill-opacity",function(d) {
-                return d.levelSetValue/10;
-            })
+            // .attr("fill-opacity",function(d) {
+            //     return d.levelSetValue/10;
+            // })
+						.attr("fill-opacity", 0.5)
             .attr("z-index", function(d) {
                 return Math.round(d.levelSetValue*100);
             })
             .attr("fill", function(d) {
                 //console.log(d.levelSetValue + ":"+ d.levelSetValue);
                 //return (d.levelSetValue < 0.5?"blue":"green");
-                //return mycolors(d.levelSetValue);
-                return "blue";
+                return mycolors(d.levelSetValue);
+                // return "blue";
             });
 	}
-	
+
 	mult.setContourData = function(surfData) {
-		
+
 		contData = d3.contours()
 				.size([surfData.width, surfData.height])
 				.thresholds(d3.range(1,21))
 				//.thresholds([1,2,3,4,5])
 				(surfData.values);
-				
+
 		console.log(contData);
-		
-		var i0 = d3.interpolateHsvLong(d3.hsv(210, .5, 1), d3.hsv(235, 1, 0.25));
-		//var i0 = d3.interpolateHsvLong(d3.hsv(0, .3, 1), d3.hsv(0, 1, .4));
-		var color = d3.scaleSequential(i0).domain([0, 10]);
+
+		// var i0 = d3.interpolateHsvLong(d3.hsv(210, .5, 1), d3.hsv(235, 1, 0.25));
+		// //var i0 = d3.interpolateHsvLong(d3.hsv(0, .3, 1), d3.hsv(0, 1, .4));
+		// var color = d3.scaleSequential(i0).domain([0, 10]);
 
 		contourGroup.selectAll(".mypoly")
 			.attr("class","remove")
@@ -735,7 +790,7 @@ function multMaker(containerDiv) {
 			.append("path")
 			.attr("d", d3.geoPath().projection(surfDataProjection))
 			.attr("class", "mypoly")
-			.attr("fill", function(d) { return color(d.value); });
+			.attr("fill", function(d) { return mycolors(d.value); });
 		}
 	//setTimeout(gogo,1000);
 
