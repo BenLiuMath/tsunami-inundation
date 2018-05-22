@@ -173,7 +173,7 @@
 		<div id="header">
 			<h1>Tsunami Inundation Maps</h1>
 			<p>Choose <a href="#supplemental">near-field</a> (Cascadia) or <a href="#supplemental">far-field</a> events.
-				A single-click on the large map will focus the small maps (corresponding to different simulations) on that spot.
+				A single-click on the large map (aggregated inundation levels) will focus the small maps (corresponding to different simulations) on that spot.
 			</p>
 
 		</div>
@@ -224,6 +224,7 @@
 //var eta_vars = [eta_CSZa, eta_CSZb, eta_CSZc, eta_CSZd, eta_CSZe, eta_CSZf, eta_SChSZa, eta_AASZa, eta_AASZb, eta_AASZc, eta_AASZd, eta_KmSZa, eta_KrSZa, eta_TOHa];
 var eta_vars = [eta_CSZa, eta_CSZb, eta_CSZc, eta_CSZd, eta_CSZe, eta_CSZf, eta_SChSZa];
 var eta_names = ["CSZa","CSZb","CSZc","CSZd","CSZe","CSZf","SChSZa"];
+var eta_decodes = ["CSZa (p=.0125)","CSZb (p=.0125)","CSZc (p=.0750)","CSZd (p=.5000)","CSZe (p=.1750)","CSZf (p=.2250)","SChSZa"];
 
 var far_field_eta_ps = [far_field_eta_pInv50, far_field_eta_pInv100, far_field_eta_pInv200, far_field_eta_pInv500, far_field_eta_pInv1000, far_field_eta_pInv5000, far_field_eta_pInv10000];
 
@@ -586,7 +587,7 @@ var mycolors = d3.scaleSequential(interpolateReverse).domain([0,12]);
 			for(var ii=0; ii<6; ii++ ) {
 				//mults[ii].setGeojson(CSZEvents[ii]);
 				mults[ii].setContourData(eta_vars[ii]);
-				mults[ii].setLabel(eta_names[ii]);
+				mults[ii].setLabel(eta_decodes[ii]);
 			}
 		}
 		setTimeout(populateMultiples, 50);
@@ -664,7 +665,7 @@ function multMaker(containerDiv) {
 	var myLabel = document.createElement("div");
 		myLabel.classList.add("simLabel");
 		//myLabel.appendChild(document.createTextNode("label"))
-		myLabel.innerText = "a";
+		myLabel.innerText = " ";
 	containerDiv.appendChild(myLabel);
 
 	var mapContainer = document.createElement("div");
