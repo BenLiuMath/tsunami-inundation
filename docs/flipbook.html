@@ -147,8 +147,7 @@
 </style>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyJ45cnv6HeZr69pu26XSsUF-OMC6cNRU"></script>
 <script type="text/javascript" src="https://d3js.org/d3.v4.min.js" ></script>
-	<script src="https://d3js.org/d3-hsv.v0.1.min.js"></script>
-	<script src="https://d3js.org/d3-contour.v1.min.js"></script>
+<script src="https://d3js.org/d3-hsv.v0.1.min.js"></script>
 
 </head>
 <body>
@@ -183,35 +182,6 @@
 
 	</div>
 <script src="CSZ_geojson.js"></script>
-<script src="CSZ_eta.js"></script>
-
-<script src="data/eta_arrs.js"></script>
-
-<script src="data/far_field_eta_pInv50.js"></script>
-<script src="data/far_field_eta_pInv100.js"></script>
-<script src="data/far_field_eta_pInv200.js"></script>
-<script src="data/far_field_eta_pInv500.js"></script>
-<script src="data/far_field_eta_pInv1000.js"></script>
-<script src="data/far_field_eta_pInv5000.js"></script>
-<script src="data/far_field_eta_pInv10000.js"></script>
-
-<script src="data/near_field_eta_pInv50.js"></script>
-<script src="data/near_field_eta_pInv100.js"></script>
-<script src="data/near_field_eta_pInv200.js"></script>
-<script src="data/near_field_eta_pInv500.js"></script>
-<script src="data/near_field_eta_pInv1000.js"></script>
-<script src="data/near_field_eta_pInv5000.js"></script>
-<script src="data/near_field_eta_pInv10000.js"></script>
-
-<script>
-//var eta_vars = [eta_CSZa, eta_CSZb, eta_CSZc, eta_CSZd, eta_CSZe, eta_CSZf, eta_SChSZa, eta_AASZa, eta_AASZb, eta_AASZc, eta_AASZd, eta_KmSZa, eta_KrSZa, eta_TOHa];
-var eta_vars = [eta_CSZa, eta_CSZb, eta_CSZc, eta_CSZd, eta_CSZe, eta_CSZf, eta_SChSZa];
-var eta_names = ["CSZa","CSZb","CSZc","CSZd","CSZe","CSZf","SChSZa"];
-
-var far_field_eta_ps = [far_field_eta_pInv50, far_field_eta_pInv100, far_field_eta_pInv200, far_field_eta_pInv500, far_field_eta_pInv1000, far_field_eta_pInv5000, far_field_eta_pInv10000];
-
-var near_field_eta_ps = [near_field_eta_pInv50, near_field_eta_pInv100, near_field_eta_pInv200, near_field_eta_pInv500, near_field_eta_pInv1000, near_field_eta_pInv5000, near_field_eta_pInv10000];
-</script>
 <script>
 	var testjson = {
 		"type": "FeatureCollection",
@@ -401,10 +371,6 @@ var styledMapType = new google.maps.StyledMapType(
 	var cityCenter = {'x':-124.2026, 'y':41.7558};
 	var individualView = document.getElementById("individualfocus");
 
-	var lat_low = 235.79781-360;
-	var lat_high = 235.82087-360;
-	var lng_low = 41.739671;
-	var lng_high = 41.762726;
 
 	var N = 100;
 	function makePerim(t) {
@@ -437,13 +403,13 @@ var styledMapType = new google.maps.StyledMapType(
 
 	var markers = []; // array of markers currently on the maps
 
-	main();
-	function main() {
+	main(CSZEvents[2]);
+	function main(json) {
 
 		// google map background
 		var map = new google.maps.Map(document.getElementById('map'), {
-			center: {lat:(cityCenter.y-0.005), lng:(cityCenter.x+.03)},
-			zoom: 15,
+			center: {lat:(cityCenter.y-0.005), lng:(cityCenter.x+.035)},
+			zoom: 14,
 			// styles:[{"stylers": [{"lightness": 100}]}],
 			styles:[
 				{
@@ -479,15 +445,14 @@ var styledMapType = new google.maps.StyledMapType(
 		// overlay geojson multipolygons on map
 		var overlay = new google.maps.OverlayView();
 
-		var contourGroup, svg, pathproj, surfDataProjection;
+		var contours, svg, pathproj;
 		overlay.onAdd = function () {
 			var layer = d3.select(this.getPanes().overlayMouseTarget)
 				.append("div")
 				.attr("class", "SvgOverlay");
 			svg = layer.append("svg");
-			contourGroup = svg.append("g")
-				.attr("class", "contourGroup")
-				.attr("opacity",.8);
+			contours = svg.append("g")
+				.attr("class", "contours");
 			var overlayProjection = this.getProjection();
 
 			// turn google map projection into d3 projection
@@ -497,13 +462,15 @@ var styledMapType = new google.maps.StyledMapType(
 			}});
 			pathproj = d3.geoPath().projection(googleMapProjection);
 
-			var surfData = far_field_eta_ps[5];
-            surfDataProjection = d3.geoTransform({point: function(j,i) {
-                x = lat_low+i/surfData.width*(lat_high - lat_low);
-                y = lng_low+j/surfData.height*(lng_high-lng_low);
-				d = overlayProjection.fromLatLngToDivPixel( new google.maps.LatLng(y, x) );
-				this.stream.point(d.x + 4000, d.y + 4000);
-			}});
+			// put the initial contours on the page
+			/*
+			contours.selectAll(".mypoly")
+				.data(json.features)
+				.enter()
+				.append("path")
+				.attr("d", pathproj)
+				.attr("class", "mypoly")
+				*/
 		}
 		overlay.setMap(map);
 
@@ -511,39 +478,80 @@ var styledMapType = new google.maps.StyledMapType(
 			this.update();
 		}
 		overlay.update = function() {
-			contourGroup.selectAll(".mypoly")
-				.attr("d", d3.geoPath().projection(surfDataProjection) )
+			svg.selectAll(".mypoly")
+				.attr("d", pathproj);
 		}
 		// This method doesn't work for now! The flipbook animation has supplanted the single dataset paradigm (for now)
-		function setContourData(surfData) {
-			
-			contData = d3.contours()
-					.size([surfData.width, surfData.height])
-					.thresholds(d3.range(1,21))
-					//.thresholds([1,2,3,4,5])
-					(surfData.values);
-					
-			console.log(contData);
-			
-			//var i0 = d3.interpolateHsvLong(d3.hsv(210, 1, 1), d3.hsv(235, 1, 0.25));
-			var i0 = d3.interpolateHsvLong(d3.hsv(0, .3, 1), d3.hsv(0, 1, .4));
-			var color = d3.scaleSequential(i0).domain([0, 10]);
-
-			contourGroup.selectAll(".mypoly")
+		function setGeojson(json) {
+			contours.selectAll(".mypoly")
 				.attr("class","remove")
 				.remove();
-			contourGroup.selectAll(".mypoly")
-				.data(contData)
+			contours.selectAll(".mypoly")
+				.data(json.features)
 				.enter()
 				.append("path")
-				.attr("d", d3.geoPath().projection(surfDataProjection))
+				.attr("d", pathproj)
 				.attr("class", "mypoly")
-                .attr("fill", function(d) { return color(d.value); });
+			/*
+			polys = contours.selectAll(".mypoly")
+				.data(json.features)
+			polys.attr("d", pathproj);
+			polys.enter()
+				.append("path")
+				.attr("class", "mypoly")
+				.attr("d", pathproj);
+			polys.exit()
+				.remove();
+				*/
 		}
-		function gogogo() {
-			setContourData(near_field_eta_ps[6]);
+
+		var i0 = d3.interpolateHsvLong(d3.hsv(120, 1, 0.65), d3.hsv(10, 1, 0.90));
+		var mycolors = d3.scaleSequential(i0).domain([0, 5]);
+
+		var kk = 0;
+		var nPileup = 1;
+		var fadeDuration = 500;
+		function flipBook() {
+			//var json = CSZEvents[3+kk];
+			var json = CSZEvents[Math.floor(Math.random()*12)];
+			kk++;
+			kk = kk%4;
+			var contourContainer = svg.append("g");
+			contourContainer.attr("opacity",0)
+				.transition()
+				.ease(d3.easeSinInOut)
+				.duration(1000)
+				.attr("opacity",1.0)
+				.transition()
+				.delay(500)
+				.ease(d3.easeSinInOut)
+				.duration(1000)
+				.attr("opacity",0)
+				.remove();
+
+			contourContainer.selectAll(".mypoly")
+				.data(json.features)
+				.enter()
+				.append("path")
+				.attr("d", pathproj)
+				.attr("class", "mypoly")
+				.attr("fill-opacity",function(d) {
+                    return d.levelSetValue/10;
+                })
+				.attr("z-index", function(d) {
+					return Math.round(d.levelSetValue*100);
+				})
+				.attr("fill", function(d) {
+					//console.log(d.levelSetValue + ":"+ d.levelSetValue);
+					//return (d.levelSetValue < 0.5?"blue":"green");
+					//return mycolors(d.levelSetValue);
+                    return "blue";
+				});
+
 		}
-		setTimeout(gogogo, 1000);
+		setInterval(flipBook,1500);
+
+
 
 		// For drawing small multiples
 		var multcontainer = document.getElementById("smallmultiplescontainer");
@@ -558,9 +566,8 @@ var styledMapType = new google.maps.StyledMapType(
 
 		function populateMultiples() {
 			for(var ii=0; ii<6; ii++ ) {
-				//mults[ii].setGeojson(CSZEvents[ii]);
-				mults[ii].setContourData(eta_vars[ii]);
-				mults[ii].setLabel(eta_names[ii]);
+				mults[ii].setGeojson(CSZEvents[ii]);
+				mults[ii].setLabel(CSZEventNameDecodes[ii]);
 			}
 		}
 		setTimeout(populateMultiples, 50);
@@ -645,15 +652,14 @@ function multMaker(containerDiv) {
 	// overlay geojson multipolygons on map
 	var overlay = new google.maps.OverlayView();
 
-	var contourGroup, pathproj, svg, surfDataProjection;
+	var contours, pathproj;
 	overlay.onAdd = function () {
 		var layer = d3.select(this.getPanes().overlayMouseTarget)
 			.append("div")
 			.attr("class", "SvgOverlay");
-		svg = layer.append("svg");
-		contourGroup = svg.append("g")
-			.attr("class", "contourGroup")
-			.attr("opacity",.8);
+		var svg = layer.append("svg");
+		contours = svg.append("g")
+			.attr("class", "contours");
 		var overlayProjection = this.getProjection();
 
 		// turn google map projection into d3 projection
@@ -662,14 +668,6 @@ function multMaker(containerDiv) {
 			this.stream.point(d.x + 4000, d.y + 4000);
 		}});
 		pathproj = d3.geoPath().projection(googleMapProjection);
-		
-		var surfData = far_field_eta_ps[5];
-		surfDataProjection = d3.geoTransform({point: function(j,i) {
-			x = lat_low+i/surfData.width*(lat_high - lat_low);
-			y = lng_low+j/surfData.height*(lng_high-lng_low);
-			d = overlayProjection.fromLatLngToDivPixel( new google.maps.LatLng(y, x) );
-			this.stream.point(d.x + 4000, d.y + 4000);
-		}});
 	}
 	overlay.setMap(map);
 
@@ -679,20 +677,16 @@ function multMaker(containerDiv) {
 	};
 
 	overlay.update = function() {
-		/*
-		contourGroup.selectAll(".mypoly")
+		contours.selectAll(".mypoly")
 			.attr("d", pathproj)
-		*/
-		contourGroup.selectAll(".mypoly")
-			.attr("d", d3.geoPath().projection(surfDataProjection) )
 	}
 	mult.map = map;
 
 	mult.setGeojson = function(json) {
-		contourGroup.selectAll(".mypoly")
+		contours.selectAll(".mypoly")
 			.attr("class","remove")
 			.remove();
-		contourGroup.selectAll(".mypoly")
+		contours.selectAll(".mypoly")
 			.data(json.features)
 			.enter()
 			.append("path")
@@ -710,33 +704,18 @@ function multMaker(containerDiv) {
                 //return mycolors(d.levelSetValue);
                 return "blue";
             });
-	}
-	
-	mult.setContourData = function(surfData) {
-		
-		contData = d3.contours()
-				.size([surfData.width, surfData.height])
-				.thresholds(d3.range(1,21))
-				//.thresholds([1,2,3,4,5])
-				(surfData.values);
-				
-		console.log(contData);
-		
-		var i0 = d3.interpolateHsvLong(d3.hsv(210, .5, 1), d3.hsv(235, 1, 0.25));
-		//var i0 = d3.interpolateHsvLong(d3.hsv(0, .3, 1), d3.hsv(0, 1, .4));
-		var color = d3.scaleSequential(i0).domain([0, 10]);
-
-		contourGroup.selectAll(".mypoly")
-			.attr("class","remove")
-			.remove();
-		contourGroup.selectAll(".mypoly")
-			.data(contData)
-			.enter()
+		/*
+		polys = contours.selectAll(".mypoly")
+			.data(json.features)
+		polys.attr("d", pathproj);
+		polys.enter()
 			.append("path")
-			.attr("d", d3.geoPath().projection(surfDataProjection))
 			.attr("class", "mypoly")
-			.attr("fill", function(d) { return color(d.value); });
-		}
+			.attr("d", pathproj);
+		polys.exit()
+			.remove();
+			*/
+	}
 	//setTimeout(gogo,1000);
 
 	return mult; // in the future, this returned object may contain references to other things associated with the small multiple, such as a label field.
