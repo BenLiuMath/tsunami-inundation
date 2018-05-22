@@ -184,6 +184,9 @@
 	</div>
 <script src="CSZ_geojson.js"></script>
 <script src="CSZ_eta.js"></script>
+
+<script src="data/eta_arrs.js"></script>
+
 <script src="data/far_field_eta_pInv50.js"></script>
 <script src="data/far_field_eta_pInv100.js"></script>
 <script src="data/far_field_eta_pInv200.js"></script>
@@ -201,6 +204,8 @@
 <script src="data/near_field_eta_pInv10000.js"></script>
 
 <script>
+var eta_vars = [eta_CSZa, eta_CSZb, eta_CSZc, eta_CSZd, eta_CSZe, eta_CSZf, eta_SChSZa, eta_AASZa, eta_AASZb, eta_AASZc, eta_AASZd, eta_KmSZa, eta_KrSZa, eta_TOHa];
+
 var far_field_eta_ps = [far_field_eta_pInv50, far_field_eta_pInv100, far_field_eta_pInv200, far_field_eta_pInv500, far_field_eta_pInv1000, far_field_eta_pInv5000, far_field_eta_pInv10000];
 
 var near_field_eta_ps = [near_field_eta_pInv50, near_field_eta_pInv100, near_field_eta_pInv200, near_field_eta_pInv500, near_field_eta_pInv1000, near_field_eta_pInv5000, near_field_eta_pInv10000];
@@ -472,15 +477,15 @@ var styledMapType = new google.maps.StyledMapType(
 		// overlay geojson multipolygons on map
 		var overlay = new google.maps.OverlayView();
 
-		var contours, svg, pathproj, surfDataProjection;
+		var contourGroup, svg, pathproj, surfDataProjection;
 		overlay.onAdd = function () {
 			var layer = d3.select(this.getPanes().overlayMouseTarget)
 				.append("div")
 				.attr("class", "SvgOverlay");
 			svg = layer.append("svg");
-			contours = svg.append("g")
-				.attr("class", "contours")
-				.attr("opacity",1);
+			contourGroup = svg.append("g")
+				.attr("class", "contourGroup")
+				.attr("opacity",.8);
 			var overlayProjection = this.getProjection();
 
 			// turn google map projection into d3 projection
@@ -504,7 +509,7 @@ var styledMapType = new google.maps.StyledMapType(
 			this.update();
 		}
 		overlay.update = function() {
-			contours.selectAll(".mypoly")
+			contourGroup.selectAll(".mypoly")
 				.attr("d", d3.geoPath().projection(surfDataProjection) )
 		}
 		// This method doesn't work for now! The flipbook animation has supplanted the single dataset paradigm (for now)
@@ -522,10 +527,10 @@ var styledMapType = new google.maps.StyledMapType(
 			var i0 = d3.interpolateHsvLong(d3.hsv(0, .3, 1), d3.hsv(0, 1, .4));
 			var color = d3.scaleSequential(i0).domain([0, 10]);
 
-			contours.selectAll(".mypoly")
+			contourGroup.selectAll(".mypoly")
 				.attr("class","remove")
 				.remove();
-			contours.selectAll(".mypoly")
+			contourGroup.selectAll(".mypoly")
 				.data(contData)
 				.enter()
 				.append("path")
@@ -552,7 +557,7 @@ var styledMapType = new google.maps.StyledMapType(
 		function populateMultiples() {
 			for(var ii=0; ii<6; ii++ ) {
 				//mults[ii].setGeojson(CSZEvents[ii]);
-				mults[ii].setContourData(far_field_eta_ps[ii]);
+				mults[ii].setContourData(eta_vars[ii]);
 				mults[ii].setLabel(CSZEventNameDecodes[ii]);
 			}
 		}
@@ -638,14 +643,14 @@ function multMaker(containerDiv) {
 	// overlay geojson multipolygons on map
 	var overlay = new google.maps.OverlayView();
 
-	var contours, pathproj, svg, surfDataProjection;
+	var contourGroup, pathproj, svg, surfDataProjection;
 	overlay.onAdd = function () {
 		var layer = d3.select(this.getPanes().overlayMouseTarget)
 			.append("div")
 			.attr("class", "SvgOverlay");
 		svg = layer.append("svg");
-		contours = svg.append("g")
-			.attr("class", "contours")
+		contourGroup = svg.append("g")
+			.attr("class", "contourGroup")
 			.attr("opacity",.8);
 		var overlayProjection = this.getProjection();
 
@@ -673,19 +678,19 @@ function multMaker(containerDiv) {
 
 	overlay.update = function() {
 		/*
-		contours.selectAll(".mypoly")
+		contourGroup.selectAll(".mypoly")
 			.attr("d", pathproj)
 		*/
-		contours.selectAll(".mypoly")
+		contourGroup.selectAll(".mypoly")
 			.attr("d", d3.geoPath().projection(surfDataProjection) )
 	}
 	mult.map = map;
 
 	mult.setGeojson = function(json) {
-		contours.selectAll(".mypoly")
+		contourGroup.selectAll(".mypoly")
 			.attr("class","remove")
 			.remove();
-		contours.selectAll(".mypoly")
+		contourGroup.selectAll(".mypoly")
 			.data(json.features)
 			.enter()
 			.append("path")
@@ -719,10 +724,10 @@ function multMaker(containerDiv) {
 		//var i0 = d3.interpolateHsvLong(d3.hsv(0, .3, 1), d3.hsv(0, 1, .4));
 		var color = d3.scaleSequential(i0).domain([0, 10]);
 
-		contours.selectAll(".mypoly")
+		contourGroup.selectAll(".mypoly")
 			.attr("class","remove")
 			.remove();
-		contours.selectAll(".mypoly")
+		contourGroup.selectAll(".mypoly")
 			.data(contData)
 			.enter()
 			.append("path")
