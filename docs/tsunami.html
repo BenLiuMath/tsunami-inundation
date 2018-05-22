@@ -204,7 +204,9 @@
 <script src="data/near_field_eta_pInv10000.js"></script>
 
 <script>
-var eta_vars = [eta_CSZa, eta_CSZb, eta_CSZc, eta_CSZd, eta_CSZe, eta_CSZf, eta_SChSZa, eta_AASZa, eta_AASZb, eta_AASZc, eta_AASZd, eta_KmSZa, eta_KrSZa, eta_TOHa];
+//var eta_vars = [eta_CSZa, eta_CSZb, eta_CSZc, eta_CSZd, eta_CSZe, eta_CSZf, eta_SChSZa, eta_AASZa, eta_AASZb, eta_AASZc, eta_AASZd, eta_KmSZa, eta_KrSZa, eta_TOHa];
+var eta_vars = [eta_CSZa, eta_CSZb, eta_CSZc, eta_CSZd, eta_CSZe, eta_CSZf, eta_SChSZa];
+var eta_names = ["CSZa","CSZb","CSZc","CSZd","CSZe","CSZf","SChSZa"];
 
 var far_field_eta_ps = [far_field_eta_pInv50, far_field_eta_pInv100, far_field_eta_pInv200, far_field_eta_pInv500, far_field_eta_pInv1000, far_field_eta_pInv5000, far_field_eta_pInv10000];
 
@@ -558,7 +560,7 @@ var styledMapType = new google.maps.StyledMapType(
 			for(var ii=0; ii<6; ii++ ) {
 				//mults[ii].setGeojson(CSZEvents[ii]);
 				mults[ii].setContourData(eta_vars[ii]);
-				mults[ii].setLabel(CSZEventNameDecodes[ii]);
+				mults[ii].setLabel(eta_names[ii]);
 			}
 		}
 		setTimeout(populateMultiples, 50);
