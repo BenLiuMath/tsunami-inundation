@@ -25,3 +25,14 @@ print("    Data files can be found in data_dir = %s"  % data_dir)
 events_dir = os.path.join(data_dir, 'Events')
 print("    Results for each event can be found in events_dir = %s"  % events_dir)
 
+#---------------------------------------------------------------------
+# Added by Brian
+#---------------------------------------------------------------------
+
+# Path to the top level of the project respository (tsunami-inundation)
+proj_dir = os.path.abspath('../..')
+print("Assuming that top level of the CSE512 repository is at: %s" % proj_dir)
+
+# Path to where JS data files are stored
+js_data_dir = os.path.join(proj_dir, 'docs/data')
+print("    JavaScript data files can be found in data_dir = %s"  % js_data_dir)
