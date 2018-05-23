@@ -38,6 +38,23 @@
 		padding: 10px;
 	}
 
+	 #floating-panel {
+	 	/*
+		https://developers.google.com/maps/documentation/javascript/examples/marker-remove
+	 	*/
+        position: absolute;
+        top: 100px;
+        left: 0%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+
 	#map {
 		position:absolute;
 		top:100px;
@@ -177,6 +194,12 @@
 			</p>
 
 		</div>
+
+		<div id="floating-panel">
+      		<input onclick="showNearField();" type=button value="Show Near-field">
+      		<input onclick="showFarField();" type=button value="Show Far-field">
+      		<input onclick="showBoth();" type=button value="Show Both">
+    	</div>
 
 		<div id="map"></div>
 		<div id="individualfocus">
@@ -454,13 +477,13 @@ var styledMapType = new google.maps.StyledMapType(
 	var mults = []; // array of small multiples
 	var markers = []; // array of markers currently on the maps
 
-// // Color scheme for the inundation levels
-// // var i0 = d3.interpolateHsvLong(d3.hsv(120, 1, 0.65), d3.hsv(10, 1, 0.90));
-// // var mycolors = d3.scaleSequential(i0).domain([0, 5]);
-var i0 = d3.interpolateCool;
-function interpolateReverse(t){
-	return i0(1-t);   // assumes [0,1] range
-}
+	// // Color scheme for the inundation levels
+	// // var i0 = d3.interpolateHsvLong(d3.hsv(120, 1, 0.65), d3.hsv(10, 1, 0.90));
+	// // var mycolors = d3.scaleSequential(i0).domain([0, 5]);
+	var i0 = d3.interpolateCool;
+	function interpolateReverse(t){
+		return i0(1-t);   // assumes [0,1] range
+	}
 var mycolors = d3.scaleSequential(interpolateReverse).domain([0,12]);
 
 	main();
@@ -693,6 +716,7 @@ function multMaker(containerDiv) {
 		mapTypeControlOptions: {
 			mapTypeIds: ['roadmap', 'styled_map']}
 	});
+
 
 	map.mapTypes.set('styled_map', styledMapType);
 	map.setMapTypeId('styled_map');
