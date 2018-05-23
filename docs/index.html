@@ -442,10 +442,10 @@ var styledMapType = new google.maps.StyledMapType(
 	var cityCenter = {'x':-124.2026, 'y':41.7558};
 	var individualView = document.getElementById("individualfocus");
 
-	var lat_low = 235.79781-360;
-	var lat_high = 235.82087-360;
-	var lng_low = 41.739671;
-	var lng_high = 41.762726;
+	var lng_low = 235.79781-360;
+	var lng_high = 235.82087-360;
+	var lat_low = 41.739671;
+	var lat_high = 41.762726;
 
 	var N = 100;
 	function makePerim(t) {
@@ -547,9 +547,9 @@ var mycolors = d3.scaleSequential(interpolateReverse).domain([0,12]);
 			pathproj = d3.geoPath().projection(googleMapProjection);
 
 			var surfData = far_field_eta_ps[5];
-            surfDataProjection = d3.geoTransform({point: function(j,i) {
-                x = lat_low+i/surfData.width*(lat_high - lat_low);
-                y = lng_low+j/surfData.height*(lng_high-lng_low);
+            surfDataProjection = d3.geoTransform({point: function(i,j) {
+                x = lng_low+j/surfData.width*(lng_high-lng_low);
+                y = lat_low+i/surfData.height*(lat_high - lat_low);
 				d = overlayProjection.fromLatLngToDivPixel( new google.maps.LatLng(y, x) );
 				this.stream.point(d.x + 4000, d.y + 4000);
 			}});
@@ -572,7 +572,6 @@ var mycolors = d3.scaleSequential(interpolateReverse).domain([0,12]);
 					//.thresholds([1,2,3,4,5])
 					(surfData.values);
 
-			console.log(contData);
 
 			// //var i0 = d3.interpolateHsvLong(d3.hsv(210, 1, 1), d3.hsv(235, 1, 0.25));
 			// var i0 = d3.interpolateHsvLong(d3.hsv(0, .3, 1), d3.hsv(0, 1, .4));
@@ -590,10 +589,27 @@ var mycolors = d3.scaleSequential(interpolateReverse).domain([0,12]);
                 .attr("fill", function(d) { return mycolors(d.value); });
 		}
 
-		function gogogo() {
-			setContourData(near_field_eta_ps[4]);
+		var yearlyRecurrences = [50,100,200,500,1000,5000,10000];
+		// Set the contour data by specifying the yearly recurrence (inverse probability). Code searches for closest probability level to given parameter.
+		function setProbLevel(yearlyRecurrence) {
+			console.log(yearlyRecurrence);
+			var bestind = 0;
+			var closeness = 100000;
+			for(var ii=0; ii<yearlyRecurrences.length; ii++) {
+				var thisclose = Math.abs(yearlyRecurrences[ii]-yearlyRecurrence);
+				console.log(thisclose+":"+closeness);
+				if( Math.abs(thisclose) < closeness ) {
+					bestind = ii;
+					closeness = thisclose;
+				}
+			}
+			console.log("ind:"+bestind);
+			setContourData(near_field_eta_ps[bestind]);
 		}
-		setTimeout(gogogo, 1000);
+		function initData() {
+			setProbLevel(1000);
+		}
+		setTimeout(initData, 1000);
 
 		// For drawing small multiples
 		var multcontainer = document.getElementById("smallmultiplescontainer");
@@ -615,60 +631,62 @@ var mycolors = d3.scaleSequential(interpolateReverse).domain([0,12]);
 		}
 		setTimeout(populateMultiples, 50);
 
-		// draw the legend
-		var legWidth = 800;
-		var legHeight = 200;
+		function makeLegend() {
+			// draw the legend
+			var legWidth = 800;
+			var legHeight = 200;
 
-		var svg = d3.select("#legend")
-				.append("svg")
-				.attr("width", legWidth)
-				.attr("height", legHeight);
+			var svg = d3.select("#legend")
+					.append("svg")
+					.attr("width", legWidth)
+					.attr("height", legHeight);
 
-		svg.append("g")
-		.attr("class", "legendSequential")
-		.attr("transform", "translate(20,0)");
+			svg.append("g")
+			.attr("class", "legendSequential")
+			.attr("transform", "translate(20,0)");
 
-		svg.append("text")
-		.attr("x", 345)
-		.attr("y", 32)
-		.text("meters of water above normal");
+			svg.append("text")
+			.attr("x", 345)
+			.attr("y", 32)
+			.text("meters of water above normal");
 
-		var legendSequential = d3.legendColor()
-			.shapeWidth(30)
-			.shapePadding(5)
-			.cells(9)
-			.orient("horizontal")
-			.scale(mycolors)
+			var legendSequential = d3.legendColor()
+				.shapeWidth(30)
+				.shapePadding(5)
+				.cells(9)
+				.orient("horizontal")
+				.scale(mycolors)
 
-		svg.select(".legendSequential")
-		.call(legendSequential);
-
+			svg.select(".legendSequential")
+			.call(legendSequential);
+		}
+		makeLegend();
 	}
 
 	// BEGIN FUNCTIONS OUTSIDE OF MAIN
 
-	function deleteMarkers() {
-		for (var i = 0; i < markers.length; i++) {
-				markers[i].setMap(null);
-			}
-			markers = [];
-	}
-
-	function addMarker(latLng, map) {
-		// add the new marker to the given map
-		var marker = new google.maps.Marker({
-			position: latLng,
-			map: map
-		});
-		// record the marker
-		markers.push(marker);
-	}
-
-	function addMarkersMultiples(latLng) {
-		for(var ii=0; ii<mults.length; ii++) {
-			addMarker(latLng, mults[ii].map);
+function deleteMarkers() {
+	for (var i = 0; i < markers.length; i++) {
+			markers[i].setMap(null);
 		}
+		markers = [];
+}
+
+function addMarker(latLng, map) {
+	// add the new marker to the given map
+	var marker = new google.maps.Marker({
+		position: latLng,
+		map: map
+	});
+	// record the marker
+	markers.push(marker);
+}
+
+function addMarkersMultiples(latLng) {
+	for(var ii=0; ii<mults.length; ii++) {
+		addMarker(latLng, mults[ii].map);
 	}
+}
 
 function panMultiples(latLng,zoom) {
 	if(!zoom) {
@@ -743,12 +761,12 @@ function multMaker(containerDiv) {
 		pathproj = d3.geoPath().projection(googleMapProjection);
 
 		var surfData = far_field_eta_ps[5];
-		surfDataProjection = d3.geoTransform({point: function(j,i) {
-			x = lat_low+i/surfData.width*(lat_high - lat_low);
-			y = lng_low+j/surfData.height*(lng_high-lng_low);
-			d = overlayProjection.fromLatLngToDivPixel( new google.maps.LatLng(y, x) );
-			this.stream.point(d.x + 4000, d.y + 4000);
-		}});
+            surfDataProjection = d3.geoTransform({point: function(i,j) {
+                x = lng_low+j/surfData.width*(lng_high-lng_low);
+                y = lat_low+i/surfData.height*(lat_high - lat_low);
+				d = overlayProjection.fromLatLngToDivPixel( new google.maps.LatLng(y, x) );
+				this.stream.point(d.x + 4000, d.y + 4000);
+			}});
 	}
 	overlay.setMap(map);
 
@@ -777,18 +795,12 @@ function multMaker(containerDiv) {
 			.append("path")
 			.attr("d", pathproj)
 			.attr("class", "mypoly")
-            // .attr("fill-opacity",function(d) {
-            //     return d.levelSetValue/10;
-            // })
-						.attr("fill-opacity", 0.5)
+			.attr("fill-opacity", 0.5)
             .attr("z-index", function(d) {
                 return Math.round(d.levelSetValue*100);
             })
             .attr("fill", function(d) {
-                //console.log(d.levelSetValue + ":"+ d.levelSetValue);
-                //return (d.levelSetValue < 0.5?"blue":"green");
                 return mycolors(d.levelSetValue);
-                // return "blue";
             });
 	}
 
@@ -800,7 +812,6 @@ function multMaker(containerDiv) {
 				//.thresholds([1,2,3,4,5])
 				(surfData.values);
 
-		console.log(contData);
 
 		// var i0 = d3.interpolateHsvLong(d3.hsv(210, .5, 1), d3.hsv(235, 1, 0.25));
 		// //var i0 = d3.interpolateHsvLong(d3.hsv(0, .3, 1), d3.hsv(0, 1, .4));
