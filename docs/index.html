@@ -453,6 +453,17 @@ var styledMapType = new google.maps.StyledMapType(
 
 <!-- Make the map!  -->
 <script>
+	function shuffle(a) {
+		var j, x, i;
+		for (i = a.length - 1; i > 0; i--) {
+			j = Math.floor(Math.random() * (i + 1));
+			x = a[i];
+			a[i] = a[j];
+			a[j] = x;
+		}
+		return a;
+	}
+
 	var cityCenter = {'x':-124.2026, 'y':41.7558};
 	var individualView = document.getElementById("individualfocus");
 
@@ -640,9 +651,11 @@ var styledMapType = new google.maps.StyledMapType(
 		}
 
 		function populateMultiples() {
+			var eventshuffle = event_etas.slice();
+			shuffle(eventshuffle);
 			for(var ii=0; ii<6; ii++ ) {
 				//mults[ii].setGeojson(CSZEvents[ii]);
-				mults[ii].setContourData(event_etas[ii]);
+				mults[ii].setContourData(eventshuffle[ii]);
 				mults[ii].setLabel(eta_decodes[ii]);
 			}
 		}
