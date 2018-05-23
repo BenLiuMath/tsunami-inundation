@@ -180,8 +180,10 @@
 	}
 
 	.simLabel {
+		padding-top:5px;
 		height:1.5em;
 		text-align:center;
+		background: rgb(255,255,255,.5);
 	}
 
 	.smallMultipleMap {
@@ -319,11 +321,35 @@ for(var ii=0; ii<eta_decodes_FF.length; ii++) {
 
 var eta_decodes_both = eta_decodes_NF.concat(eta_decodes_FF);
 
-var far_field_eta_ps = [far_field_eta_pInv50, far_field_eta_pInv100, far_field_eta_pInv200, far_field_eta_pInv500, far_field_eta_pInv1000, far_field_eta_pInv5000, far_field_eta_pInv10000];
+var eta_ps_far = [far_field_eta_pInv50, far_field_eta_pInv100, far_field_eta_pInv200, far_field_eta_pInv500, far_field_eta_pInv1000, far_field_eta_pInv5000, far_field_eta_pInv10000];
 
-var near_field_eta_ps = [near_field_eta_pInv50, near_field_eta_pInv100, near_field_eta_pInv200, near_field_eta_pInv500, near_field_eta_pInv1000, near_field_eta_pInv5000, near_field_eta_pInv10000];
+var eta_ps_near = [near_field_eta_pInv50, near_field_eta_pInv100, near_field_eta_pInv200, near_field_eta_pInv500, near_field_eta_pInv1000, near_field_eta_pInv5000, near_field_eta_pInv10000];
 
-var both_field_eta_ps = [all_eta_pInv50, all_eta_pInv100, all_eta_pInv200, all_eta_pInv500, all_eta_pInv1000, all_eta_pInv5000, all_eta_pInv10000];
+var eta_ps_both = [all_eta_pInv50, all_eta_pInv100, all_eta_pInv200, all_eta_pInv500, all_eta_pInv1000, all_eta_pInv5000, all_eta_pInv10000];
+
+
+var tsunamiEvents_near = [];
+for(var ii=0; ii<eta_names_NF.length; ii++) {
+	var myevent = {};
+	myevent.etadata = etas_near[ii];
+	myevent.name = eta_names_NF[ii];
+	myevent.decode = eta_decodes_NF[ii];
+	tsunamiEvents_near.push(myevent);
+}
+
+var tsunamiEvents_far = [];
+for(var ii=0; ii<eta_names_FF.length; ii++) {
+	var myevent = {};
+	myevent.etadata = etas_far[ii];
+	myevent.name = eta_names_FF[ii];
+	myevent.decode = eta_decodes_FF[ii];
+	tsunamiEvents_far.push(myevent);
+}
+var tsunamiEvents_both = tsunamiEvents_near.concat(tsunamiEvents_far);
+
+//console.log(tsunamiEvents_near);
+//console.log(tsunamiEvents_far);
+//console.log(tsunamiEvents_both);
 
 </script>
 <script>
@@ -547,9 +573,8 @@ var styledMapType = new google.maps.StyledMapType(
 	main();
 	function main() {
 		// initialize with near-field data
-		var event_etas = etas_near;
-		var hazard_maps = near_field_eta_ps;
-		var eta_decodes = eta_decodes_NF;
+		var tsunamiEvents = tsunamiEvents_near;
+		var hazard_maps = eta_ps_near;
 
 		// google map background
 		var map = new google.maps.Map(document.getElementById('map'), {
@@ -638,19 +663,16 @@ var styledMapType = new google.maps.StyledMapType(
 		function switchEventType(ptype) {
 			switch(ptype) {
 				case "far":
-					event_etas = etas_far;
-					hazard_maps = far_field_eta_ps;
-					eta_decodes = eta_decodes_FF;
+					tsunamiEvents = tsunamiEvents_far;
+					hazard_maps = eta_ps_far;
 				break;
 				case "near":
-					event_etas = etas_near;
-					hazard_maps = near_field_eta_ps;
-					eta_decodes = eta_decodes_NF;
+					tsunamiEvents = tsunamiEvents_near;
+					hazard_maps = eta_ps_near;
 				break;
 				default:
-					event_etas = etas_both;
-					hazard_maps = both_field_eta_ps;
-					eta_decodes = eta_decodes_both;
+					tsunamiEvents = tsunamiEvents_both;
+					hazard_maps = eta_ps_both;
 			}
 			initPlots();
 		}
@@ -675,12 +697,7 @@ var styledMapType = new google.maps.StyledMapType(
 					//.thresholds([1,2,3,4,5])
 					(surfData.values);
 
-
-			// //var i0 = d3.interpolateHsvLong(d3.hsv(210, 1, 1), d3.hsv(235, 1, 0.25));
-			// var i0 = d3.interpolateHsvLong(d3.hsv(0, .3, 1), d3.hsv(0, 1, .4));
-			// var color = d3.scaleSequential(i0).domain([0, 10]);
-
-			contourGroup.selectAll(".mypoly")
+					contourGroup.selectAll(".mypoly")
 				.attr("class","remove")
 				.remove();
 			contourGroup.selectAll(".mypoly")
@@ -724,12 +741,14 @@ var styledMapType = new google.maps.StyledMapType(
 		}
 
 		function populateMultiples() {
-			var eventshuffle = event_etas.slice();
+			
+			var eventshuffle = tsunamiEvents.slice();
 			shuffle(eventshuffle);
-			for(var ii=0; ii<6; ii++ ) {
+			
+			for(var ii=0; ii<Math.min(eventshuffle.length, 6); ii++ ) {
 				//mults[ii].setGeojson(CSZEvents[ii]);
-				mults[ii].setContourData(eventshuffle[ii]);
-				mults[ii].setLabel(eta_decodes[ii]);
+				mults[ii].setContourData(eventshuffle[ii].etadata);
+				mults[ii].setLabel(eventshuffle[ii].decode);
 			}
 		}
 
@@ -861,7 +880,7 @@ function multMaker(containerDiv) {
 		}});
 		pathproj = d3.geoPath().projection(googleMapProjection);
 
-		var surfData = far_field_eta_ps[5];
+		var surfData = {width:250, height:250};
             surfDataProjection = d3.geoTransform({point: function(i,j) {
                 x = lng_low+j/surfData.width*(lng_high-lng_low);
                 y = lat_low+i/surfData.height*(lat_high - lat_low);
