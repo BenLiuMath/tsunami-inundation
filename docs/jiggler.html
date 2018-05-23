@@ -1,0 +1,1045 @@
+<!DOCTYPE HTML>
+<html xml:lang="en" lang="en">
+<head>
+	<title>Tsunami Hazard Visualizer</title>
+	<style>
+	* { padding: 0; margin: 0; }
+
+	body {
+		margin: 0 auto 0 auto;
+		padding: 0;
+		max-width: 100%;
+		font-family: "Avenir", "Avenir Next", Helvetica Neue, Arial;
+		font-size: 0.95em;
+	}
+
+	h1, h2, h3, h4, h5 {
+		color: #492a7c;
+		background-color: inherit;
+		font-weight: normal;
+		padding: 0 0 5px 0;
+		margin: 15px 0 0 0;
+		border: none;
+		clear: right;
+	}
+	h1 { font-size: 20pt; margin:  5px 0 10px 0; line-height: 28px; }
+	h2 { font-size: 14pt; margin: 30px 0 15px 0; letter-spacing: 0.01em; border-bottom: 1px solid #ccc;  line-height: 20px;}
+	h3 { font-size: 13pt; }
+	h4 { font-size: 12pt; }
+	h5 { font-size: 10pt; }
+	p { margin: 0 0 10px 0; }
+
+	#header {
+		position:absolute;
+		top:0px;
+		height:20%;
+		font-family: "Avenir Next";
+		/* font-size: 1.8em; */
+		padding: 10px;
+	}
+
+	/* Slider CSS from w3schools.org */
+
+	.slider {
+	    -webkit-appearance: none;
+	    width: 500%;
+	    height: 5px;
+	    background: #d3d3d3;
+	    outline: none;
+	    opacity: 0.7;
+	    -webkit-transition: .2s;
+	    transition: opacity .2s;
+	}
+
+	.slider:hover {
+    	opacity: 1; /* Fully shown on mouse-over */
+	}
+
+	.slider::-webkit-slider-thumb {
+	    -webkit-appearance: none; /* Override default look */
+	    appearance: none;
+	    width: 15px; /* Set a specific slider handle width */
+	    height: 15px; /* Slider handle height */
+	    background: #4CAF50; /* Green background */
+	    cursor: pointer; /* Cursor on hover */
+	}
+
+	.slider::-moz-range-thumb {
+	    width: 25px; /* Set a specific slider handle width */
+	    height: 25px; /* Slider handle height */
+	    background: #4CAF50; /* Green background */
+	    cursor: pointer; /* Cursor on hover */
+	}
+
+	#slidecontainer {
+		position: absolute;
+		top: 86px;
+		left: 50%; /* Brings slider to line up with the small multiples */
+		z-index: 5; /* Brings slider in front of map */
+	}
+
+	/* Style for far- and near-field buttons
+	https://developers.google.com/maps/documentation/javascript/examples/marker-remove
+ 	*/
+	#fieldbuttons {
+	    position: absolute;
+	    top: 79px;
+	    left: 0%;
+	    z-index: 5; /* Brings buttons in front of map */
+	    background-color: #FFFFFF;
+	    /* padding: 5px;*/
+	    /* border: 1px solid #999;*/
+	    text-align: center;
+	    font-family: "Avenir Next";
+	    padding-left: 5px;
+	}
+
+	#resetbutton {
+	    position: absolute;
+	    top: 79px;
+	    left: 43.5%;
+	    z-index: 5; /* Brings buttons in front of map */
+	    background-color: #FFFFFF;
+	    /* padding: 5px;*/
+	    /* border: 1px solid #999;*/
+	    text-align: center;
+	    font-family: "Avenir Next";
+	    padding-left: 5px;
+	}
+
+	#map {
+		position:absolute;
+		top:100px;
+		/* left:50%; */
+		width:100%;
+		height:80%;
+		display:block;
+		/* margin:auto;
+		display:block;
+		width: 100%;
+		height: 600px;
+		padding: 0px; */
+	}
+
+	.SvgOverlay {
+		position: relative;
+		width: 100%;
+		height: 100%;
+	}
+	.SvgOverlay svg {
+		position: absolute;
+		top: -4000px;
+		left: -4000px;
+		width: 8000px;
+		height: 8000px;
+		opacity: 1.0;
+	}
+	.SvgOverlay path {
+		stroke: black;
+		stroke-width: 0px;
+		//fill-opacity: 0.3;
+	}
+
+/*
+	#individualfocus {
+		position:absolute;
+		top:20%;
+		left:10%;
+		width:80%;
+		height:60%;
+		border:2px solid black;
+		display:block;
+	}
+*/
+	#individualfocus {
+		position:absolute;
+		top:100px;
+		left:50%;
+		width:50%;
+		height:65%;
+		display:block;
+	}
+
+	.backdrop {
+		position:absolute; top:0px; left:0px;
+		width:100%;
+		height:100%;
+		background:#cccc99;
+		opacity:0.8;
+	}
+
+	#smallmultiplescontainer {
+		position:absolute;
+		top:0;
+		left:0;
+		width:100%;
+		height:100%;
+	}
+
+	.mypoly {
+		//fill:blue;
+		opacity:1.0;
+	}
+
+	.MapBounds {
+		color:red;
+	}
+
+	.smallmultiple {
+		margin:3%;
+		width:26%;
+		height:41%;
+		border:1px solid black;
+		display:inline-block;
+	}
+
+	.simLabel {
+		padding-top:5px;
+		height:1.5em;
+		text-align:center;
+		background: rgb(255,255,255,.5);
+	}
+
+	.smallMultipleMap {
+		margin:none;
+		display:block;
+		width: 100%;
+		height: calc(100% - 1.5em);
+		padding: 0px;
+	}
+
+	#legend {
+		position:absolute;
+		top:15px;
+		left:40%;
+		/*font-family: "Avenir Next";
+		 font-size: 1.8em;
+		padding: 10px; */
+	}
+
+	#supplemental {
+		position:absolute;
+		top:100%;
+		height:200px;
+		font-family: "Avenir Next";
+		/* font-size: 1.8em; */
+		padding: 10px;
+	}
+</style>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyJ45cnv6HeZr69pu26XSsUF-OMC6cNRU"></script>
+<script type="text/javascript" src="https://d3js.org/d3.v4.min.js" ></script>
+<script src="https://d3js.org/d3-contour.v1.min.js"></script>
+<script src="https://d3js.org/d3-hsv.v0.1.min.js"></script>
+<script src="https://d3js.org/d3-color.v1.min.js"></script>
+<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.js"></script>
+
+</head>
+<body>
+	<div class="content">
+
+		<div id="header">
+			<h1>Tsunami Inundation Maps</h1>
+			<p>Choose 
+				<a href="#supplemental">near-field</a>
+				near-field
+				</span> 
+				(Cascadia) or <a href="#supplemental">far-field</a> events.
+				A single-click on the large map (aggregated inundation levels) will focus the small maps (corresponding to different simulations) on that spot.
+			</p>
+
+		</div>
+
+		<!-- Buttons for near- and far-field events -->
+		<div id="fieldbuttons">
+      		<input id="switchEventsNear" type="button" value="Show Near-field">
+      		<input id="switchEventsFar" type="button" value="Show Far-field">
+      		<input id="switchEventsBoth" type="button" value="Show Both">
+    	</div>
+
+    	<!-- Button to reset view -->
+    	<div id="resetbutton">
+      		<input id="resetView" type="button" value="Center">
+    	</div>
+
+    	<!-- Slider for probability -->
+    	<div id="slidecontainer">
+  			<input type="range" min="0" max="6" step="1" class="slider" id="probabilitySlider">
+		</div>
+
+		<div id="map"></div>
+		<div id="individualfocus">
+			<div class="backdrop"></div>
+			<div id="smallmultiplescontainer"></div>
+		</div>
+		<div id="legend"></div>
+
+		<div id="supplemental">
+			<h3>Background &amp; Context</h3>
+
+			<p><i>Near-field</i> events originate nearby, in Cascadia.
+				They occur less frequently, but because they originate nearby, they can be extremely damaging. </p>
+
+			<p><i>Far-field</i> events originate farther away (e.g. Alaska, East Asia, Chile).
+				Because of this, they are often less damaging, and people have more warning time to evacuate.
+				However, they can still cause significant damage, and they are much more likely than near-field events to occur
+				(since there are more places they can originate).</p>
+
+		</div>
+
+	</div>
+<script src="CSZ_geojson.js"></script>
+<script src="CSZ_eta.js"></script>
+
+<script src="data/eta_arrs.js"></script>
+
+<script src="data/far_field_eta_pInv50.js"></script>
+<script src="data/far_field_eta_pInv100.js"></script>
+<script src="data/far_field_eta_pInv200.js"></script>
+<script src="data/far_field_eta_pInv500.js"></script>
+<script src="data/far_field_eta_pInv1000.js"></script>
+<script src="data/far_field_eta_pInv5000.js"></script>
+<script src="data/far_field_eta_pInv10000.js"></script>
+
+<script src="data/near_field_eta_pInv50.js"></script>
+<script src="data/near_field_eta_pInv100.js"></script>
+<script src="data/near_field_eta_pInv200.js"></script>
+<script src="data/near_field_eta_pInv500.js"></script>
+<script src="data/near_field_eta_pInv1000.js"></script>
+<script src="data/near_field_eta_pInv5000.js"></script>
+<script src="data/near_field_eta_pInv10000.js"></script>
+
+<script src="data/all_eta_pInv50.js"></script>
+<script src="data/all_eta_pInv100.js"></script>
+<script src="data/all_eta_pInv200.js"></script>
+<script src="data/all_eta_pInv500.js"></script>
+<script src="data/all_eta_pInv1000.js"></script>
+<script src="data/all_eta_pInv5000.js"></script>
+<script src="data/all_eta_pInv10000.js"></script>
+
+<script>
+//var eta_vars = [eta_CSZa, eta_CSZb, eta_CSZc, eta_CSZd, eta_CSZe, eta_CSZf, eta_SChSZa, eta_AASZa, eta_AASZb, eta_AASZc, eta_AASZd, eta_KmSZa, eta_KrSZa, eta_TOHa];
+var etas_near = [eta_CSZa, eta_CSZb, eta_CSZc, eta_CSZd, eta_CSZe, eta_CSZf];
+var etas_far = [eta_SChSZa, eta_AASZa, eta_AASZb, eta_AASZc, eta_AASZd, eta_KmSZa, eta_KrSZa, eta_TOHa];
+var etas_both = etas_near.concat(etas_far);
+
+// name and probability data for simulations (to use in small multiple labels)
+var eta_names_NF = ["CSZa","CSZb","CSZc","CSZd","CSZe","CSZf"];
+var event_prob_NF = [0.0125/250, 0.0125/250, 0.0750/250, 0.5000/250, 0.1750/250, 0.2250/250];
+var eta_decodes_NF = ["Cascadia A","Cascadia B","Cascadia C","Cascadia D","Cascadia E","Cascadia F"];
+for(var ii=0; ii<eta_decodes_NF.length; ii++) {
+	eta_decodes_NF[ii] = eta_decodes_NF[ii] + " (p=" + event_prob_NF[ii].toFixed(4) + ")";
+}
+
+var eta_names_FF = ["SChSZa", "AASZa", "AASZb", "AASZc", "AASZd", "KmSZa", "KrSZa", "TOHa"];
+var event_prob_FF = [1/300, 1/394, 1/750, 1/563, 1/324, 1/50, 1/167, 1/103];
+var eta_decodes_FF = ["S Chile", "Alaska A", "Alaska B", "Alaska C", "Alaska D", "Kamchatka", "Kuril Isl", "Tohoku"];
+for(var ii=0; ii<eta_decodes_FF.length; ii++) {
+	eta_decodes_FF[ii] = eta_decodes_FF[ii] + " (p=" + event_prob_FF[ii].toFixed(4) + ")";
+}
+
+var eta_decodes_both = eta_decodes_NF.concat(eta_decodes_FF);
+
+var eta_ps_far = [far_field_eta_pInv50, far_field_eta_pInv100, far_field_eta_pInv200, far_field_eta_pInv500, far_field_eta_pInv1000, far_field_eta_pInv5000, far_field_eta_pInv10000];
+
+var eta_ps_near = [near_field_eta_pInv50, near_field_eta_pInv100, near_field_eta_pInv200, near_field_eta_pInv500, near_field_eta_pInv1000, near_field_eta_pInv5000, near_field_eta_pInv10000];
+
+var eta_ps_both = [all_eta_pInv50, all_eta_pInv100, all_eta_pInv200, all_eta_pInv500, all_eta_pInv1000, all_eta_pInv5000, all_eta_pInv10000];
+
+
+var tsunamiEvents_near = [];
+for(var ii=0; ii<eta_names_NF.length; ii++) {
+	var myevent = {};
+	myevent.etadata = etas_near[ii];
+	myevent.name = eta_names_NF[ii];
+	myevent.decode = eta_decodes_NF[ii];
+	tsunamiEvents_near.push(myevent);
+}
+
+var tsunamiEvents_far = [];
+for(var ii=0; ii<eta_names_FF.length; ii++) {
+	var myevent = {};
+	myevent.etadata = etas_far[ii];
+	myevent.name = eta_names_FF[ii];
+	myevent.decode = eta_decodes_FF[ii];
+	tsunamiEvents_far.push(myevent);
+}
+var tsunamiEvents_both = tsunamiEvents_near.concat(tsunamiEvents_far);
+
+//console.log(tsunamiEvents_near);
+//console.log(tsunamiEvents_far);
+//console.log(tsunamiEvents_both);
+
+</script>
+<script>
+	var testjson = {
+		"type": "FeatureCollection",
+		"features": [
+		{"type": "Feature",
+		"geometry": { "type": "MultiPolygon",
+		"coordinates": [
+		[
+		[[ -124.1026, 41.6558 ],
+		[ -124.1026, 41.8558 ],
+		[ -124.3026, 41.8558 ],
+		[ -124.3026, 41.6558 ],
+		[ -124.2026, 41.7558 ]]
+		]
+		] } }
+		]
+	};
+</script>
+
+<!-- Styled map specifications -->
+<script>
+var styledMapType = new google.maps.StyledMapType(
+	[
+  {
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#f5f5f5"
+      }
+    ]
+  },
+  {
+    "elementType": "labels.icon",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#616161"
+      }
+    ]
+  },
+  {
+    "elementType": "labels.text.stroke",
+    "stylers": [
+      {
+        "color": "#f5f5f5"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.land_parcel",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#bdbdbd"
+      }
+    ]
+  },
+  {
+    "featureType": "poi",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#eeeeee"
+      }
+    ]
+  },
+  {
+    "featureType": "poi",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#757575"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.park",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#e5e5e5"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.park",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#9e9e9e"
+      }
+    ]
+  },
+  {
+    "featureType": "road",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#ffffff"
+      }
+    ]
+  },
+  {
+    "featureType": "road.arterial",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#757575"
+      }
+    ]
+  },
+  {
+    "featureType": "road.highway",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#dadada"
+      }
+    ]
+  },
+  {
+    "featureType": "road.highway",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#616161"
+      }
+    ]
+  },
+  {
+    "featureType": "road.local",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#9e9e9e"
+      }
+    ]
+  },
+  {
+    "featureType": "transit.line",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#e5e5e5"
+      }
+    ]
+  },
+  {
+    "featureType": "transit.station",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#eeeeee"
+      }
+    ]
+  },
+  {
+    "featureType": "water",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#c9c9c9"
+      }
+    ]
+  },
+  {
+    "featureType": "water",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#9e9e9e"
+      }
+    ]
+  }
+],{name: 'Styled Map'});
+</script>
+
+<!-- Make the map!  -->
+<script>
+	function shuffle(a) {
+		var j, x, i;
+		for (i = a.length - 1; i > 0; i--) {
+			j = Math.floor(Math.random() * (i + 1));
+			x = a[i];
+			a[i] = a[j];
+			a[j] = x;
+		}
+		return a;
+	}
+
+	var cityCenter = {'x':-124.2026, 'y':41.7558};
+	var individualView = document.getElementById("individualfocus");
+
+	var lng_low = 235.79781-360;
+	var lng_high = 235.82087-360;
+	var lat_low = 41.739671;
+	var lat_high = 41.762726;
+
+
+	var mults = []; // array of small multiples
+	var markers = []; // array of markers currently on the maps
+
+	// // Color scheme for the inundation levels
+	// // var i0 = d3.interpolateHsvLong(d3.hsv(120, 1, 0.65), d3.hsv(10, 1, 0.90));
+	// // var mycolors = d3.scaleSequential(i0).domain([0, 5]);
+	var i0 = d3.interpolateCool;
+	function interpolateReverse(t){
+		return i0(1-t);   // assumes [0,1] range
+	}
+	var mycolors = d3.scaleSequential(interpolateReverse).domain([0,12]);
+
+	main();
+	function main() {
+		// initialize with near-field data
+		var tsunamiEvents = tsunamiEvents_near;
+		var hazard_maps = eta_ps_near;
+
+		// google map background
+		var map = new google.maps.Map(document.getElementById('map'), {
+			center: {lat:(cityCenter.y-0.005), lng:(cityCenter.x+.03)},
+			zoom: 14,
+			// styles:[{"stylers": [{"lightness": 100}]}],
+			styles:[
+				{
+					"featureType": "all",
+					"stylers": [{"color": "#C0C0C0"}]
+				}
+			],
+			mapTypeControl: true,
+			streetViewControl: false,
+			fullscreenControl: false,
+			mapTypeControlOptions: {
+				//mapTypeIds: ['styled_map']
+				mapTypeIds: []}
+		});
+
+		function focusArea(e) {
+
+
+			//map.panTo(e.latLng);
+			//map.setZoom(15);
+			latlngJSON = e.latLng.toJSON();
+			var lat = latlngJSON.lat;
+			var lng = latlngJSON.lng;
+			if (lat > lat_high || lat < lat_low || lng < lng_low || lng > lng_high) {
+
+				return;
+			}
+			individualView.style.display = "block";
+			panMultiples(e.latLng);
+			deleteMarkers();
+			addMarker(e.latLng, map);
+			addMarkersMultiples(e.latLng);
+          	// map.setCenter(marker.getPosition());
+        }
+
+		// zoom in and recenter when user clicks on a point
+		map.addListener('click', focusArea);
+
+		map.mapTypes.set('styled_map', styledMapType);
+        map.setMapTypeId('styled_map');
+
+		// overlay geojson multipolygons on map
+		var overlay = new google.maps.OverlayView();
+
+		var contourGroup, svg, pathproj, surfDataProjection;
+		overlay.onAdd = function () {
+			var layer = d3.select(this.getPanes().overlayMouseTarget)
+				.append("div")
+				.attr("class", "SvgOverlay");
+			svg = layer.append("svg");
+			contourGroup = svg.append("g")
+				.attr("class", "contourGroup")
+				.attr("opacity",.8);
+			var overlayProjection = this.getProjection();
+
+			// turn google map projection into d3 projection
+			var googleMapProjection = d3.geoTransform({point: function(x, y) {
+				d = overlayProjection.fromLatLngToDivPixel( new google.maps.LatLng(y, x) );
+				this.stream.point(d.x + 4000, d.y + 4000);
+			}});
+			pathproj = d3.geoPath().projection(googleMapProjection);
+
+			var surfData = {width:250, height:250};
+            surfDataProjection = d3.geoTransform({point: function(i,j) {
+                x = lng_low+j/surfData.width*(lng_high-lng_low);
+                y = lat_low+i/surfData.height*(lat_high - lat_low);
+				d = overlayProjection.fromLatLngToDivPixel( new google.maps.LatLng(y, x) );
+				this.stream.point(d.x + 4000, d.y + 4000);
+			}});
+		}
+		overlay.setMap(map);
+
+		overlay.draw = function () {
+			this.update();
+		}
+		overlay.update = function() {
+			contourGroup.selectAll(".mypoly")
+				.attr("d", d3.geoPath().projection(surfDataProjection) )
+		}
+
+		function switchEventType(ptype) {
+			switch(ptype) {
+				case "far":
+					tsunamiEvents = tsunamiEvents_far;
+					hazard_maps = eta_ps_far;
+				break;
+				case "near":
+					tsunamiEvents = tsunamiEvents_near;
+					hazard_maps = eta_ps_near;
+				break;
+				default:
+					tsunamiEvents = tsunamiEvents_both;
+					hazard_maps = eta_ps_both;
+			}
+			initPlots();
+		}
+		document.getElementById("switchEventsNear")
+			.addEventListener("click",function() {
+				switchEventType('near');
+			});
+		document.getElementById("switchEventsFar")
+			.addEventListener("click",function() {
+				switchEventType('far');
+			});
+		document.getElementById("switchEventsBoth")
+			.addEventListener("click",function() {
+				switchEventType('both');
+			});
+
+		document.getElementById("resetView")
+			.addEventListener("click", function() {
+				map.setCenter({lat:(cityCenter.y-0.005), lng:(cityCenter.x+.03)});
+				map.setZoom(14);
+			});
+
+
+		function setContourData(surfData) {
+			var contData = d3.contours()
+					.size([surfData.width, surfData.height])
+					.thresholds(d3.range(1,21))
+					//.thresholds([1,2,3,4,5])
+					(surfData.values);
+
+					contourGroup.selectAll(".mypoly")
+				.attr("class","remove")
+				.remove();
+			contourGroup.selectAll(".mypoly")
+				.data(contData)
+				.enter()
+				.append("path")
+				.attr("d", d3.geoPath().projection(surfDataProjection))
+				.attr("class", "mypoly")
+                .attr("fill", function(d) { return mycolors(d.value); });
+		}
+
+		var yearlyRecurrences = [50,100,200,500,1000,5000,10000];
+		// Set the contour data by specifying the yearly recurrence (inverse probability). Code searches for closest probability level to given parameter.
+		function setProbLevel(yearlyRecurrence) {
+			var bestind = 0;
+			var closeness = 100000;
+			for(var ii=0; ii<yearlyRecurrences.length; ii++) {
+				var thisclose = Math.abs(yearlyRecurrences[ii]-yearlyRecurrence);
+				if( Math.abs(thisclose) < closeness ) {
+					bestind = ii;
+					closeness = thisclose;
+				}
+			}
+			setContourData(hazard_maps[bestind]);
+		}
+		function setProbLevelByIndex(ind) {
+			setContourData(hazard_maps[ind]);
+		}
+		
+		var probSlider = document.getElementById("probabilitySlider");
+		probSlider.addEventListener("change",function() {
+			setProbLevelByIndex(probSlider.value);
+		});
+		
+		function initPlots() {
+			setProbLevel(1000);
+			populateMultiples();
+		}
+		setTimeout(initPlots, 100);
+		
+		
+		var jiggleContours = [];
+		var time = 0;
+		function jiggle() {
+			
+			contData = jiggleContours[time];
+			time++;
+			time = time%jiggleContours.length;
+			
+			// //var i0 = d3.interpolateHsvLong(d3.hsv(210, 1, 1), d3.hsv(235, 1, 0.25));
+			// var i0 = d3.interpolateHsvLong(d3.hsv(0, .3, 1), d3.hsv(0, 1, .4));
+			// var color = d3.scaleSequential(i0).domain([0, 10]);
+
+			contourGroup.selectAll(".mypoly")
+				.attr("class","remove")
+				.remove();
+			contourGroup.selectAll(".mypoly")
+				.data(contData)
+				.enter()
+				.append("path")
+				.attr("d", d3.geoPath().projection(surfDataProjection))
+				.attr("class", "mypoly")
+                .attr("fill", function(d) { return mycolors(d.value); });
+		}
+
+		function startJiggling() {
+			var surfData2 = eta_ps_near[5];
+			var N = 24;
+			for(var tt=0; tt<N; tt++) {
+			
+				var mylevels = d3.range(1,21);
+				for(var ii=0; ii<mylevels.length; ii++) {
+					mylevels[ii] += Math.sin(2*Math.PI*tt/N)*.2;
+				}
+				var mycontData = d3.contours()
+						.size([surfData2.width, surfData2.height])
+						.thresholds(mylevels)
+						//.thresholds([1,2,3,4,5])
+						(surfData2.values);
+				jiggleContours.push(mycontData);
+				
+			}
+			setInterval(jiggle,66);
+		}
+		setTimeout(startJiggling, 2000);
+		
+		
+
+		// For drawing small multiples
+		var multcontainer = document.getElementById("smallmultiplescontainer");
+
+		for(var ii=0; ii<6; ii++) {
+			var mymultDiv = document.createElement("div");
+				mymultDiv.classList.add("smallmultiple");
+				multcontainer.appendChild(mymultDiv);
+			var mymult = multMaker(mymultDiv);
+			mults.push(mymult);
+		}
+
+		function populateMultiples() {
+			
+			var eventshuffle = tsunamiEvents.slice();
+			shuffle(eventshuffle);
+			
+			for(var ii=0; ii<Math.min(eventshuffle.length, 6); ii++ ) {
+				//mults[ii].setGeojson(CSZEvents[ii]);
+				mults[ii].setContourData(eventshuffle[ii].etadata);
+				mults[ii].setLabel(eventshuffle[ii].decode);
+			}
+		}
+
+		function makeLegend() {
+			// draw the legend
+			var legWidth = 800;
+			var legHeight = 40;
+
+			var svg = d3.select("#legend")
+					.append("svg")
+					.attr("width", legWidth)
+					.attr("height", legHeight);
+
+			svg.append("g")
+			.attr("class", "legendSequential")
+			.attr("transform", "translate(20,0)");
+
+			svg.append("text")
+			.attr("x", 345)
+			.attr("y", 32)
+			.text("meters of water above normal");
+
+			var legendSequential = d3.legendColor()
+				.shapeWidth(30)
+				.shapePadding(5)
+				.cells(9)
+				.orient("horizontal")
+				.scale(mycolors)
+
+			svg.select(".legendSequential")
+			.call(legendSequential);
+		}
+		makeLegend();
+	}
+
+
+function deleteMarkers() {
+	for (var i = 0; i < markers.length; i++) {
+			markers[i].setMap(null);
+		}
+		markers = [];
+}
+
+function addMarker(latLng, map) {
+	// add the new marker to the given map
+	var marker = new google.maps.Marker({
+		position: latLng,
+		map: map
+	});
+	// record the marker
+	markers.push(marker);
+}
+
+function addMarkersMultiples(latLng) {
+	for(var ii=0; ii<mults.length; ii++) {
+		addMarker(latLng, mults[ii].map);
+	}
+}
+
+function panMultiples(latLng,zoom) {
+	if(!zoom) {
+		zoom = 14;
+	}
+	for(var ii=0; ii<mults.length; ii++) {
+		mults[ii].map.setZoom(zoom);
+		mults[ii].map.panTo(latLng);
+	}
+}
+
+
+function multMaker(containerDiv) {
+
+	var mult = {};
+
+	var myLabel = document.createElement("div");
+		myLabel.classList.add("simLabel");
+		//myLabel.appendChild(document.createTextNode("label"))
+		myLabel.innerText = " ";
+	containerDiv.appendChild(myLabel);
+
+	var mapContainer = document.createElement("div");
+	mapContainer.classList.add("smallMultipleMap");
+	containerDiv.appendChild(mapContainer);
+	mult.setLabel = function(text) {
+		myLabel.innerText = text;
+	}
+
+	// google map background
+	var map = new google.maps.Map(mapContainer, {
+		// center: new google.maps.LatLng(47.4,-120.5),
+		//center: new google.maps.LatLng(41.759671,-124.20219),
+		center: {lat:41.7509671, lng:-124.19219},
+		zoom: 14,
+		disableDoubleClickZoom:true,
+		draggable: false,
+		scrollwheel: false,
+		panControl: false,
+		styles:[{"stylers": [{"lightness": 100}]}],
+		mapTypeControl: false,
+		streetViewControl: false,
+		fullscreenControl: false,
+		zoomControl:false,
+		mapTypeControlOptions: {
+			mapTypeIds: ['roadmap', 'styled_map']}
+	});
+
+
+	map.mapTypes.set('styled_map', styledMapType);
+	map.setMapTypeId('styled_map');
+
+	// overlay geojson multipolygons on map
+	var overlay = new google.maps.OverlayView();
+
+	var contourGroup, pathproj, svg, surfDataProjection;
+	overlay.onAdd = function () {
+		var layer = d3.select(this.getPanes().overlayMouseTarget)
+			.append("div")
+			.attr("class", "SvgOverlay");
+		svg = layer.append("svg");
+		contourGroup = svg.append("g")
+			.attr("class", "contourGroup")
+			.attr("opacity",.8);
+		var overlayProjection = this.getProjection();
+
+		// turn google map projection into d3 projection
+		var googleMapProjection = d3.geoTransform({point: function(x, y) {
+			d = overlayProjection.fromLatLngToDivPixel( new google.maps.LatLng(y, x) );
+			this.stream.point(d.x + 4000, d.y + 4000);
+		}});
+		pathproj = d3.geoPath().projection(googleMapProjection);
+
+		var surfData = {width:250, height:250};
+            surfDataProjection = d3.geoTransform({point: function(i,j) {
+                x = lng_low+j/surfData.width*(lng_high-lng_low);
+                y = lat_low+i/surfData.height*(lat_high - lat_low);
+				d = overlayProjection.fromLatLngToDivPixel( new google.maps.LatLng(y, x) );
+				this.stream.point(d.x + 4000, d.y + 4000);
+			}});
+	}
+	overlay.setMap(map);
+
+	// drawing routine
+	overlay.draw = function () {
+		this.update();
+	};
+
+	overlay.update = function() {
+		/*
+		contourGroup.selectAll(".mypoly")
+			.attr("d", pathproj)
+		*/
+		contourGroup.selectAll(".mypoly")
+			.attr("d", d3.geoPath().projection(surfDataProjection) )
+	}
+	mult.map = map;
+
+	/*
+	mult.setGeojson = function(json) {
+		contourGroup.selectAll(".mypoly")
+			.attr("class","remove")
+			.remove();
+		contourGroup.selectAll(".mypoly")
+			.data(json.features)
+			.enter()
+			.append("path")
+			.attr("d", pathproj)
+			.attr("class", "mypoly")
+			.attr("fill-opacity", 0.5)
+            .attr("z-index", function(d) {
+                return Math.round(d.levelSetValue*100);
+            })
+            .attr("fill", function(d) {
+                return mycolors(d.levelSetValue);
+            });
+	}
+	*/
+	mult.setContourData = function(surfData) {
+
+		contData = d3.contours()
+			.size([surfData.width, surfData.height])
+			.thresholds(d3.range(1,21))
+			//.thresholds([1,2,3,4,5])
+			(surfData.values);
+
+
+		// var i0 = d3.interpolateHsvLong(d3.hsv(210, .5, 1), d3.hsv(235, 1, 0.25));
+		// //var i0 = d3.interpolateHsvLong(d3.hsv(0, .3, 1), d3.hsv(0, 1, .4));
+		// var color = d3.scaleSequential(i0).domain([0, 10]);
+
+		contourGroup.selectAll(".mypoly")
+			.attr("class","remove")
+			.remove();
+		contourGroup.selectAll(".mypoly")
+			.data(contData)
+			.enter()
+			.append("path")
+			.attr("d", d3.geoPath().projection(surfDataProjection))
+			.attr("class", "mypoly")
+			.attr("fill", function(d) { return mycolors(d.value); });
+		}
+
+	return mult;
+}
+
+
+//individualView.addEventListener("click",function() { individualView.style.display ="none"; });
+</script>
+
+</body>
+</html>
