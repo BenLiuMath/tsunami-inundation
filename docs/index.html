@@ -245,7 +245,7 @@
 
     	<!-- Slider for probability -->
     	<div id="slidecontainer">
-  			<input type="range" min="0" max="1" step="0.01" class="slider" id="slider_range">
+  			<input type="range" min="0" max="6" step="1" class="slider" id="probabilitySlider">
 		</div>
 
 		<div id="map"></div>
@@ -723,6 +723,15 @@ var styledMapType = new google.maps.StyledMapType(
 			}
 			setContourData(hazard_maps[bestind]);
 		}
+		function setProbLevelByIndex(ind) {
+			setContourData(hazard_maps[ind]);
+		}
+		
+		var probSlider = document.getElementById("probabilitySlider");
+		probSlider.addEventListener("change",function() {
+			setProbLevelByIndex(probSlider.value);
+		});
+		
 		function initPlots() {
 			setProbLevel(1000);
 			populateMultiples();
