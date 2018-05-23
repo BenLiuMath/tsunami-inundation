@@ -196,9 +196,9 @@
 		</div>
 
 		<div id="floating-panel">
-      		<input onclick="showNearField();" type=button value="Show Near-field">
-      		<input onclick="showFarField();" type=button value="Show Far-field">
-      		<input onclick="showBoth();" type=button value="Show Both">
+      		<input id="switchEventsNear" type="button" value="Show Near-field">
+      		<input id="switchEventsFar" type="button" value="Show Far-field">
+      		<input id="switchEventsBoth" type="button" value="Show Both">
     	</div>
 
 		<div id="map"></div>
@@ -243,15 +243,29 @@
 <script src="data/near_field_eta_pInv5000.js"></script>
 <script src="data/near_field_eta_pInv10000.js"></script>
 
+<script src="data/all_eta_pInv50.js"></script>
+<script src="data/all_eta_pInv100.js"></script>
+<script src="data/all_eta_pInv200.js"></script>
+<script src="data/all_eta_pInv500.js"></script>
+<script src="data/all_eta_pInv1000.js"></script>
+<script src="data/all_eta_pInv5000.js"></script>
+<script src="data/all_eta_pInv10000.js"></script>
+
 <script>
 //var eta_vars = [eta_CSZa, eta_CSZb, eta_CSZc, eta_CSZd, eta_CSZe, eta_CSZf, eta_SChSZa, eta_AASZa, eta_AASZb, eta_AASZc, eta_AASZd, eta_KmSZa, eta_KrSZa, eta_TOHa];
-var eta_vars = [eta_CSZa, eta_CSZb, eta_CSZc, eta_CSZd, eta_CSZe, eta_CSZf, eta_SChSZa];
+var etas_near = [eta_CSZa, eta_CSZb, eta_CSZc, eta_CSZd, eta_CSZe, eta_CSZf];
+var etas_far = [eta_SChSZa, eta_AASZa, eta_AASZb, eta_AASZc, eta_AASZd, eta_KmSZa, eta_KrSZa, eta_TOHa];
+var etas_both = etas_near.concat(etas_far);
+
 var eta_names = ["CSZa","CSZb","CSZc","CSZd","CSZe","CSZf","SChSZa"];
 var eta_decodes = ["CSZa (p=.0125)","CSZb (p=.0125)","CSZc (p=.0750)","CSZd (p=.5000)","CSZe (p=.1750)","CSZf (p=.2250)","SChSZa"];
 
 var far_field_eta_ps = [far_field_eta_pInv50, far_field_eta_pInv100, far_field_eta_pInv200, far_field_eta_pInv500, far_field_eta_pInv1000, far_field_eta_pInv5000, far_field_eta_pInv10000];
 
 var near_field_eta_ps = [near_field_eta_pInv50, near_field_eta_pInv100, near_field_eta_pInv200, near_field_eta_pInv500, near_field_eta_pInv1000, near_field_eta_pInv5000, near_field_eta_pInv10000];
+
+var both_field_eta_ps = [all_eta_pInv50, all_eta_pInv100, all_eta_pInv200, all_eta_pInv500, all_eta_pInv1000, all_eta_pInv5000, all_eta_pInv10000];
+
 </script>
 <script>
 	var testjson = {
@@ -446,33 +460,7 @@ var styledMapType = new google.maps.StyledMapType(
 	var lng_high = 235.82087-360;
 	var lat_low = 41.739671;
 	var lat_high = 41.762726;
-
-	var N = 100;
-	function makePerim(t) {
-		var perim = [];
-		var sc = .0075+.0025*Math.sin(t);
-		for(var tt=0; tt<N+1; tt++) {
-			var xx = cityCenter.x + sc*Math.cos(tt*2*Math.PI/N);
-			var yy = cityCenter.y + sc*Math.sin(tt*2*Math.PI/N);
-			perim.push([xx,yy]);
-		}
-		return perim;
-	}
-
-	function packagePolygons(multipolygon) {
-		var features = [
-			{"type": "Feature",
-			"geometry": { "type": "MultiPolygon",
-			"coordinates": multipolygon}
-			}
-		]
-		return features;
-	}
-
-	// load geojson data
-	// d3.json("../ptha_tutorial/DataFiles/Events/CSZa/contours.geojson", main);
-
-	// alternative for hard-coded data
+	
 
 	var mults = []; // array of small multiples
 	var markers = []; // array of markers currently on the maps
@@ -484,11 +472,13 @@ var styledMapType = new google.maps.StyledMapType(
 	function interpolateReverse(t){
 		return i0(1-t);   // assumes [0,1] range
 	}
-var mycolors = d3.scaleSequential(interpolateReverse).domain([0,12]);
+	var mycolors = d3.scaleSequential(interpolateReverse).domain([0,12]);
 
 	main();
 	function main() {
-
+		var event_etas = etas_near;
+		var hazard_maps = near_field_eta_ps;
+		
 		// google map background
 		var map = new google.maps.Map(document.getElementById('map'), {
 			center: {lat:(cityCenter.y-0.005), lng:(cityCenter.x+.03)},
@@ -546,7 +536,7 @@ var mycolors = d3.scaleSequential(interpolateReverse).domain([0,12]);
 			}});
 			pathproj = d3.geoPath().projection(googleMapProjection);
 
-			var surfData = far_field_eta_ps[5];
+			var surfData = {width:250, height:250};
             surfDataProjection = d3.geoTransform({point: function(i,j) {
                 x = lng_low+j/surfData.width*(lng_high-lng_low);
                 y = lat_low+i/surfData.height*(lat_high - lat_low);
@@ -563,9 +553,38 @@ var mycolors = d3.scaleSequential(interpolateReverse).domain([0,12]);
 			contourGroup.selectAll(".mypoly")
 				.attr("d", d3.geoPath().projection(surfDataProjection) )
 		}
-		// This method doesn't work for now! The flipbook animation has supplanted the single dataset paradigm (for now)
+		
+		function switchEventType(ptype) {
+			switch(ptype) {
+				case "near":
+					event_etas = etas_far;
+					hazard_maps = far_field_eta_ps;
+				break;
+				case "far":
+					event_etas = etas_near;
+					hazard_maps = near_field_eta_ps;
+				break;
+				default:
+					event_etas = etas_both;
+					hazard_maps = both_field_eta_ps;
+			}
+			initPlots();
+		}
+		document.getElementById("switchEventsNear")
+			.addEventListener("click",function() {
+				switchEventType('near');
+			});
+		document.getElementById("switchEventsFar")
+			.addEventListener("click",function() {
+				switchEventType('far');
+			});
+		document.getElementById("switchEventsBoth")
+			.addEventListener("click",function() {
+				switchEventType('both');
+			});
+		
+		
 		function setContourData(surfData) {
-
 			contData = d3.contours()
 					.size([surfData.width, surfData.height])
 					.thresholds(d3.range(1,21))
@@ -592,25 +611,23 @@ var mycolors = d3.scaleSequential(interpolateReverse).domain([0,12]);
 		var yearlyRecurrences = [50,100,200,500,1000,5000,10000];
 		// Set the contour data by specifying the yearly recurrence (inverse probability). Code searches for closest probability level to given parameter.
 		function setProbLevel(yearlyRecurrence) {
-			console.log(yearlyRecurrence);
 			var bestind = 0;
 			var closeness = 100000;
 			for(var ii=0; ii<yearlyRecurrences.length; ii++) {
 				var thisclose = Math.abs(yearlyRecurrences[ii]-yearlyRecurrence);
-				console.log(thisclose+":"+closeness);
 				if( Math.abs(thisclose) < closeness ) {
 					bestind = ii;
 					closeness = thisclose;
 				}
 			}
-			console.log("ind:"+bestind);
-			setContourData(near_field_eta_ps[bestind]);
+			setContourData(hazard_maps[bestind]);
 		}
-		function initData() {
+		function initPlots() {
 			setProbLevel(1000);
+			populateMultiples();
 		}
-		setTimeout(initData, 1000);
-
+		setTimeout(initPlots, 1000);
+		
 		// For drawing small multiples
 		var multcontainer = document.getElementById("smallmultiplescontainer");
 
@@ -625,11 +642,10 @@ var mycolors = d3.scaleSequential(interpolateReverse).domain([0,12]);
 		function populateMultiples() {
 			for(var ii=0; ii<6; ii++ ) {
 				//mults[ii].setGeojson(CSZEvents[ii]);
-				mults[ii].setContourData(eta_vars[ii]);
+				mults[ii].setContourData(event_etas[ii]);
 				mults[ii].setLabel(eta_decodes[ii]);
 			}
 		}
-		setTimeout(populateMultiples, 50);
 
 		function makeLegend() {
 			// draw the legend
@@ -663,7 +679,6 @@ var mycolors = d3.scaleSequential(interpolateReverse).domain([0,12]);
 		makeLegend();
 	}
 
-	// BEGIN FUNCTIONS OUTSIDE OF MAIN
 
 function deleteMarkers() {
 	for (var i = 0; i < markers.length; i++) {
@@ -785,6 +800,7 @@ function multMaker(containerDiv) {
 	}
 	mult.map = map;
 
+	/*
 	mult.setGeojson = function(json) {
 		contourGroup.selectAll(".mypoly")
 			.attr("class","remove")
@@ -803,14 +819,14 @@ function multMaker(containerDiv) {
                 return mycolors(d.levelSetValue);
             });
 	}
-
+	*/
 	mult.setContourData = function(surfData) {
 
 		contData = d3.contours()
-				.size([surfData.width, surfData.height])
-				.thresholds(d3.range(1,21))
-				//.thresholds([1,2,3,4,5])
-				(surfData.values);
+			.size([surfData.width, surfData.height])
+			.thresholds(d3.range(1,21))
+			//.thresholds([1,2,3,4,5])
+			(surfData.values);
 
 
 		// var i0 = d3.interpolateHsvLong(d3.hsv(210, .5, 1), d3.hsv(235, 1, 0.25));
@@ -828,13 +844,10 @@ function multMaker(containerDiv) {
 			.attr("class", "mypoly")
 			.attr("fill", function(d) { return mycolors(d.value); });
 		}
-	//setTimeout(gogo,1000);
 
-	return mult; // in the future, this returned object may contain references to other things associated with the small multiple, such as a label field.
+	return mult;
 }
 
-function setMultGeojson(mult,json) {
-}
 
 //individualView.addEventListener("click",function() { individualView.style.display ="none"; });
 </script>
