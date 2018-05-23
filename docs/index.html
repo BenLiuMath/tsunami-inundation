@@ -74,17 +74,30 @@
 	#slidecontainer {
 		position: absolute;
 		top: 86px;
-		left: 15%;
+		left: 50%; /* Brings slider to line up with the small multiples */
 		z-index: 5; /* Brings slider in front of map */
 	}
 
 	/* Style for far- and near-field buttons
 	https://developers.google.com/maps/documentation/javascript/examples/marker-remove
  	*/
-	#floating-panel {
+	#fieldbuttons {
 	    position: absolute;
-	    top: 81px;
+	    top: 79px;
 	    left: 0%;
+	    z-index: 5; /* Brings buttons in front of map */
+	    background-color: #FFFFFF;
+	    /* padding: 5px;*/
+	    /* border: 1px solid #999;*/
+	    text-align: center;
+	    font-family: "Avenir Next";
+	    padding-left: 5px;
+	}
+
+	#resetbutton {
+	    position: absolute;
+	    top: 79px;
+	    left: 43.5%;
 	    z-index: 5; /* Brings buttons in front of map */
 	    background-color: #FFFFFF;
 	    /* padding: 5px;*/
@@ -126,6 +139,7 @@
 		stroke-width: 0px;
 		//fill-opacity: 0.3;
 	}
+
 /*
 	#individualfocus {
 		position:absolute;
@@ -198,8 +212,6 @@
 		position:absolute;
 		top:15px;
 		left:40%;
-		width:90%;
-		height:200px;
 		/*font-family: "Avenir Next";
 		 font-size: 1.8em;
 		padding: 10px; */
@@ -230,17 +242,26 @@
 
 		<div id="header">
 			<h1>Tsunami Inundation Maps</h1>
-			<p>Choose <a href="#supplemental">near-field</a> (Cascadia) or <a href="#supplemental">far-field</a> events.
+			<p>Choose 
+				<a href="#supplemental">near-field</a>
+				near-field
+				</span> 
+				(Cascadia) or <a href="#supplemental">far-field</a> events.
 				A single-click on the large map (aggregated inundation levels) will focus the small maps (corresponding to different simulations) on that spot.
 			</p>
 
 		</div>
 
 		<!-- Buttons for near- and far-field events -->
-		<div id="floating-panel">
+		<div id="fieldbuttons">
       		<input id="switchEventsNear" type="button" value="Show Near-field">
       		<input id="switchEventsFar" type="button" value="Show Far-field">
       		<input id="switchEventsBoth" type="button" value="Show Both">
+    	</div>
+
+    	<!-- Button to reset view -->
+    	<div id="resetbutton">
+      		<input id="resetView" type="button" value="Center">
     	</div>
 
     	<!-- Slider for probability -->
@@ -689,6 +710,12 @@ var styledMapType = new google.maps.StyledMapType(
 				switchEventType('both');
 			});
 
+		document.getElementById("resetView")
+			.addEventListener("click", function() {
+				map.setCenter({lat:(cityCenter.y-0.005), lng:(cityCenter.x+.03)});
+				map.setZoom(14);
+			});
+
 
 		function setContourData(surfData) {
 			contData = d3.contours()
@@ -764,7 +791,7 @@ var styledMapType = new google.maps.StyledMapType(
 		function makeLegend() {
 			// draw the legend
 			var legWidth = 800;
-			var legHeight = 200;
+			var legHeight = 40;
 
 			var svg = d3.select("#legend")
 					.append("svg")
