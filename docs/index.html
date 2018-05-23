@@ -241,7 +241,7 @@
       		<input id="switchEventsBoth" type="button" value="Show Both">
     	</div>
 
-    	<!-- Slider for probability -->	
+    	<!-- Slider for probability -->
     	<div id="slidecontainer">
   			<input type="range" min="0" max="1" step="0.01" class="slider" id="slider_range">
 		</div>
@@ -302,8 +302,22 @@ var etas_near = [eta_CSZa, eta_CSZb, eta_CSZc, eta_CSZd, eta_CSZe, eta_CSZf];
 var etas_far = [eta_SChSZa, eta_AASZa, eta_AASZb, eta_AASZc, eta_AASZd, eta_KmSZa, eta_KrSZa, eta_TOHa];
 var etas_both = etas_near.concat(etas_far);
 
-var eta_names = ["CSZa","CSZb","CSZc","CSZd","CSZe","CSZf","SChSZa"];
-var eta_decodes = ["CSZa (p=.0125)","CSZb (p=.0125)","CSZc (p=.0750)","CSZd (p=.5000)","CSZe (p=.1750)","CSZf (p=.2250)","SChSZa"];
+// name and probability data for simulations (to use in small multiple labels)
+var eta_names_NF = ["CSZa","CSZb","CSZc","CSZd","CSZe","CSZf"];
+var event_prob_NF = [0.0125/250, 0.0125/250, 0.0750/250, 0.5000/250, 0.1750/250, 0.2250/250];
+var eta_decodes_NF = ["Cascadia A","Cascadia B","Cascadia C","Cascadia D","Cascadia E","Cascadia F"];
+for(var ii=0; ii<eta_decodes_NF.length; ii++) {
+	eta_decodes_NF[ii] = eta_decodes_NF[ii] + " (p=" + event_prob_NF[ii].toFixed(4) + ")";
+}
+
+var eta_names_FF = ["SChSZa", "AASZa", "AASZb", "AASZc", "AASZd", "KmSZa", "KrSZa", "TOHa"];
+var event_prob_FF = [1/300, 1/394, 1/750, 1/563, 1/324, 1/50, 1/167, 1/103];
+var eta_decodes_FF = ["S Chile", "Alaska A", "Alaska B", "Alaska C", "Alaska D", "Kamchatka", "Kuril Isl", "Tohoku"];
+for(var ii=0; ii<eta_decodes_FF.length; ii++) {
+	eta_decodes_FF[ii] = eta_decodes_FF[ii] + " (p=" + event_prob_FF[ii].toFixed(4) + ")";
+}
+
+var eta_decodes_both = eta_decodes_NF.concat(eta_decodes_FF);
 
 var far_field_eta_ps = [far_field_eta_pInv50, far_field_eta_pInv100, far_field_eta_pInv200, far_field_eta_pInv500, far_field_eta_pInv1000, far_field_eta_pInv5000, far_field_eta_pInv10000];
 
@@ -516,7 +530,7 @@ var styledMapType = new google.maps.StyledMapType(
 	var lng_high = 235.82087-360;
 	var lat_low = 41.739671;
 	var lat_high = 41.762726;
-	
+
 
 	var mults = []; // array of small multiples
 	var markers = []; // array of markers currently on the maps
@@ -532,9 +546,11 @@ var styledMapType = new google.maps.StyledMapType(
 
 	main();
 	function main() {
+		// initialize with near-field data
 		var event_etas = etas_near;
 		var hazard_maps = near_field_eta_ps;
-		
+		var eta_decodes = eta_decodes_NF;
+
 		// google map background
 		var map = new google.maps.Map(document.getElementById('map'), {
 			center: {lat:(cityCenter.y-0.005), lng:(cityCenter.x+.03)},
@@ -563,7 +579,7 @@ var styledMapType = new google.maps.StyledMapType(
 			var lat = latlngJSON.lat;
 			var lng = latlngJSON.lng;
 			if (lat > lat_high || lat < lat_low || lng < lng_low || lng > lng_high) {
-				
+
 				return;
 			}
 			individualView.style.display = "block";
@@ -618,20 +634,23 @@ var styledMapType = new google.maps.StyledMapType(
 			contourGroup.selectAll(".mypoly")
 				.attr("d", d3.geoPath().projection(surfDataProjection) )
 		}
-		
+
 		function switchEventType(ptype) {
 			switch(ptype) {
-				case "near":
+				case "far":
 					event_etas = etas_far;
 					hazard_maps = far_field_eta_ps;
+					eta_decodes = eta_decodes_FF;
 				break;
-				case "far":
+				case "near":
 					event_etas = etas_near;
 					hazard_maps = near_field_eta_ps;
+					eta_decodes = eta_decodes_NF;
 				break;
 				default:
 					event_etas = etas_both;
 					hazard_maps = both_field_eta_ps;
+					eta_decodes = eta_decodes_both;
 			}
 			initPlots();
 		}
@@ -647,8 +666,8 @@ var styledMapType = new google.maps.StyledMapType(
 			.addEventListener("click",function() {
 				switchEventType('both');
 			});
-		
-		
+
+
 		function setContourData(surfData) {
 			contData = d3.contours()
 					.size([surfData.width, surfData.height])
@@ -692,7 +711,7 @@ var styledMapType = new google.maps.StyledMapType(
 			populateMultiples();
 		}
 		setTimeout(initPlots, 1000);
-		
+
 		// For drawing small multiples
 		var multcontainer = document.getElementById("smallmultiplescontainer");
 
