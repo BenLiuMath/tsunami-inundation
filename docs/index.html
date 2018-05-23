@@ -555,14 +555,23 @@ var styledMapType = new google.maps.StyledMapType(
 		});
 
 		function focusArea(e) {
+
+
 			//map.panTo(e.latLng);
 			//map.setZoom(15);
+			latlngJSON = e.latLng.toJSON();
+			var lat = latlngJSON.lat;
+			var lng = latlngJSON.lng;
+			if (lat > lat_high || lat < lat_low || lng < lng_low || lng > lng_high) {
+				
+				return;
+			}
 			individualView.style.display = "block";
 			panMultiples(e.latLng);
 			deleteMarkers();
 			addMarker(e.latLng, map);
 			addMarkersMultiples(e.latLng);
-          // map.setCenter(marker.getPosition());
+          	// map.setCenter(marker.getPosition());
         }
 
 		// zoom in and recenter when user clicks on a point
