@@ -38,22 +38,61 @@
 		padding: 10px;
 	}
 
-	 #floating-panel {
-	 	/*
-		https://developers.google.com/maps/documentation/javascript/examples/marker-remove
-	 	*/
-        position: absolute;
-        top: 100px;
-        left: 0%;
-        z-index: 5;
-        background-color: #fff;
-        padding: 5px;
-        border: 1px solid #999;
-        text-align: center;
-        font-family: 'Roboto','sans-serif';
-        line-height: 30px;
-        padding-left: 10px;
-      }
+	/* Slider CSS from w3schools.org */
+
+	.slider {
+	    -webkit-appearance: none;
+	    width: 500%;
+	    height: 5px;
+	    background: #d3d3d3;
+	    outline: none;
+	    opacity: 0.7;
+	    -webkit-transition: .2s;
+	    transition: opacity .2s;
+	}
+
+	.slider:hover {
+    	opacity: 1; /* Fully shown on mouse-over */
+	}
+
+	.slider::-webkit-slider-thumb {
+	    -webkit-appearance: none; /* Override default look */
+	    appearance: none;
+	    width: 15px; /* Set a specific slider handle width */
+	    height: 15px; /* Slider handle height */
+	    background: #4CAF50; /* Green background */
+	    cursor: pointer; /* Cursor on hover */
+	}
+
+	.slider::-moz-range-thumb {
+	    width: 25px; /* Set a specific slider handle width */
+	    height: 25px; /* Slider handle height */
+	    background: #4CAF50; /* Green background */
+	    cursor: pointer; /* Cursor on hover */
+	}
+
+	#slidecontainer {
+		position: absolute;
+		top: 86px;
+		left: 15%;
+		z-index: 5; /* Brings slider in front of map */
+	}
+
+	/* Style for far- and near-field buttons
+	https://developers.google.com/maps/documentation/javascript/examples/marker-remove
+ 	*/
+	#floating-panel {
+	    position: absolute;
+	    top: 81px;
+	    left: 0%;
+	    z-index: 5; /* Brings buttons in front of map */
+	    background-color: #FFFFFF;
+	    /* padding: 5px;*/
+	    /* border: 1px solid #999;*/
+	    text-align: center;
+	    font-family: "Avenir Next";
+	    padding-left: 5px;
+	}
 
 	#map {
 		position:absolute;
@@ -195,11 +234,17 @@
 
 		</div>
 
+		<!-- Buttons for near- and far-field events -->
 		<div id="floating-panel">
       		<input id="switchEventsNear" type="button" value="Show Near-field">
       		<input id="switchEventsFar" type="button" value="Show Far-field">
       		<input id="switchEventsBoth" type="button" value="Show Both">
     	</div>
+
+    	<!-- Slider for probability -->	
+    	<div id="slidecontainer">
+  			<input type="range" min="0" max="1" step="0.01" class="slider" id="slider_range">
+		</div>
 
 		<div id="map"></div>
 		<div id="individualfocus">
