@@ -51,7 +51,7 @@
 % The third is 19% wide and houses a logo for your university/organization or a photo of you
 % The widths of these boxes can be easily edited to accommodate your content as you see fit
 
-\begin{minipage}[b]{0.63\linewidth}
+\begin{minipage}[b]{0.5\linewidth}
 \raggedright
 \veryHuge \color{MidnightBlue} \textbf{Tsunami Inundation Maps} \color{Black}\\ % Title
 % \Huge\textit{Intersecting Ports in 2D}\\[1cm] % Subtitle
@@ -59,12 +59,12 @@
 \huge University of Washington\\ Mathematics \& Applied Mathematics\\ % University/organization
 \end{minipage}
 %
-\begin{minipage}[b]{0.20\linewidth}
-\color{DarkRed}\Large \textbf{Contact Information:}\\
+\begin{minipage}[b]{0.35\linewidth}
+\color{DarkRed}\Large \textbf{Github repository:}\\
 % Applied Mathematics, 202 Lewis Hall\\ % Address
 % UW Box 353925\\
 % Seattle, Washington 98195-3925\\\\
-\texttt{bdesilva@uw.edu}\\ % Email addresses
+\texttt{https://github.com/cse512-18s/tsunami-inundation}\\
 \end{minipage}
 %
 \begin{minipage}[b]{0.15\linewidth}
@@ -82,6 +82,7 @@
 
 \color{Navy} % Navy color for the abstract
 
+% I'm not a huge fan of having the abstract on our poster, but 
 \begin{abstract}
 	Numerical simulations conducted by researchers at the University of Washington are used to model and predict the impact of tsunamis. By estimating the probability of occurrence of each simulated tsunami, the probability of exceeding a given level of inundation (flooding) can be estimated for every point in the landscape, giving rise to a hazard map. Visualizing hazard maps is difficult for several reasons. First, the data has a large amount of uncertainty: the probability of each simulated event must be estimated, and the hazard maps are also generated from a limited pool of simulated events, thus they may not account for the worst or most exotic tsunamis. Second, the resultant hazard maps specify a complex hazard function at every point, which describes the probability of inundation at every depth. To effectively communicate the dangers and potential impacts of tsunamis to the general public, we employ interactive and research-driven design techniques to enhance users' understanding of the complex data. We display contour plots of inundation level for fixed probabilities, and allow the users to manipulate the probabilities to see how inundation changes over the landscape. We additionally use small multiples to present the user with an overview of the inundation from a sample of individual simulations, showing the possible variety of outcomes over separate events. Our hope is that by showing both the aggregate data and the data for individual simulations, we can reduce the level of abstraction in the uncertainty measures that are typically reported.
 
@@ -109,6 +110,7 @@
 \input{motivation.tex}
 
 
+% This breaks up the column and determines the height of the three columns
 \vfill\null
 \columnbreak
 
@@ -140,6 +142,12 @@ quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
 consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
 cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 \color{DarkRed}
 \subsection*{Small multiples}
@@ -150,10 +158,10 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 \begin{centering}\color{Black}
 	\begin{tikzpicture}[scale=5]
 		\draw[step=2cm, line width=2pt](0,0) rectangle (4,4);
-		\node at (1,1) {\large $\Omega_1$};
-		\node at (3,1) {\large $\Omega_2$};
-		\node at (1,3) {\large $\Omega_4$};
-		\node at (3,3) {\large $\Omega_3$};
+		\node at (1,1) {\huge $\Omega_1$};
+		\node at (3,1) {\huge $\Omega_2$};
+		\node at (1,3) {\huge $\Omega_4$};
+		\node at (3,3) {\huge $\Omega_3$};
 		\draw[black,line width=4pt,dashed] (0,2) -- (2,2);
 		\draw[blue,line width=4pt,dashed] (2,0) -- (2,2);
 		\draw[red,line width=4pt,dashed] (2,2) -- (4,2);
@@ -168,6 +176,24 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 \subsection*{Moving boundaries}
 % \color{DarkOliveGreen}
 \color{Black}
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 % \input{filename.tex}
 
