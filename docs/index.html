@@ -40,7 +40,7 @@
 
 	/* Slider CSS from w3schools.org */
 
-	
+
 	#slidecontainer {
 		position: absolute;
 		bottom:-25px;
@@ -48,7 +48,7 @@
 		width:31%;
 		z-index: 5; /* Brings slider in front of map */
 	}
-	
+
 	.slider {
 	    -webkit-appearance: none;
 	    width: 100%;
@@ -92,13 +92,13 @@
 		margin:0px;
 		border: 1px solid #ccc;
 	}
-	
+
 	#map {
 		position:absolute;
 		top:0px;
 		left:0px;
 		width:45%;
-		height:100%;
+		height:65%;
 		display:block;
 	}
 
@@ -118,16 +118,18 @@
 		width:100%;
 		height:100%;
 	}
-	
+
 	#colorlegend {
 		position:relative;
 		top:0px;
 		left:45%;
+		width:10%;
+		height:65%;
 		background: rgb(255,255,255,.7);
 		border:1px solid black;
 		display:inline-block;
 	}
-	
+
 
 	#resetbutton {
 	    position: absolute;
@@ -142,8 +144,8 @@
 	#resetbutton input {
 		width:100%;
 	}
-	
-	
+
+
 	.SvgOverlay {
 		position: relative;
 		width: 100%;
@@ -198,7 +200,7 @@
 		height: calc(100% - 1.5em - 5px);
 		padding: 0px;
 	}
-	
+
 
 	#supplemental {
 		position:absolute;
@@ -263,16 +265,16 @@
 
 		<div id="header">
 			<h1>Tsunami Inundation Maps</h1>
-			<p>Choose 
+			<p>Choose
 				<a href="#supplemental">near-field</a>
 				near-field
-				</span> 
+				</span>
 				(Cascadia) or <a href="#supplemental">far-field</a> events.
 				A single-click on the large map (aggregated inundation levels) will focus the small maps (corresponding to different simulations) on that spot.
 			</p>
 
 		</div>
-		
+
 		<div id="viscontainer">
 			<!-- Buttons for near- and far-field events -->
 			<div id="fieldbuttons">
@@ -622,7 +624,7 @@ var styledMapType = new google.maps.StyledMapType(
 
 		// google map background
 		var map = new google.maps.Map(document.getElementById('map'), {
-			center: {lat:(cityCenter.y-0.005), lng:(cityCenter.x+.03)},
+			center: {lat:(cityCenter.y-0.005), lng:(cityCenter.x+.0125)},
 			zoom: 14,
 			// styles:[{"stylers": [{"lightness": 100}]}],
 			styles:[
@@ -704,7 +706,7 @@ var styledMapType = new google.maps.StyledMapType(
 				.attr("d", d3.geoPath().projection(surfDataProjection) )
 		}
 
-		
+
 		function switchEventType(ptype) {
 			var i, tabcontent, tablinks;
 
@@ -717,7 +719,7 @@ var styledMapType = new google.maps.StyledMapType(
 			// Show the current tab, and add an "active" class to the button that opened the tab
 			//evt.currentTarget.className += " active";
 			document.getElementById("switchEvents_"+ptype).className += " active";
-		
+
 			switch(ptype) {
 				case "far":
 					tsunamiEvents = tsunamiEvents_far;
@@ -733,7 +735,7 @@ var styledMapType = new google.maps.StyledMapType(
 			}
 			initPlots();
 		}
-		
+
 		function attachButtons() {
 			var types = ["near","far","both"];
 			for(var ii=0; ii<types.length; ii++) {
@@ -789,12 +791,12 @@ var styledMapType = new google.maps.StyledMapType(
 		function setProbLevelByIndex(ind) {
 			setContourData(hazard_maps[ind]);
 		}
-		
+
 		var probSlider = document.getElementById("probabilitySlider");
 		probSlider.addEventListener("change",function() {
 			setProbLevelByIndex(probSlider.value);
 		});
-		
+
 		function initPlots() {
 			setProbLevel(1000);
 			populateMultiples();
@@ -813,10 +815,10 @@ var styledMapType = new google.maps.StyledMapType(
 		}
 
 		function populateMultiples() {
-			
+
 			var eventshuffle = tsunamiEvents.slice();
 			shuffle(eventshuffle);
-			
+
 			for(var ii=0; ii<Math.min(eventshuffle.length, 6); ii++ ) {
 				//mults[ii].setGeojson(CSZEvents[ii]);
 				mults[ii].setContourData(eventshuffle[ii].etadata);
@@ -826,13 +828,13 @@ var styledMapType = new google.maps.StyledMapType(
 
 		function makeLegend() {
 			// draw the legend
-			var legWidth = 150;
+			// var legWidth = 150;
 			var legHeight = 400;
 
 			var svg = d3.select("#colorlegend")
 					.attr("class","legendQuant")
 					.append("svg")
-					.attr("width", legWidth)
+					// .attr("width", legWidth)
 					.attr("height", legHeight);
 
 			svg.append("g")
