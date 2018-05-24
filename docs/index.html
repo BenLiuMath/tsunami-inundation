@@ -40,11 +40,21 @@
 
 	/* Slider CSS from w3schools.org */
 
+	
+	#slidecontainer {
+		position: absolute;
+		bottom:-25px;
+		left:2%;
+		width:31%;
+		z-index: 5; /* Brings slider in front of map */
+	}
+	
 	.slider {
 	    -webkit-appearance: none;
-	    width: 500%;
+	    width: 100%;
 	    height: 5px;
 	    background: #d3d3d3;
+		cursor:pointer;
 	    outline: none;
 	    opacity: 0.7;
 	    -webkit-transition: .2s;
@@ -74,10 +84,13 @@
 
 	#viscontainer {
 		position:absolute;
-		top:100px;
+		top:140px;
 		left:0%;
 		width:100%;
 		height:720px;
+		padding:0px;
+		margin:0px;
+		border: 1px solid #ccc;
 	}
 	
 	#map {
@@ -115,23 +128,19 @@
 		display:inline-block;
 	}
 	
-	
-	#slidecontainer {
-		position: absolute;
-		bottom:0px;
-		left:0px; /* Brings slider to line up with the small multiples */
-		z-index: 5; /* Brings slider in front of map */
-	}
-
 
 	#resetbutton {
 	    position: absolute;
-	    top: 79px;
-	    left: 43.5%;
+	    bottom:-25px;
+	    right:55%;
+		width:10%;
 	    z-index: 5; /* Brings buttons in front of map */
 	    background-color: #FFFFFF;
 	    text-align: center;
 	    padding-left: 5px;
+	}
+	#resetbutton input {
+		width:100%;
 	}
 	
 	
@@ -206,7 +215,8 @@
 
 #fieldbuttons {
 	position: absolute;
-	top: -3em;
+	padding:0px;
+	top: -42px;
 	left: 0%;
 	z-index: 5; /* Brings buttons in front of map */
 	background-color: #FFFFFF;
@@ -224,7 +234,7 @@
     cursor: pointer;
     //padding: 14px 16px;
 	padding:0 1em 0 1em;
-	height:3em;
+	height:40px;
     transition: 0.3s;
 }
 
@@ -266,9 +276,9 @@
 		<div id="viscontainer">
 			<!-- Buttons for near- and far-field events -->
 			<div id="fieldbuttons">
-				<button class="tablinks" id="switchEvents_near" value="near">Show Near-field</button>
-				<button class="tablinks"  id="switchEvents_far" value="far">Show Far-field</button>
-				<button class="tablinks"  id="switchEvents_both" value="both">Show Both</button>
+				<button class="tablinks" id="switchEvents_near" value="near">Near-field</button>
+				<button class="tablinks"  id="switchEvents_far" value="far">Far-field</button>
+				<button class="tablinks"  id="switchEvents_both" value="both">Near- and Far-field</button>
 			</div>
 
 			<!-- Button to reset view -->
@@ -816,33 +826,38 @@ var styledMapType = new google.maps.StyledMapType(
 
 		function makeLegend() {
 			// draw the legend
-			var legWidth = 400;
-			var legHeight = 80;
+			var legWidth = 150;
+			var legHeight = 400;
 
 			var svg = d3.select("#colorlegend")
+					.attr("class","legendQuant")
 					.append("svg")
 					.attr("width", legWidth)
 					.attr("height", legHeight);
 
 			svg.append("g")
 			.attr("class", "legendSequential")
-			.attr("transform", "translate(20,0)");
+			.attr("transform", "translate(20,20)");
 
+			/*
 			// maybe rotate the text 90 degrees?
 			svg.append("text")
 			.attr("x", 345)
 			.attr("y", 32)
-			.text("meters of water above normal");
+			.text("Meters");
+			*/
 
 			var legendSequential = d3.legendColor()
 				.shapeWidth(30)
 				.shapePadding(5)
 				.cells(9)
-				.orient("horizontal")
-				.scale(mycolors)
+				.orient("vertical")
+				.title("Meters Flooded")
+				.titleWidth(100)
+				.scale(mycolors);
 
 			svg.select(".legendSequential")
-			.call(legendSequential);
+				.call(legendSequential);
 		}
 		makeLegend();
 	}
