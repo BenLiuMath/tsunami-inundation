@@ -4,7 +4,6 @@
 	<title>Tsunami Hazard Visualizer</title>
 	<style>
 	
-
 	* { padding: 0; margin: 0; }
 
 	body {
@@ -32,12 +31,67 @@
 	p { margin: 0 0 10px 0; }
 
 	#header {
-		position:absolute;
-		top:0px;
-		height:20%;
 		font-family: "Avenir Next";
 		/* font-size: 1.8em; */
 		padding: 10px;
+	}
+
+	#flipbookvis {
+		position:relative;
+		top:0;
+		left:0;
+		width:100%;
+		height:500px;
+		padding:0px;
+		margin:0px;
+		border: 1px solid #ccc;
+	}
+	#flipbookmap {
+		position:absolute;
+		top:0px;
+		left:0px;
+		width:100%;
+		height:100%;
+		display:block;
+	}
+	
+	#viscontainer {
+		position:relative;
+		top:0;
+		left:0;
+		margin-bottom:200px;
+		width:100%;
+		height:600px;
+		padding:0px;
+		margin:0px;
+	}
+	
+	#fieldtabs {
+		display:inline-block;
+		width:500px;
+		z-index: 5; /* Brings buttons in front of map */
+		background-color: #FFFFFF;
+		text-align: center;
+		overflow: hidden;
+		border: 1px solid #ccc;
+		background-color: #f1f1f1;
+	}
+
+	#tabbedcontent {
+		position:relative;
+		top:0px;
+		left:0px;
+		width:100%;
+		height:100%;
+		border: 1px solid #ccc;
+	}
+	#map {
+		position:absolute;
+		top:0px;
+		left:0px;
+		width:45%;
+		height:100%;
+		display:block;
 	}
 
 	#slidecontainer {
@@ -53,34 +107,14 @@
 	}
 
 	input[type=range]::-webkit-slider-runnable-track {
-	  width: 100%;
-	  height: 8.4px;
-	  cursor: pointer;
-	  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
-	  background: rgb(211,211,211);
-
+		width: 100%;
+		height: 8.4px;
+		cursor: pointer;
+		box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+		background: rgb(211,211,211);
 	}
 
-	#viscontainer {
-		position:absolute;
-		top:140px;
-		left:0%;
-		width:100%;
-		height:600px;
-		padding:0px;
-		margin:0px;
-		border: 1px solid #ccc;
-	}
-
-	#map {
-		position:absolute;
-		top:0px;
-		left:0px;
-		width:45%;
-		height:100%;
-		display:block;
-	}
-
+	
 	#individualfocus {
 		position:absolute;
 		top:0px;
@@ -108,7 +142,6 @@
 		border:1px solid black;
 		display:inline-block;
 	}
-
 
 	#resetbutton {
 	    position: absolute;
@@ -182,9 +215,7 @@
 
 
 	#supplemental {
-		position:absolute;
-		top:125%;
-		height:200px;
+		position:relative;
 		font-family: "Avenir Next";
 		/* font-size: 1.8em; */
 		padding: 10px;
@@ -195,21 +226,9 @@
 <style>
 /* Style the tab */
 
-#fieldbuttons {
-	position: absolute;
-	padding:0px;
-	top: -42px;
-	left: 0%;
-	z-index: 5; /* Brings buttons in front of map */
-	background-color: #FFFFFF;
-	text-align: center;
-    overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
-}
 
 /* Style the buttons that are used to open the tab content */
-#fieldbuttons button {
+#fieldtabs button {
     background-color: inherit;
     border: none;
     outline: none;
@@ -221,12 +240,12 @@
 }
 
 /* Change background color of buttons on hover */
-#fieldbuttons button:hover {
+#fieldtabs button:hover {
     background-color: #ddd;
 }
 
 /* Create an active/current tablink class */
-#fieldbuttons button.active {
+#fieldtabs button.active {
     background-color: #ccc;
 }
 </style>
@@ -241,70 +260,78 @@
 
 </head>
 <body>
-	<div class="content">
+<div class="content">
 
-		<div id="header">
-			<h1>Tsunami Inundation Maps</h1>
-			<p>Choose
-				<a href="#supplemental">near-field</a>
-				near-field
-				</span>
-				(Cascadia) or <a href="#supplemental">far-field</a> events.
-				A single-click on the large map (aggregated inundation levels) will focus the small maps (corresponding to different simulations) on that spot.
-			</p>
+	<div id="header">
+		<h1>Tsunami Inundation Maps</h1>
+		<p>Choose
+			<a href="#supplemental">near-field</a>
+			near-field
+			</span>
+			(Cascadia) or <a href="#supplemental">far-field</a> events.
+			A single-click on the large map (aggregated inundation levels) will focus the small maps (corresponding to different simulations) on that spot.
+		</p>
 
+	</div>
+
+	<div id="flipbookvis">
+		<div id="flipbookmap"></div>
+	</div>
+	
+	<div>
+	Middle content
+	</div>
+	
+	<div id="viscontainer">
+		<!-- Buttons for near- and far-field events -->
+		<div id="fieldtabs">
+			<button class="tablinks" id="switchEvents_near" value="near">Near-field</button>
+			<button class="tablinks" id="switchEvents_far" value="far">Far-field</button>
+			<button class="tablinks" id="switchEvents_both" value="both">Near- and Far-field</button>
 		</div>
-
-		<div id="viscontainer">
-			<!-- Buttons for near- and far-field events -->
-			<div id="fieldbuttons">
-				<button class="tablinks" id="switchEvents_near" value="near">Near-field</button>
-				<button class="tablinks"  id="switchEvents_far" value="far">Far-field</button>
-				<button class="tablinks"  id="switchEvents_both" value="both">Near- and Far-field</button>
-			</div>
-
-			<!-- Button to reset view -->
-			<div id="resetbutton">
-				<input id="resetView" type="button" value="Reset View">
-			</div>
-
-			<!-- Slider for probability -->
-			<div id="slidecontainer">
-				<input type="range" min="0" max="6" step="1" class="slider" id="probabilitySlider" list="tickmark">
-				<datalist id="tickmark">
-					<option label="1/50">0</option>
-					<option label="1/100">1</option>
-					<option label="1/200">2</option>
-					<option label="1/500">3</option>
-					<option label="1/1000">4</option>
-					<option label="1/5000">5</option>
-					<option label="1/10000">6</option>
-				</datalist>
-				<output id="output" for="probabilitySlider">Selected probability: 1/500</output> <!-- Just to display selected value -->
-			</div>
-
+		<div id="tabbedcontent">
 			<div id="map"></div>
+			<div id="colorlegend"></div>
 			<div id="individualfocus">
 				<div class="backdrop"></div>
 				<div id="smallmultiplescontainer"></div>
 			</div>
-			<div id="colorlegend"></div>
+		</div>
+				<!-- Button to reset view -->
+		<div id="resetbutton">
+			<input id="resetView" type="button" value="Reset View">
 		</div>
 
-		<div id="supplemental">
-			<h3>Background &amp; Context</h3>
-
-			<p><i>Near-field</i> events originate nearby, in Cascadia.
-				They occur less frequently, but because they originate nearby, they can be extremely damaging. </p>
-
-			<p><i>Far-field</i> events originate farther away (e.g. Alaska, East Asia, Chile).
-				Because of this, they are often less damaging, and people have more warning time to evacuate.
-				However, they can still cause significant damage, and they are much more likely than near-field events to occur
-				(since there are more places they can originate).</p>
-
+		<!-- Slider for probability -->
+		<div id="slidecontainer">
+			<input type="range" min="0" max="6" step="1" class="slider" id="probabilitySlider" list="tickmark">
+			<datalist id="tickmark">
+				<option label="1/50">0</option>
+				<option label="1/100">1</option>
+				<option label="1/200">2</option>
+				<option label="1/500">3</option>
+				<option label="1/1000">4</option>
+				<option label="1/5000">5</option>
+				<option label="1/10000">6</option>
+			</datalist>
+			<output id="output" for="probabilitySlider">Selected probability: 1/500</output> <!-- Just to display selected value -->
 		</div>
 
 	</div>
+
+	<div id="supplemental">
+		<h3>Background &amp; Context</h3>
+
+		<p><i>Near-field</i> events originate nearby, in Cascadia.
+			They occur less frequently, but because they originate nearby, they can be extremely damaging. </p>
+
+		<p><i>Far-field</i> events originate farther away (e.g. Alaska, East Asia, Chile).
+			Because of this, they are often less damaging, and people have more warning time to evacuate.
+			However, they can still cause significant damage, and they are much more likely than near-field events to occur
+			(since there are more places they can originate).</p>
+	</div>
+
+</div>
 <script src="CSZ_geojson.js"></script>
 <script src="CSZ_eta.js"></script>
 
@@ -389,24 +416,6 @@ var tsunamiEvents_both = tsunamiEvents_near.concat(tsunamiEvents_far);
 //console.log(tsunamiEvents_far);
 //console.log(tsunamiEvents_both);
 
-</script>
-<script>
-	var testjson = {
-		"type": "FeatureCollection",
-		"features": [
-		{"type": "Feature",
-		"geometry": { "type": "MultiPolygon",
-		"coordinates": [
-		[
-		[[ -124.1026, 41.6558 ],
-		[ -124.1026, 41.8558 ],
-		[ -124.3026, 41.8558 ],
-		[ -124.3026, 41.6558 ],
-		[ -124.2026, 41.7558 ]]
-		]
-		] } }
-		]
-	};
 </script>
 
 <!-- Styled map specifications -->
@@ -601,13 +610,79 @@ var styledMapType = new google.maps.StyledMapType(
 
 	// // Color scheme for the inundation levels
 	// // var i0 = d3.interpolateHsvLong(d3.hsv(120, 1, 0.65), d3.hsv(10, 1, 0.90));
-	// // var mycolors = d3.scaleSequential(i0).domain([0, 5]);
+	// // var depthColors = d3.scaleSequential(i0).domain([0, 5]);
 	var i0 = d3.interpolateCool;
 	function interpolateReverse(t){
 		return i0(1-t);   // assumes [0,1] range
 	}
-	var mycolors = d3.scaleSequential(interpolateReverse).domain([0,12]);
+	var depthColors = d3.scaleSequential(interpolateReverse).domain([0,12]);
 
+	flipBookMain();
+	function flipBookMain() {
+		// google map background
+		var map = new google.maps.Map(document.getElementById('flipbookmap'), {
+			center: {lat:(cityCenter.y-0.005), lng:(cityCenter.x+.0125)},
+			zoom: 14,
+			// styles:[{"stylers": [{"lightness": 100}]}],
+			styles:[
+				{
+					"featureType": "all",
+					"stylers": [{"color": "#C0C0C0"}]
+				}
+			],
+			scrollwheel: false,
+			mapTypeControl: true,
+			streetViewControl: false,
+			fullscreenControl: false,
+			mapTypeControlOptions: {
+				//mapTypeIds: ['styled_map']
+				mapTypeIds: []}
+		});
+		
+		map.mapTypes.set('styled_map', styledMapType);
+        map.setMapTypeId('styled_map');
+
+		// overlay geojson multipolygons on map
+		var overlay = new google.maps.OverlayView();
+
+		var contourGroup, svg, pathproj, surfDataProjection;
+		overlay.onAdd = function () {
+			var layer = d3.select(this.getPanes().overlayMouseTarget)
+				.append("div")
+				.attr("class", "SvgOverlay");
+			svg = layer.append("svg");
+			contourGroup = svg.append("g")
+				.attr("class", "contourGroup")
+				.attr("opacity",.8);
+			var overlayProjection = this.getProjection();
+
+			// turn google map projection into d3 projection
+			var googleMapProjection = d3.geoTransform({point: function(x, y) {
+				d = overlayProjection.fromLatLngToDivPixel( new google.maps.LatLng(y, x) );
+				this.stream.point(d.x + 4000, d.y + 4000);
+			}});
+			pathproj = d3.geoPath().projection(googleMapProjection);
+
+			var surfData = {width:250, height:250};
+            surfDataProjection = d3.geoTransform({point: function(i,j) {
+                x = lng_low+j/surfData.width*(lng_high-lng_low);
+                y = lat_low+i/surfData.height*(lat_high - lat_low);
+				d = overlayProjection.fromLatLngToDivPixel( new google.maps.LatLng(y, x) );
+				this.stream.point(d.x + 4000, d.y + 4000);
+			}});
+		}
+		overlay.setMap(map);
+
+		overlay.draw = function () {
+			this.update();
+		}
+		overlay.update = function() {
+			contourGroup.selectAll(".mypoly")
+				.attr("d", d3.geoPath().projection(surfDataProjection) )
+		}
+	}
+	
+	
 	main();
 	function main() {
 		// initialize with near-field data
@@ -625,6 +700,7 @@ var styledMapType = new google.maps.StyledMapType(
 					"stylers": [{"color": "#C0C0C0"}]
 				}
 			],
+			scrollwheel: false,
 			mapTypeControl: true,
 			streetViewControl: false,
 			fullscreenControl: false,
@@ -634,15 +710,12 @@ var styledMapType = new google.maps.StyledMapType(
 		});
 
 		function focusArea(e) {
-
-
 			//map.panTo(e.latLng);
 			//map.setZoom(15);
 			latlngJSON = e.latLng.toJSON();
 			var lat = latlngJSON.lat;
 			var lng = latlngJSON.lng;
 			if (lat > lat_high || lat < lat_low || lng < lng_low || lng > lng_high) {
-
 				return;
 			}
 			individualView.style.display = "block";
@@ -763,7 +836,7 @@ var styledMapType = new google.maps.StyledMapType(
 				.append("path")
 				.attr("d", d3.geoPath().projection(surfDataProjection))
 				.attr("class", "mypoly")
-                .attr("fill", function(d) { return mycolors(d.value); });
+                .attr("fill", function(d) { return depthColors(d.value); });
 		}
 
 		var yearlyRecurrences = [50,100,200,500,1000,5000,10000];
@@ -851,7 +924,7 @@ var styledMapType = new google.maps.StyledMapType(
 				.orient("vertical")
 				.title("Meters Flooded")
 				.titleWidth(100)
-				.scale(mycolors);
+				.scale(depthColors);
 
 			svg.select(".legendSequential")
 				.call(legendSequential);
@@ -996,7 +1069,7 @@ function multMaker(containerDiv) {
                 return Math.round(d.levelSetValue*100);
             })
             .attr("fill", function(d) {
-                return mycolors(d.levelSetValue);
+                return depthColors(d.levelSetValue);
             });
 	}
 	*/
@@ -1022,7 +1095,7 @@ function multMaker(containerDiv) {
 			.append("path")
 			.attr("d", d3.geoPath().projection(surfDataProjection))
 			.attr("class", "mypoly")
-			.attr("fill", function(d) { return mycolors(d.value); });
+			.attr("fill", function(d) { return depthColors(d.value); });
 		}
 
 	return mult;
