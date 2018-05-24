@@ -71,28 +71,58 @@
 	    cursor: pointer; /* Cursor on hover */
 	}
 
+
+	#viscontainer {
+		position:absolute;
+		top:100px;
+		left:0%;
+		width:100%;
+		height:720px;
+	}
+	
+	#map {
+		position:absolute;
+		top:0px;
+		left:0px;
+		width:45%;
+		height:100%;
+		display:block;
+	}
+
+	#individualfocus {
+		position:absolute;
+		top:0px;
+		right:0%;
+		width:45%;
+		height:65%;
+		display:block;
+	}
+
+	#smallmultiplescontainer {
+		position:absolute;
+		top:0;
+		left:0;
+		width:100%;
+		height:100%;
+	}
+	
+	#colorlegend {
+		position:relative;
+		top:0px;
+		left:45%;
+		background: rgb(255,255,255,.7);
+		border:1px solid black;
+		display:inline-block;
+	}
+	
+	
 	#slidecontainer {
 		position: absolute;
-		top: 86px;
-		left: 50%; /* Brings slider to line up with the small multiples */
+		bottom:0px;
+		left:0px; /* Brings slider to line up with the small multiples */
 		z-index: 5; /* Brings slider in front of map */
 	}
 
-	/* Style for far- and near-field buttons
-	https://developers.google.com/maps/documentation/javascript/examples/marker-remove
- 	*/
-	#fieldbuttons {
-	    position: absolute;
-	    top: 79px;
-	    left: 0%;
-	    z-index: 5; /* Brings buttons in front of map */
-	    background-color: #FFFFFF;
-	    /* padding: 5px;*/
-	    /* border: 1px solid #999;*/
-	    text-align: center;
-	    font-family: "Avenir Next";
-	    padding-left: 5px;
-	}
 
 	#resetbutton {
 	    position: absolute;
@@ -100,27 +130,11 @@
 	    left: 43.5%;
 	    z-index: 5; /* Brings buttons in front of map */
 	    background-color: #FFFFFF;
-	    /* padding: 5px;*/
-	    /* border: 1px solid #999;*/
 	    text-align: center;
-	    font-family: "Avenir Next";
 	    padding-left: 5px;
 	}
-
-	#map {
-		position:absolute;
-		top:100px;
-		/* left:50%; */
-		width:100%;
-		height:80%;
-		display:block;
-		/* margin:auto;
-		display:block;
-		width: 100%;
-		height: 600px;
-		padding: 0px; */
-	}
-
+	
+	
 	.SvgOverlay {
 		position: relative;
 		width: 100%;
@@ -140,25 +154,6 @@
 		//fill-opacity: 0.3;
 	}
 
-/*
-	#individualfocus {
-		position:absolute;
-		top:20%;
-		left:10%;
-		width:80%;
-		height:60%;
-		border:2px solid black;
-		display:block;
-	}
-*/
-	#individualfocus {
-		position:absolute;
-		top:100px;
-		left:50%;
-		width:50%;
-		height:65%;
-		display:block;
-	}
 
 	.backdrop {
 		position:absolute; top:0px; left:0px;
@@ -166,19 +161,6 @@
 		height:100%;
 		background:#cccc99;
 		opacity:0.8;
-	}
-
-	#smallmultiplescontainer {
-		position:absolute;
-		top:0;
-		left:0;
-		width:100%;
-		height:100%;
-	}
-
-	.mypoly {
-		//fill:blue;
-		opacity:1.0;
 	}
 
 	.MapBounds {
@@ -204,18 +186,10 @@
 		margin:none;
 		display:block;
 		width: 100%;
-		height: calc(100% - 1.5em);
+		height: calc(100% - 1.5em - 5px);
 		padding: 0px;
 	}
-
-	#legend {
-		position:absolute;
-		top:15px;
-		left:40%;
-		/*font-family: "Avenir Next";
-		 font-size: 1.8em;
-		padding: 10px; */
-	}
+	
 
 	#supplemental {
 		position:absolute;
@@ -227,6 +201,43 @@
 	}
 </style>
 
+<style>
+/* Style the tab */
+
+#fieldbuttons {
+	position: absolute;
+	top: -3em;
+	left: 0%;
+	z-index: 5; /* Brings buttons in front of map */
+	background-color: #FFFFFF;
+	text-align: center;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Style the buttons that are used to open the tab content */
+#fieldbuttons button {
+    background-color: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    //padding: 14px 16px;
+	padding:0 1em 0 1em;
+	height:3em;
+    transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+#fieldbuttons button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+#fieldbuttons button.active {
+    background-color: #ccc;
+}
+</style>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyJ45cnv6HeZr69pu26XSsUF-OMC6cNRU"></script>
 <script type="text/javascript" src="https://d3js.org/d3.v4.min.js" ></script>
 <script src="https://d3js.org/d3-contour.v1.min.js"></script>
@@ -251,30 +262,32 @@
 			</p>
 
 		</div>
+		
+		<div id="viscontainer">
+			<!-- Buttons for near- and far-field events -->
+			<div id="fieldbuttons">
+				<button class="tablinks" id="switchEvents_near" value="near">Show Near-field</button>
+				<button class="tablinks"  id="switchEvents_far" value="far">Show Far-field</button>
+				<button class="tablinks"  id="switchEvents_both" value="both">Show Both</button>
+			</div>
 
-		<!-- Buttons for near- and far-field events -->
-		<div id="fieldbuttons">
-      		<input id="switchEventsNear" type="button" value="Show Near-field">
-      		<input id="switchEventsFar" type="button" value="Show Far-field">
-      		<input id="switchEventsBoth" type="button" value="Show Both">
-    	</div>
+			<!-- Button to reset view -->
+			<div id="resetbutton">
+				<input id="resetView" type="button" value="Center">
+			</div>
 
-    	<!-- Button to reset view -->
-    	<div id="resetbutton">
-      		<input id="resetView" type="button" value="Center">
-    	</div>
+			<!-- Slider for probability -->
+			<div id="slidecontainer">
+				<input type="range" min="0" max="6" step="1" class="slider" id="probabilitySlider">
+			</div>
 
-    	<!-- Slider for probability -->
-    	<div id="slidecontainer">
-  			<input type="range" min="0" max="6" step="1" class="slider" id="probabilitySlider">
+			<div id="map"></div>
+			<div id="individualfocus">
+				<div class="backdrop"></div>
+				<div id="smallmultiplescontainer"></div>
+			</div>
+			<div id="colorlegend"></div>
 		</div>
-
-		<div id="map"></div>
-		<div id="individualfocus">
-			<div class="backdrop"></div>
-			<div id="smallmultiplescontainer"></div>
-		</div>
-		<div id="legend"></div>
 
 		<div id="supplemental">
 			<h3>Background &amp; Context</h3>
@@ -681,7 +694,20 @@ var styledMapType = new google.maps.StyledMapType(
 				.attr("d", d3.geoPath().projection(surfDataProjection) )
 		}
 
+		
 		function switchEventType(ptype) {
+			var i, tabcontent, tablinks;
+
+			// Get all elements with class="tablinks" and remove the class "active"
+			tablinks = document.getElementsByClassName("tablinks");
+			for (i = 0; i < tablinks.length; i++) {
+				tablinks[i].className = tablinks[i].className.replace(" active", "");
+			}
+
+			// Show the current tab, and add an "active" class to the button that opened the tab
+			//evt.currentTarget.className += " active";
+			document.getElementById("switchEvents_"+ptype).className += " active";
+		
 			switch(ptype) {
 				case "far":
 					tsunamiEvents = tsunamiEvents_far;
@@ -697,18 +723,18 @@ var styledMapType = new google.maps.StyledMapType(
 			}
 			initPlots();
 		}
-		document.getElementById("switchEventsNear")
-			.addEventListener("click",function() {
-				switchEventType('near');
-			});
-		document.getElementById("switchEventsFar")
-			.addEventListener("click",function() {
-				switchEventType('far');
-			});
-		document.getElementById("switchEventsBoth")
-			.addEventListener("click",function() {
-				switchEventType('both');
-			});
+		
+		function attachButtons() {
+			var types = ["near","far","both"];
+			for(var ii=0; ii<types.length; ii++) {
+				var mybutton = document.getElementById("switchEvents_"+types[ii]);
+				function buttonfunc(evt) {
+					switchEventType(evt.currentTarget.value);
+				}
+				mybutton.addEventListener("click",buttonfunc);
+			}
+		}
+		attachButtons();
 
 		document.getElementById("resetView")
 			.addEventListener("click", function() {
@@ -790,10 +816,10 @@ var styledMapType = new google.maps.StyledMapType(
 
 		function makeLegend() {
 			// draw the legend
-			var legWidth = 800;
-			var legHeight = 40;
+			var legWidth = 400;
+			var legHeight = 80;
 
-			var svg = d3.select("#legend")
+			var svg = d3.select("#colorlegend")
 					.append("svg")
 					.attr("width", legWidth)
 					.attr("height", legHeight);
@@ -802,6 +828,7 @@ var styledMapType = new google.maps.StyledMapType(
 			.attr("class", "legendSequential")
 			.attr("transform", "translate(20,0)");
 
+			// maybe rotate the text 90 degrees?
 			svg.append("text")
 			.attr("x", 345)
 			.attr("y", 32)
