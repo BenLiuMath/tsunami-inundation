@@ -340,93 +340,10 @@
 	</div>
 
 </div>
-<script src="CSZ_geojson.js"></script>
-<script src="CSZ_eta.js"></script>
-
-<!-- <script src="data/eta_arrs.js"></script> -->
+<!-- Load in the simulation data and inundation maps -->
 <script src="data/simulation_data.js"></script>
 <script src="data/inundation_maps.js"></script>
 
-<!-- <script src="data/far_field_eta_pInv50.js"></script>
-<script src="data/far_field_eta_pInv100.js"></script>
-<script src="data/far_field_eta_pInv200.js"></script>
-<script src="data/far_field_eta_pInv500.js"></script>
-<script src="data/far_field_eta_pInv1000.js"></script>
-<script src="data/far_field_eta_pInv5000.js"></script>
-<script src="data/far_field_eta_pInv10000.js"></script>
-
-<script src="data/near_field_eta_pInv50.js"></script>
-<script src="data/near_field_eta_pInv100.js"></script>
-<script src="data/near_field_eta_pInv200.js"></script>
-<script src="data/near_field_eta_pInv500.js"></script>
-<script src="data/near_field_eta_pInv1000.js"></script>
-<script src="data/near_field_eta_pInv5000.js"></script>
-<script src="data/near_field_eta_pInv10000.js"></script>
-
-<script src="data/all_eta_pInv50.js"></script>
-<script src="data/all_eta_pInv100.js"></script>
-<script src="data/all_eta_pInv200.js"></script>
-<script src="data/all_eta_pInv500.js"></script>
-<script src="data/all_eta_pInv1000.js"></script>
-<script src="data/all_eta_pInv5000.js"></script>
-<script src="data/all_eta_pInv10000.js"></script> -->
-
-<script>
-/*var eta_vars = [eta_CSZa, eta_CSZb, eta_CSZc, eta_CSZd, eta_CSZe, eta_CSZf, eta_SChSZa, eta_AASZa, eta_AASZb, eta_AASZc, eta_AASZd, eta_KmSZa, eta_KrSZa, eta_TOHa];
-var pInv = ["1/50", "1/100", "1/200", "1/500", "1/1000", "1/5000", "1/10000"];
-
-var etas_near = [eta_CSZa, eta_CSZb, eta_CSZc, eta_CSZd, eta_CSZe, eta_CSZf];
-var etas_far = [eta_SChSZa, eta_AASZa, eta_AASZb, eta_AASZc, eta_AASZd, eta_KmSZa, eta_KrSZa, eta_TOHa];
-var etas_both = etas_near.concat(etas_far);
-
-// name and probability data for simulations (to use in small multiple labels)
-var eta_names_NF = ["CSZa","CSZb","CSZc","CSZd","CSZe","CSZf"];
-var event_prob_NF = [0.0125/250, 0.0125/250, 0.0750/250, 0.5000/250, 0.1750/250, 0.2250/250];
-var eta_decodes_NF = ["Cascadia A","Cascadia B","Cascadia C","Cascadia D","Cascadia E","Cascadia F"];
-for(var ii=0; ii<eta_decodes_NF.length; ii++) {
-	eta_decodes_NF[ii] = eta_decodes_NF[ii] + " (p=" + event_prob_NF[ii].toFixed(4) + ")";
-}
-
-var eta_names_FF = ["SChSZa", "AASZa", "AASZb", "AASZc", "AASZd", "KmSZa", "KrSZa", "TOHa"];
-var event_prob_FF = [1/300, 1/394, 1/750, 1/563, 1/324, 1/50, 1/167, 1/103];
-var eta_decodes_FF = ["S Chile", "Alaska A", "Alaska B", "Alaska C", "Alaska D", "Kamchatka", "Kuril Isl", "Tohoku"];
-for(var ii=0; ii<eta_decodes_FF.length; ii++) {
-	eta_decodes_FF[ii] = eta_decodes_FF[ii] + " (p=" + event_prob_FF[ii].toFixed(4) + ")";
-}
-
-var eta_decodes_both = eta_decodes_NF.concat(eta_decodes_FF);
-
-var eta_ps_far = [far_field_eta_pInv50, far_field_eta_pInv100, far_field_eta_pInv200, far_field_eta_pInv500, far_field_eta_pInv1000, far_field_eta_pInv5000, far_field_eta_pInv10000];
-
-var eta_ps_near = [near_field_eta_pInv50, near_field_eta_pInv100, near_field_eta_pInv200, near_field_eta_pInv500, near_field_eta_pInv1000, near_field_eta_pInv5000, near_field_eta_pInv10000];
-
-var eta_ps_all = [all_eta_pInv50, all_eta_pInv100, all_eta_pInv200, all_eta_pInv500, all_eta_pInv1000, all_eta_pInv5000, all_eta_pInv10000];
-
-
-const near_events = near_events;
-for(var ii=0; ii<eta_names_NF.length; ii++) {
-	var myevent = {};
-	myevent.eta_data = etas_near[ii];
-	myevent.name = eta_names_NF[ii];
-	myevent.decode = eta_decodes_NF[ii];
-	near_events.push(myevent);
-}
-
-const far_events = far_events;
-for(var ii=0; ii<eta_names_FF.length; ii++) {
-	var myevent = {};
-	myevent.eta_data = etas_far[ii];
-	myevent.name = eta_names_FF[ii];
-	myevent.decode = eta_decodes_FF[ii];
-	far_events.push(myevent);
-}
-const all_events = near_events.concat(far_events);*/
-
-//console.log(near_events);
-//console.log(far_events);
-//console.log(all_events);
-
-</script>
 
 <!-- Styled map specifications -->
 <script>
