@@ -99,14 +99,15 @@
 		position: absolute;
 		bottom:0px;
 		left:2%;
-		width:31%;
+		width:45%;
 		z-index: 5; /* Brings slider in front of map */
 	}
 
 	.slider {
-		width: 125%;
+		width: 100%;
 	}
 
+	/*
 	input[type=range]::-webkit-slider-runnable-track {
 		width: 100%;
 		height: 8.4px;
@@ -114,6 +115,7 @@
 		box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
 		background: rgb(211,211,211);
 	}
+	*/
 
 
 	#individualfocus {
@@ -561,6 +563,7 @@ var styledMapType = new google.maps.StyledMapType(
 		return i0(1-t);   // assumes [0,1] range
 	}
 	var depthColors = d3.scaleSequential(interpolateReverse).domain([0,12]);
+	var depthBins = [1.5,3.0,4.5,6.0,7.5,9.0,10.5,12.0];
 
 	flipBookMain();
 	function flipBookMain() {
@@ -648,7 +651,7 @@ var styledMapType = new google.maps.StyledMapType(
 			
 			contData = d3.contours()
 					.size([surfData.width, surfData.height])
-					.thresholds(d3.range(1,21))
+					.thresholds(depthBins)
 					//.thresholds([1,2,3,4,5])
 					(surfData.values);
 
@@ -810,7 +813,7 @@ var styledMapType = new google.maps.StyledMapType(
 		function setContourData(surfData) {
 			contData = d3.contours()
 					.size([surfData.width, surfData.height])
-					.thresholds(d3.range(1,21))
+					.thresholds(depthBins)
 					//.thresholds([1,2,3,4,5])
 					(surfData.values);
 
@@ -920,6 +923,7 @@ var styledMapType = new google.maps.StyledMapType(
 				.scale(depthColors);
 
 			svg.select(".legendSequential")
+				.attr("opacity",.8)
 				.call(legendSequential);
 		}
 		makeLegend();
@@ -1070,7 +1074,7 @@ function multMaker(containerDiv) {
 
 		contData = d3.contours()
 			.size([surfData.width, surfData.height])
-			.thresholds(d3.range(1,21))
+			.thresholds(depthBins)
 			//.thresholds([1,2,3,4,5])
 			(surfData.values);
 
