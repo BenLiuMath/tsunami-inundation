@@ -13,6 +13,12 @@
 		font-family: "Avenir", "Avenir Next", Helvetica Neue, Arial;
 		font-size: 0.95em;
 	}
+	
+	.content {
+		width:60%;
+		min-width:800px;
+		margin:0 auto;
+	}
 
 	h1, h2, h3, h4, h5 {
 		color: #492a7c;
@@ -90,7 +96,7 @@
 		position:absolute;
 		top:0px;
 		left:0px;
-		width:50%;
+		width:40%;
 		height:calc(100% - 60px);
 		display:block;
 	}
@@ -122,7 +128,7 @@
 		position:absolute;
 		top:0px;
 		right:0%;
-		width:50%;
+		width:60%;
 		height:100%;
 		display:block;
 		padding:0;
@@ -197,7 +203,7 @@
 	.smallmultiple {
 		margin:1% 1% 1% 1%;
 		padding:0;
-		width:31%;
+		width:30%;
 		height:46%;
 		border:1px solid black;
 		display:inline-block;
@@ -269,9 +275,7 @@
 
 	<div id="header">
 
-		<h1>Tsunami Inundation Maps</h1>
-
-		<p>some text</p>
+		<h1>Estimating the Risks of Tsunamis</h1>
 
 		<!-- <p>On the West Coast of the United States, these earthquakes come in two flavors.
 			First, there are the earthquakes occuring in the <strong>Cascadia Subduction Zone</strong>, which are referred to as <strong>near-field</strong> events
@@ -299,23 +303,37 @@
 			A single-click on the large map (aggregated inundation levels) will focus the small maps (corresponding to different simulations) on that spot.
 		</p> -->
 
+		<p>
+		At 5:36 p.m. AST On March 27, 1964 600 miles of fault near Anchorage, Alaska ruptured, resulting in the second most powerful earthquake ever recorded. Roughly four hours later the first of four tsunami waves caused by the quake reached Crescent City, California. The first wave merely resulted in localized flooding. The second and third were smaller than the first and had little effect. The fourth wave, however, struck the city with a height of about six meters (20 feet) after having pulled most of the water from the harbor. After the dust had settled the damage was tallied: over 100 injured; 12 confirmed dead; 289 buildings destroyed; 100 cars and 25 large fishing ships crushed; 60 blocks inundated with 30 beyond repair.
+		</p>
+
+		<p>
+		Due to its offshore geography, Crescent City, and especially its harbor, are unusually susceptible to tsunamis. Since 1964 the city has sustained damage from a number of additional earthquakes. The 2005 Eureka earthquake caused the entire city to be evacuated. In November 2006, an earthquake by the Kuril Islands in the western Pacific created a tsunami which damaged multiple docks and boats. The 9.0 earthquake that struck Japan on March 11, 2011 produced a tsunami which destroyed 35 boats and damaged the harbor severely.
+		</p>
+
+		<p>
+		To estimate a community's risk of flooding due to a tsunami, researchers use numerical simulations. The process of modeling a tsunami begins with the specification of a slip pattern, which measures where and to what degree the ocean floor moves in during the earthquake. The slip pattern determines how water is displaced, leading to the initial formation of the tsunami. The displaced water is then tracked to determine the degree of inland flooding, known as inundation.
+		</p>
+		
 	</div>
 
 	<div id="flipbookvis">
 		<div id="flipbookmap"></div>
 	</div>
 
-	<div>
-	<p>Middle content!</p>
-	<p>Lots of text!</p>
-	<p>Middle content!</p>
-	<p>Lots of text!</p>
-	<p>Middle content!</p>
-	<p>Lots of text!</p>
-	<p>Middle content!</p>
-	<p>Lots of text!</p>
-	</div>
-
+		<p>
+		Notice that in (the flipbook animation), the simulated tsunamis have vastly different impacts on Crescent City in terms of flooding. In order to understand the “overall” tsunami risk posed to the city, we have to take into account the characteristics of each simulation.
+		</p>
+		
+		<p>
+		The tsunamis which affect Crescent City are caused by earthquakes that come in two types. First there are the earthquakes originating in the Cascadia Subduction Zone, which are referred to as near-field events (since they occur relatively nearby). Since near-field events have a limited geographic area in which they can occur they occur relatively infrequently. Since they originate nearby, however, the tsunamis they trigger can be extremely damaging.
+		</p>
+		
+		<p>
+		The opposite of near-field events are far-field events. These can occur in a much broader range of locations, and hence are much more common. However, the greater distance of the West Coast from the earthquake's origin means that the resulting tsunamis usually have less severe effects. The far-field events in our simulations come from Alaska and the Aleutian Islands, Southern Chile, Kamchatka, the Kuril Islands, and Tohoku, Japan.
+		As described above, near- and far-field events differ in terms of how likely they are to occur. But individual simulations from the same (or similar) locations can also differ in how likely they are to occur, based on properties of the tectonic plates in that location.
+		</p>
+		
 	<div id="viscontainer">
 		<!-- Buttons for near- and far-field events -->
 		<div id="fieldtabs">
