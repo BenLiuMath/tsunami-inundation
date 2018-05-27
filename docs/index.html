@@ -537,6 +537,9 @@ var styledMapType = new google.maps.StyledMapType(
 		}
 		return a;
 	}
+	function clamp(a,min,max) {
+		return Math.min(Math.max(a,min),max);
+	}
 
 	var cityCenter = {'x':-124.2026, 'y':41.7558};
 	var individualView = document.getElementById("individualfocus");
@@ -619,9 +622,46 @@ var styledMapType = new google.maps.StyledMapType(
 			this.update();
 		}
 		overlay.update = function() {
-			contourGroup.selectAll(".mypoly")
+			svg.selectAll(".mypoly")
 				.attr("d", d3.geoPath().projection(surfDataProjection) )
 		}
+		
+		var tsunamiEvents = all_events;
+		shuffle(tsunamiEvents);
+		var flipInd = 0;
+		function flipBook() {
+			var surfData = tsunamiEvents[flipInd].eta_data;
+			flipInd = (flipInd+1)%tsunamiEvents.length;
+			
+			var contourContainer = svg.append("g");
+			contourContainer.attr("opacity",0)
+				.transition()
+				.ease(d3.easeSinInOut)
+				.duration(500)
+				.attr("opacity",1.0)
+				.transition()
+				.delay(2000)
+				.ease(d3.easeSinInOut)
+				.duration(500)
+				.attr("opacity",0)
+				.remove();
+			
+			contData = d3.contours()
+					.size([surfData.width, surfData.height])
+					.thresholds(d3.range(1,21))
+					//.thresholds([1,2,3,4,5])
+					(surfData.values);
+
+			contourContainer.selectAll(".mypoly")
+				.data(contData)
+				.enter()
+				.append("path")
+				.attr("d", d3.geoPath().projection(surfDataProjection))
+				.attr("class", "mypoly")
+                .attr("fill", function(d) { return depthColors(d.value); });
+		}
+		
+		setInterval(flipBook, 3000);
 	}
 
 
@@ -650,21 +690,23 @@ var styledMapType = new google.maps.StyledMapType(
 				//mapTypeIds: ['styled_map']
 				mapTypeIds: []}
 		});
-
 		function focusArea(e) {
 			//map.panTo(e.latLng);
 			//map.setZoom(15);
-			latlngJSON = e.latLng.toJSON();
-			var lat = latlngJSON.lat;
-			var lng = latlngJSON.lng;
-			if (lat > lat_high || lat < lat_low || lng < lng_low || lng > lng_high) {
-				return;
-			}
+			//latlngJSON = e.latLng.toJSON();
+			var latLng = e.latLng.toJSON();
+			
+			var lat = latLng.lat;
+			var lng = latLng.lng;
+			//if (lat > lat_high || lat < lat_low || lng < lng_low || lng > lng_high) return;
+			latLng.lat = clamp(lat,lat_low, lat_high);
+			latLng.lng = clamp(lng,lng_low, lng_high);
+			
 			individualView.style.display = "block";
-			panMultiples(e.latLng);
+			panMultiples(latLng);
 			deleteMarkers();
-			addMarker(e.latLng, map);
-			addMarkersMultiples(e.latLng);
+			addMarker(latLng, map);
+			addMarkersMultiples(latLng);
           	// map.setCenter(marker.getPosition());
         }
 
@@ -842,7 +884,7 @@ var styledMapType = new google.maps.StyledMapType(
 		function makeLegend() {
 			// draw the legend
 			var legWidth = 550;
-			var legHeight = 200;
+			var legHeight = 40;
 
 			var svg = d3.select("#colorlegend")
 					.attr("class","legendQuant")
