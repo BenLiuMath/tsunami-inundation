@@ -3,7 +3,7 @@
 <head>
 	<title>Tsunami Hazard Visualizer</title>
 	<style>
-	
+
 	* { padding: 0; margin: 0; }
 
 	body {
@@ -54,7 +54,7 @@
 		height:100%;
 		display:block;
 	}
-	
+
 	#viscontainer {
 		position:relative;
 		top:0;
@@ -64,7 +64,7 @@
 		padding:0px;
 		margin:0px;
 	}
-	
+
 	#fieldtabs {
 		margin:0px;
 		height:40px;
@@ -90,7 +90,7 @@
 		position:absolute;
 		top:0px;
 		left:0px;
-		width:45%;
+		width:50%;
 		height:calc(100% - 60px);
 		display:block;
 	}
@@ -115,12 +115,12 @@
 		background: rgb(211,211,211);
 	}
 
-	
+
 	#individualfocus {
 		position:absolute;
 		top:0px;
 		right:0%;
-		width:45%;
+		width:50%;
 		height:100%;
 		display:block;
 	}
@@ -135,20 +135,20 @@
 
 	#colorlegend {
 		position:relative;
-		top:0px;
-		left:45%;
-		width:10%;
-		height:100%;
+		top:-45px;
+		left: 405px;
+		width:550px;
+		height:40px;
 		background: rgb(255,255,255,.7);
-		border:1px solid black;
+		/* border:1px solid black; */
 		display:inline-block;
 	}
 
 	#resetbutton {
 	    position: absolute;
-	    bottom:-25px;
-	    right:45%;
-		width:10%;
+	    top:-38px;
+	    left: 290px;
+		width:80px;
 	    z-index: 5; /* Brings buttons in front of map */
 	    background-color: #FFFFFF;
 	    text-align: center;
@@ -263,21 +263,43 @@
 <div class="content">
 
 	<div id="header">
+
 		<h1>Tsunami Inundation Maps</h1>
-		<p>Choose
+
+		<p>some text</p>
+
+		<!-- <p>On the West Coast of the United States, these earthquakes come in two flavors.
+			First, there are the earthquakes occuring in the <strong>Cascadia Subduction Zone</strong>, which are referred to as <strong>near-field</strong> events
+			(since they occur relatively nearby). Near-field events have a limited geographic area in which they can occur, so they occur relatively frequently.
+			Since they originate nearby, however, the tsunamis they trigger can be extremely damaging.</p>
+
+			<p>The opposite of near-field events are <strong>far-field</strong> events. These can occur in a much broader range of locations, and hence are
+				much more common. However, the greater distance of the West Coast from the earthquake's origin means that the resulting tsunamis often
+			have less severe effects (on us, at least).</p>
+
+				 <p>Let's look at an example: Crescent City, CA. </p>
+
+				 <p><a href="https://en.wikipedia.org/wiki/Crescent_City,_California">Crescent City</a>
+					 lies in the northenmost part of California, about 20 miles south of Oregon and along the coast.
+					 It has a history of damage due to tsunamis, including the 1964 Alaska earthquakes and the 2011 Tohoku earthquake.
+					 Several blocks of Crescent's City's downtown area were destroyed by the 1964 tsunami, and are now covered by
+					 the Beach Front Park you see along the waterfront in the maps below.
+				 </p> -->
+
+		<!-- <p>Choose
 			<a href="#supplemental">near-field</a>
 			near-field
 			</span>
 			(Cascadia) or <a href="#supplemental">far-field</a> events.
 			A single-click on the large map (aggregated inundation levels) will focus the small maps (corresponding to different simulations) on that spot.
-		</p>
+		</p> -->
 
 	</div>
 
 	<div id="flipbookvis">
 		<div id="flipbookmap"></div>
 	</div>
-	
+
 	<div>
 	<p>Middle content!</p>
 	<p>Lots of text!</p>
@@ -288,7 +310,7 @@
 	<p>Middle content!</p>
 	<p>Lots of text!</p>
 	</div>
-	
+
 	<div id="viscontainer">
 		<!-- Buttons for near- and far-field events -->
 		<div id="fieldtabs">
@@ -303,8 +325,8 @@
 				<div class="backdrop"></div>
 				<div id="smallmultiplescontainer"></div>
 			</div>
-			
-			
+
+
 			<!-- Button to reset view -->
 			<div id="resetbutton">
 				<input id="resetView" type="button" value="Reset View">
@@ -322,21 +344,14 @@
 					<option label="1/5000">5</option>
 					<option label="1/10000">6</option>
 				</datalist>
-				<output id="output" for="probabilitySlider">Selected probability: 1/500</output> <!-- Just to display selected value -->
+				<output id="output" for="probabilitySlider">Selected annual probability: 1 in 500</output> <!-- Just to display selected value -->
 			</div>
 		</div>
 	</div>
 
 	<div id="supplemental">
-		<h3>Background &amp; Context</h3>
-
-		<p><i>Near-field</i> events originate nearby, in Cascadia.
-			They occur less frequently, but because they originate nearby, they can be extremely damaging. </p>
-
-		<p><i>Far-field</i> events originate farther away (e.g. Alaska, East Asia, Chile).
-			Because of this, they are often less damaging, and people have more warning time to evacuate.
-			However, they can still cause significant damage, and they are much more likely than near-field events to occur
-			(since there are more places they can originate).</p>
+		<h1>Supplemental</h1>
+		<p> more things???? </p>
 	</div>
 
 </div>
@@ -565,7 +580,7 @@ var styledMapType = new google.maps.StyledMapType(
 				//mapTypeIds: ['styled_map']
 				mapTypeIds: []}
 		});
-		
+
 		map.mapTypes.set('styled_map', styledMapType);
         map.setMapTypeId('styled_map');
 
@@ -608,8 +623,8 @@ var styledMapType = new google.maps.StyledMapType(
 				.attr("d", d3.geoPath().projection(surfDataProjection) )
 		}
 	}
-	
-	
+
+
 	main();
 	function main() {
 		// initialize with near-field data
@@ -742,8 +757,11 @@ var styledMapType = new google.maps.StyledMapType(
 
 		document.getElementById("resetView")
 			.addEventListener("click", function() {
-				map.setCenter({lat:(cityCenter.y-0.005), lng:(cityCenter.x+.0125)});
+				var resetLatLng = {lat:(cityCenter.y-0.005), lng:(cityCenter.x+.0125)};
+				map.setCenter(resetLatLng);
 				map.setZoom(14);
+				deleteMarkers();
+				panMultiples(resetLatLng,14);
 			});
 
 
@@ -788,7 +806,7 @@ var styledMapType = new google.maps.StyledMapType(
 		var probSlider = document.getElementById("probabilitySlider");
 		probSlider.addEventListener("change",function() {
 			setProbLevelByIndex(probSlider.value);
-			outputSlider.value="Selected probability: " + pInv[probSlider.value];
+			outputSlider.value="Selected annual probability: 1 in " + pInv[probSlider.value];
 		});
 
 
@@ -823,18 +841,23 @@ var styledMapType = new google.maps.StyledMapType(
 
 		function makeLegend() {
 			// draw the legend
-			// var legWidth = 150;
-			var legHeight = 400;
+			var legWidth = 550;
+			var legHeight = 200;
 
 			var svg = d3.select("#colorlegend")
 					.attr("class","legendQuant")
 					.append("svg")
-					// .attr("width", legWidth)
+					.attr("width", legWidth)
 					.attr("height", legHeight);
 
 			svg.append("g")
 			.attr("class", "legendSequential")
-			.attr("transform", "translate(20,20)");
+			.attr("transform", "translate(0,0)");
+
+			svg.append("text")
+			// .attr("class", "legendSequential")
+			.attr("transform", "translate(440,33)")
+			.text("meters flooded");
 
 			/*
 			// maybe rotate the text 90 degrees?
@@ -845,12 +868,13 @@ var styledMapType = new google.maps.StyledMapType(
 			*/
 
 			var legendSequential = d3.legendColor()
-				.shapeWidth(30)
-				.shapePadding(5)
+				.shapeWidth(50)
+				.shapePadding(0)
 				.cells(9)
-				.orient("vertical")
-				.title("Meters Flooded")
-				.titleWidth(100)
+				.orient("horizontal")
+				.labelAlign("start")
+				// .title("Meters Flooded")
+				// .titleWidth(100)
 				.scale(depthColors);
 
 			svg.select(".legendSequential")
