@@ -36,21 +36,25 @@
 	h5 { font-size: 10pt; }
 	p { margin: 0 0 10px 0; }
 
-	#header {
+	.articletext {
 		font-family: "Avenir Next";
 		/* font-size: 1.8em; */
 		padding: 10px;
+		line-height:1.5em;
+		text-align:justify;
 	}
 
 	#flipbookvis {
 		position:relative;
 		top:0;
 		left:0;
-		width:100%;
+		width:60%;
+		min-width:400px;
 		height:500px;
 		padding:0px;
 		margin:0px;
 		border: 1px solid #ccc;
+		margin:0 auto;
 	}
 	#flipbookmap {
 		position:absolute;
@@ -105,7 +109,7 @@
 		position: absolute;
 		bottom:0px;
 		left:2%;
-		width:45%;
+		width:36%;
 		z-index: 5; /* Brings slider in front of map */
 	}
 
@@ -273,7 +277,7 @@
 <body>
 <div class="content">
 
-	<div id="header">
+	<div class="articletext">
 
 		<h1>Estimating the Risks of Tsunamis</h1>
 
@@ -321,6 +325,7 @@
 		<div id="flipbookmap"></div>
 	</div>
 
+	<div class="articletext">
 		<p>
 		Notice that in (the flipbook animation), the simulated tsunamis have vastly different impacts on Crescent City in terms of flooding. In order to understand the “overall” tsunami risk posed to the city, we have to take into account the characteristics of each simulation.
 		</p>
@@ -333,7 +338,8 @@
 		The opposite of near-field events are far-field events. These can occur in a much broader range of locations, and hence are much more common. However, the greater distance of the West Coast from the earthquake's origin means that the resulting tsunamis usually have less severe effects. The far-field events in our simulations come from Alaska and the Aleutian Islands, Southern Chile, Kamchatka, the Kuril Islands, and Tohoku, Japan.
 		As described above, near- and far-field events differ in terms of how likely they are to occur. But individual simulations from the same (or similar) locations can also differ in how likely they are to occur, based on properties of the tectonic plates in that location.
 		</p>
-		
+	</div>
+	
 	<div id="viscontainer">
 		<!-- Buttons for near- and far-field events -->
 		<div id="fieldtabs">
@@ -881,7 +887,7 @@ var styledMapType = new google.maps.StyledMapType(
 			setProbLevel(1000);
 			populateMultiples();
 		}
-		setTimeout(initPlots, 1000);
+		setTimeout(initPlots, 100);
 
 		// For drawing small multiples
 		var multcontainer = document.getElementById("smallmultiplescontainer");
