@@ -263,6 +263,21 @@
 #fieldtabs button.active {
     background-color: #ccc;
 }
+
+
+		#calcContainer {
+			width:50%;
+			border:1px solid black;
+			margin:0 auto;
+			font-size:120%;
+			padding:5px 20px;
+			text-align:center;
+		}
+		#calcContainer input {
+			font-size:110%;
+			text-align:center;
+		}
+		
 </style>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyJ45cnv6HeZr69pu26XSsUF-OMC6cNRU"></script>
 <script type="text/javascript" src="https://d3js.org/d3.v4.min.js" ></script>
@@ -348,9 +363,8 @@
 			We show a collection of these “inundation maps” below. You can modify the probability using the slider. You can also see how the map changes when you restrict to just near-field or just far-field events using different tabs. Some of the individual simulations that informed the inundation map are shown on the right. If you are interested in a particular point, you can click it in the large map and the small maps will shift focus to your point.
 
 		</p>
-	</div>
-	
-	<div id="viscontainer">
+		
+		
 		<div>
 			<svg width="300" height="160" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
 			 <!-- Created with SVG-edit - http://svg-edit.googlecode.com/ -->
@@ -414,6 +428,11 @@
 			 </g>
 			</svg>
 		</div>
+		
+	</div>
+	
+		
+	<div id="viscontainer">
 		<!-- Buttons for near- and far-field events -->
 		<div id="fieldtabs">
 			<button class="tablinks" id="switchEvents_near" value="near">Near-field</button>
@@ -451,6 +470,38 @@
 			</div>
 		</div>
 	</div>
+	
+	<script>
+		function updateCalc() {
+			var annualRecur = parseInt(document.probcalc.calc_annualRecurrence.value);
+			var annualProb = 1.0/annualRecur;
+			var numYears = parseInt(document.probcalc.calc_numYears.value);
+			
+			var outProb = 1.0 - Math.pow(1.0 - annualProb, numYears);
+			
+			var outField = document.getElementById("outputProbability");
+			//outField.innerText = `Over ${numYears} years, an event with annual chance of occurence of 1 out of ${annualRecur} has a ${Math.round(outProb*100)} of occurring.`; //+"%";
+			//outField.innerText = `${Math.round(outProb*1000)/10}%`;
+			
+			outProb = outProb*100;
+			outField.innerText = outProb.toPrecision(3)+"%";
+		}
+		document.body.onload=updateCalc;
+	</script>
+	<div class="articletext">
+		<div id="calcContainer">
+			<form name="probcalc">
+			Over 
+			<input type="number" name="calc_numYears" min="1" max="100" step="1" value="30" onChange="updateCalc(); " onClick="updateCalc(); " style="width:2.5em; ">
+			 years, an event with an annual chance of <br/> occurrence of 1 out of 
+			<input type="number" name="calc_annualRecurrence" min="100" max="10000" step="100" value="500" onChange="updateCalc(); " onClick="updateCalc(); " style="width:3.5em; ">
+			 happens with probability <span id="outputProbability" style="font-weight:bold; ">--%</span>.
+			
+			</table>
+			</form>
+		</div>
+	</div>
+	
 
 	<div id="supplemental">
 		<h1>Supplemental Material</h1>
