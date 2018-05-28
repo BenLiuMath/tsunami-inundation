@@ -156,10 +156,10 @@
 
 	#colorlegend {
 		position:relative;
-		top:-45px;
-		left: 405px;
-		width:550px;
-		height:40px;
+		top:00px;
+		left: 100%;
+		width:50px;
+		height:100%;
 		background: rgb(255,255,255,.7);
 		/* border:1px solid black; */
 		display:inline-block;
@@ -1099,8 +1099,8 @@ var styledMapType = new google.maps.StyledMapType(
 
 		function makeLegend() {
 			// draw the legend
-			var legWidth = 550;
-			var legHeight = 40;
+			var legWidth = 80;
+			var legHeight = 1000;
 
 			var svg = d3.select("#colorlegend")
 					.attr("class","legendQuant")
@@ -1110,12 +1110,12 @@ var styledMapType = new google.maps.StyledMapType(
 
 			svg.append("g")
 			.attr("class", "legendSequential")
-			.attr("transform", "translate(0,0)");
+			.attr("transform", "translate(0,30)");
 
-			svg.append("text")
-			// .attr("class", "legendSequential")
-			.attr("transform", "translate(440,33)")
-			.text("meters flooded");
+			// svg.append("text")
+			// // .attr("class", "legendSequential")
+			// .attr("transform", "translate(0,10)")
+			// .text("meters flooded");
 
 			/*
 			// maybe rotate the text 90 degrees?
@@ -1126,13 +1126,14 @@ var styledMapType = new google.maps.StyledMapType(
 			*/
 
 			var legendSequential = d3.legendColor()
-				.shapeWidth(50)
+				.shapeWidth(20)
 				.shapePadding(0)
 				.cells(9)
-				.orient("horizontal")
-				.labelAlign("start")
-				// .title("Meters Flooded")
-				// .titleWidth(100)
+				.labels(['1.5', '3.0', '4.5', '6.0', '7.5', '9.0', '10.5', '12.0', '13.5'])
+				.orient("vertical")
+				// .labelAlign("start")
+				.title("Meters Flooded")
+				.titleWidth(100)
 				.scale(depthColors);
 
 			svg.select(".legendSequential")
