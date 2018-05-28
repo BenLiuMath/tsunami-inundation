@@ -327,7 +327,7 @@
 
 	<div class="articletext">
 		<p>
-			Notice that the simulated tsunamis have vastly different impacts on Crescent City in terms of flooding. In order to understand the “overall” tsunami risk posed to the city, we should take into account the characteristics of each simulation.
+			Notice that the simulated tsunamis have vastly different impacts on Crescent City in terms of flooding. In order to understand the “overall” tsunami risk posed to the city, we should take into account the characteristics of each.
 		</p>
 		
 		<p>
@@ -339,7 +339,14 @@
 		</p>
 
 		<p>
-			As described above, near- and far-field events differ in terms of how likely they are to occur. But individual simulations from the same (or similar) locations can also differ in how likely they are to occur, based on properties of the tectonic plates in that location.
+			As described above, near- and far-field events differ in terms of how likely they are to take place. But individual simulated events from the same (or close) locations can also differ in how likely they are to occur, based on properties of the tectonic plates in that location. Associated with each earthquake is its <strong>annual probability</strong> of occurrence. The annual probability of an event describes the odds that the event will happen sometime in a single year. For example, an event with annual probability 1/100 has a 1 in 100 chance of occuring any given year. It does not, however, guarantee that the event will happen in the next 100 years (more on that later). These probabilities are usually not known exactly, and are instead estimated by experts.
+		</p>
+		<p>
+			Given that we do not know in advance what kind of seismic event will happen next, we would like to combine the information from all the simulations into one aggregate inundation map. We start by picking an annual probability, <em>p</em>, in which we are interested. For each point in a region of the map we then use the results of all the simulations to figure out the maximum amount of flooding that the simulations predict could occur with probability at least <em>p</em>. The result is a map which shows the “worst-case” amount of flooding one would expect to occur with annual probability <em>p</em>. We can vary <em>p</em> to produce more such maps and get an idea of how likely different levels of inundation might be.
+		</p>
+		<p>
+			We show a collection of these “inundation maps” below. You can modify the probability using the slider. You can also see how the map changes when you restrict to just near-field or just far-field events using different tabs. Some of the individual simulations that informed the inundation map are shown on the right. If you are interested in a particular point, you can click it in the large map and the small maps will shift focus to your point.
+
 		</p>
 	</div>
 	
@@ -382,8 +389,13 @@
 	</div>
 
 	<div id="supplemental">
-		<h1>Supplemental</h1>
-		<p> more things???? </p>
+		<h1>Supplemental Material</h1>
+		<p>
+			If you are curious about the technical details behind the tsunami simulations, the full report can be found <a href="https://digital.lib.washington.edu/researchworks/handle/1773/25916">here.</a>
+		</p>
+		<p>
+			One of the researchers involved in the project, Randy LeVeque, has a set of Jupyter notebooks describing the process of creating inundation maps on his <a href="https://github.com/rjleveque/ptha_tutorial">Github page</a>.
+		</p>
 	</div>
 
 </div>
