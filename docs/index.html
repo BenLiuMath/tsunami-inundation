@@ -788,7 +788,7 @@ var styledMapType = new google.maps.StyledMapType(
 
 		var contourGroup, svg, pathproj, surfDataProjection;
 		overlay.onAdd = function () {
-			var layer = d3.select(this.getPanes().overlayMouseTarget)
+			var layer = d3.select(this.getPanes().overlayLayer)
 				.append("div")
 				.attr("class", "SvgOverlay");
 			svg = layer.append("svg");
@@ -937,7 +937,7 @@ var styledMapType = new google.maps.StyledMapType(
 
 		var contourGroup, svg, pathproj, surfDataProjection;
 		overlay.onAdd = function () {
-			var layer = d3.select(this.getPanes().overlayMouseTarget)
+			var layer = d3.select(this.getPanes().overlayLayer)
 				.append("div")
 				.attr("class", "SvgOverlay");
 			svg = layer.append("svg");
@@ -1196,11 +1196,14 @@ function deleteMarkers() {
 		markers = [];
 }
 
+var markerImage = 'Black_star.png';
+
 function addMarker(latLng, map) {
 	// add the new marker to the given map
 	var marker = new google.maps.Marker({
 		position: latLng,
-		map: map
+		map: map,
+		icon: markerImage
 	});
 	// record the marker
 	markers.push(marker);
@@ -1285,7 +1288,7 @@ function multMaker(containerDiv) {
 
 	var contourGroup, pathproj, svg, surfDataProjection;
 	overlay.onAdd = function () {
-		var layer = d3.select(this.getPanes().overlayMouseTarget)
+		var layer = d3.select(this.getPanes().overlayLayer)
 			.append("div")
 			.attr("class", "SvgOverlay");
 		svg = layer.append("svg");
