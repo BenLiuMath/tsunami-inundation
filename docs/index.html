@@ -1291,7 +1291,7 @@ function multMaker(containerDiv) {
 		mapTypeControlOptions: {
 			mapTypeIds: ['roadmap', 'styled_map']}
 	});
-
+	map.setOptions({draggableCursor:'default'});
 	map.mapTypes.set('styled_map', styledMapType);
 	map.setMapTypeId('styled_map');
 
