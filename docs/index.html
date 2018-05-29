@@ -249,7 +249,7 @@
 
 	#supplemental {
 		position:relative;
-		margin-top:150px;
+		margin-top:20px;
 		font-family: "Avenir Next";
 		/* font-size: 1.8em; */
 	}
@@ -499,13 +499,20 @@
 
 
 	<div id="supplemental">
-		<h1>Supplemental Material</h1>
+		<h1>Supplementary Material</h1>
 		<p>
 			If you are curious about the technical details behind the tsunami simulations, the full report can be found <a href="https://digital.lib.washington.edu/researchworks/handle/1773/25916">here.</a>
 		</p>
 		<p>
 			One of the researchers involved in the project, Randy LeVeque, has a set of Jupyter notebooks describing the process of creating inundation maps on his <a href="https://github.com/rjleveque/ptha_tutorial">Github page</a>.
 		</p>
+</div>
+
+<div id="supplemental">
+			<h1>Acknowledgements</h1>
+			<p>The <a href="https://commons.wikimedia.org/wiki/File:Black_star.png">black star marker</a> in the maps
+				comes from ANGELUS on Wikipedia Commons, and is licensed under the Creative Commons license.</p>
+
 	</div>
 
 </div>
@@ -1079,7 +1086,7 @@ var styledMapType = new google.maps.StyledMapType(
 			var topMargin = 20;
 			var blockWidth = 25;
 			var blockHeight = 30;
-			
+
 			var legWidth = 200;
 			var legHeight = blockHeight*8+topMargin+10;
 
@@ -1115,8 +1122,8 @@ var styledMapType = new google.maps.StyledMapType(
 				.ascending("true")
 				.labels( () => { return "";})
 				.scale(depthColors);
-				
-			
+
+
 			var mylabels = depthBins.slice();//.push(0);
 			mylabels.unshift(0);
 			mylabels.reverse();
@@ -1142,7 +1149,7 @@ var styledMapType = new google.maps.StyledMapType(
 			var topMargin = 20;
 			var blockWidth = 25;
 			var blockHeight = 65;
-			
+
 			var legWidth = 200;
 			var legHeight = blockHeight*8+topMargin+1;
 
@@ -1163,7 +1170,7 @@ var styledMapType = new google.maps.StyledMapType(
 				.attr("font-size","16pt");
 
 			document.getElementById("personcomparepicture").style.height = 1.764 / 1.5*blockHeight+"px";
-			
+
 			var legendSequential = d3.legendColor()
 				.shapePadding(0)
 				.shapeWidth(blockWidth)
@@ -1173,7 +1180,7 @@ var styledMapType = new google.maps.StyledMapType(
 				.ascending("true")
 				.labels( () => { return "";})
 				.scale(depthColors);
-			
+
 			var mylabels = depthBins.slice();//.push(0);
 			mylabels.unshift(0);
 			mylabels.reverse();
@@ -1188,8 +1195,8 @@ var styledMapType = new google.maps.StyledMapType(
 					.attr("y2",jj*blockHeight+topMargin)
 					.attr("stroke","black");
 			}
-			
-				
+
+
 			svg.select(".legendSequential")
 				.attr("opacity",.8)
 				.call(legendSequential);
