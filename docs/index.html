@@ -710,7 +710,7 @@ var styledMapType = new google.maps.StyledMapType(
 	function interpolateReverse(t){
 		return i0(1-t);   // assumes [0,1] range
 	}
-	var depthColors = d3.scaleSequential(interpolateReverse).domain([0,12]);
+	var depthColors = d3.scaleSequential(interpolateReverse).domain([1.5,12]);
 	var depthBins = [1.5,3.0,4.5,6.0,7.5,9.0,10.5,12.0];
 
 	flipBookMain();
@@ -1073,7 +1073,7 @@ var styledMapType = new google.maps.StyledMapType(
 		function makeLegend() {
 			// draw the legend
 			var legWidth = 80;
-			var legHeight = 1000;
+			var legHeight = 500;
 
 			var svg = d3.select("#colorlegend")
 					.attr("class","legendQuant")
@@ -1101,7 +1101,8 @@ var styledMapType = new google.maps.StyledMapType(
 			var legendSequential = d3.legendColor()
 				.shapeWidth(20)
 				.shapePadding(0)
-				.cells(9)
+				.cells(7)
+				.ascending("true")
 				.labels(['1.5', '3.0', '4.5', '6.0', '7.5', '9.0', '10.5', '12.0', '13.5'])
 				.orient("vertical")
 				// .labelAlign("start")
