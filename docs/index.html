@@ -1276,7 +1276,8 @@ function multMaker(containerDiv) {
 	var map = new google.maps.Map(mapContainer, {
 		// center: new google.maps.LatLng(47.4,-120.5),
 		//center: new google.maps.LatLng(41.759671,-124.20219),
-		center: {lat:41.7509671, lng:-124.19219},
+		// center: {lat:41.7509671, lng:-124.19219},
+		center: {lat:(cityCenter.y-0.005), lng:(cityCenter.x+.0125)},
 		zoom: 14,
 		disableDoubleClickZoom:true,
 		draggable: false,
