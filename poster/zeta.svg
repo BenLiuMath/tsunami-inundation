@@ -1,0 +1,37 @@
+<svg width="300" height="199.99999999999997" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <!-- Created with SVG-edit - http://svg-edit.googlecode.com/ -->
+ <g>
+  <title>Layer 1</title>
+  <path fill="none" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" d="m99.65332,193c0,0 67.16046,-25 98.82182,-78c31.66136,-53 100.74069,-59 100.74069,-59" id="svg_2" stroke="brown"/>
+  <text fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="18.7969" y="69.01562" id="svg_12" font-size="12" font-family="serif" text-anchor="middle" xml:space="preserve">ζ =</text>
+  <text fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="42.193378" y="62.75587" id="svg_28" font-size="12" font-family="serif" text-anchor="middle" xml:space="preserve">h</text>
+  <path fill="none" stroke="blue" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" d="m3.3125,98.7627c0,0 94,17 149,-59c55,-76 131,17 131,17" id="svg_4"/>
+  <line fill="none" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="1" y1="103" x2="206.69044" y2="103" id="svg_5" stroke="#000000"/>
+  <line fill="none" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="107" y1="103" x2="107" y2="190" id="svg_9" stroke="#000000"/>
+  <line fill="none" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="175" y1="19" x2="175" y2="103" id="svg_10" stroke="#000000"/>
+  <line fill="none" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="243" y1="23" x2="243" y2="73" id="svg_11" stroke="#000000"/>
+  <line fill="none" stroke="#000000" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="107" y1="103" x2="103" y2="110" id="svg_1"/>
+  <line fill="none" stroke="#000000" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="107" y1="103" x2="111" y2="110" id="svg_6"/>
+  <line fill="none" stroke="#000000" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="107" y1="190" x2="103" y2="183" id="svg_7"/>
+  <line fill="none" stroke="#000000" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="107" y1="190" x2="111" y2="183" id="svg_13"/>
+  <line fill="none" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="175" y1="103" x2="171" y2="96" id="svg_14" stroke="#000000"/>
+  <line fill="none" stroke="#000000" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="243" y1="73" x2="247" y2="66" id="svg_16"/>
+  <line fill="none" stroke="#000000" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="243" y1="23" x2="239" y2="30" id="svg_17"/>
+  <line fill="none" stroke="#000000" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="243" y1="23" x2="247" y2="30" id="svg_19"/>
+  <line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="175" y1="103" x2="179" y2="96" id="svg_21" stroke="#000000"/>
+  <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="175" y1="19" x2="171" y2="26" id="svg_22"/>
+  <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="175" y1="19" x2="179" y2="26" id="svg_23"/>
+  <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="243" y1="73" x2="239" y2="66" id="svg_25"/>
+  <text fill="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="259.40627" y="14.3125" id="svg_3" font-size="24" font-family="serif" text-anchor="middle" xml:space="preserve" stroke="#000000"/>
+  <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="12" id="svg_8" y="51.33204" x="231.45706" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">ζ</text>
+  <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="12" id="svg_15" y="96.29688" x="260.6719" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">B &gt; 0 (onshore)</text>
+  <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="12" id="svg_18" y="191.21876" x="165.75002" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">B &lt; 0 (offshore)</text>
+  <text style="cursor: move;" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="12" id="svg_20" y="152.47657" x="94.66407" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">|B|</text>
+  <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="12" y="68.76758" x="165.85159" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000" id="svg_24">ζ</text>
+  <text fill="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="32.06838" y="59.40354" id="svg_27" font-size="12" font-family="serif" text-anchor="middle" xml:space="preserve" transform="matrix(1,0,0,2.6099999248981476,0,-80.91499642562121) " stroke="#000000">{</text>
+  <text fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="72.56838" y="76.44337" id="svg_29" font-size="12" font-family="serif" text-anchor="middle" xml:space="preserve">h + B if B &lt; 0.</text>
+  <text style="cursor: move;" fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="47.25587" y="115.81837" id="svg_31" font-size="12" font-family="serif" text-anchor="middle" xml:space="preserve">Mean High Water</text>
+  <ellipse id="svg_26" cy="50.924491" cx="-26.341146" stroke-width="5" stroke="#000000" fill="#000000"/>
+  <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="12" id="svg_32" y="62.693369" x="87.568373" stroke-width="0" stroke="#000000" fill="#000000">if B &gt; 0,</text>
+ </g>
+</svg>
