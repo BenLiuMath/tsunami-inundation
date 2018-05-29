@@ -484,17 +484,29 @@
 		document.body.onload=updateCalc;
 	</script>
 	<div class="articletext">
+		<p>
+			Write down some takeaways of the above visualization.
+		</p>
+
+		<p>
+			Introduce the ideas behind the probability explorer.
+		</p>
+
 		<div id="calcContainer">
 			<form name="probcalc">
 			Over
 			<input type="number" name="calc_numYears" min="1" max="100" step="1" value="30" onChange="updateCalc(); " onClick="updateCalc(); " style="width:2.5em; ">
-			 years, an event with <br/> annual chance of occurrence <br/> 1 out of
+			 years, an event with <br/> annual probability <br/> 1 out of
 			<input type="number" name="calc_annualRecurrence" min="100" max="10000" step="100" value="500" onChange="updateCalc(); " onClick="updateCalc(); " style="width:3.5em; ">
 			 <br/>happens with probability <span id="outputProbability" style="font-weight:bold; ">--%</span>.
 
 			</table>
 			</form>
 		</div>
+
+		<p>
+			Make concluding remarks.
+		</p>
 	</div>
 
 
