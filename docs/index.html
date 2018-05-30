@@ -1196,11 +1196,11 @@ var styledMapType = new google.maps.StyledMapType(
 
 
 			var mylabels = depthBins.slice();//.push(0);
-			mylabels.unshift(0);
+			//mylabels.unshift(0);
 			mylabels.reverse();
 			for(var jj=0; jj<mylabels.length; jj++) {
 				svg.append("text")
-					.attr("transform", `translate(${blockWidth+10},${jj*blockHeight+topMargin+5})`)
+					.attr("transform", `translate(${blockWidth+10},${jj*blockHeight+topMargin+2})`)
 					.text(mylabels[jj]);
 				svg.append("line")
 					.attr("x1",0+1)
@@ -1214,7 +1214,7 @@ var styledMapType = new google.maps.StyledMapType(
 				.attr("x",1)
 				.attr("y",topMargin)
 				.attr("width",blockWidth)
-				.attr("height",(7+1)*blockHeight)
+				.attr("height",(7+1/6)*blockHeight)
 				.attr("fill","none")
 				.attr("stroke","black")
 				.attr("shape-rendering","crispEdges");
@@ -1229,10 +1229,10 @@ var styledMapType = new google.maps.StyledMapType(
 			var topMargin = 15;
 			var bottomMargin = 1;
 			var blockWidth = 25;
-			var blockHeight = 55;
+			var blockHeight = 60;
 
 			var legWidth = blockWidth+80;
-			var legHeight = blockHeight*8+topMargin+bottomMargin;
+			var legHeight = blockHeight*(7+1/6)+topMargin+bottomMargin;
 
 			d3.select("#flipcolorlegend")
 				.style("width", legWidth+"px")
@@ -1267,7 +1267,7 @@ var styledMapType = new google.maps.StyledMapType(
 				.scale(depthColors);
 
 			var mylabels = depthBins.slice();//.push(0);
-			mylabels.unshift(0);
+			//mylabels.unshift(0);
 			mylabels.reverse();
 			for(var jj=0; jj<mylabels.length; jj++) {
 				svg.append("text")
@@ -1285,7 +1285,7 @@ var styledMapType = new google.maps.StyledMapType(
 				.attr("x",1)
 				.attr("y",topMargin)
 				.attr("width",blockWidth)
-				.attr("height",(7+1)*blockHeight)
+				.attr("height",(7+1/6)*blockHeight)
 				.attr("fill","none")
 				.attr("stroke","black")
 				.attr("shape-rendering","crispEdges");
