@@ -124,7 +124,9 @@
 		vertical-align: top;
 		width:100%;
 		height:calc(100% - 40px);
-		//border: 1px solid #ccc;
+		border: 1px solid #ccc;
+		/*background:rgb(245,245,245);*/
+		padding-bottom:5px;
 	}
 	#map {
 		position:absolute;
@@ -1375,15 +1377,45 @@ function deleteMarkers() {
 		markers = [];
 }
 
-var markerImage = 'Black_star.png';
+/*
 var markerImage = {
-    //url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
 	url: 'Black_star.png',
     // This marker is 20 pixels wide by 32 pixels high.
     size: new google.maps.Size(30, 29),
     // The origin for this image is (0, 0).
     origin: new google.maps.Point(0, 0),
     anchor: new google.maps.Point(10, 10)
+  };
+
+var markerImage = {
+	url: 'reddot.png',
+    // This marker is 20 pixels wide by 32 pixels high.
+    size: new google.maps.Size(15, 15),
+    // The origin for this image is (0, 0).
+    origin: new google.maps.Point(0, 0),
+    // The anchor for this image is the base of the flagpole at (0, 32).
+    anchor: new google.maps.Point(8, 8)
+  };
+*/
+
+var markerImage = {
+	url: 'reddot2.png',
+    // This marker is 20 pixels wide by 32 pixels high.
+    size: new google.maps.Size(9, 9),
+    // The origin for this image is (0, 0).
+    origin: new google.maps.Point(0, 0),
+    // The anchor for this image is the base of the flagpole at (0, 32).
+    anchor: new google.maps.Point(5, 5)
+  };
+
+var markerImage = {
+	url: 'red_dot_hollow.png',
+    // This marker is 20 pixels wide by 32 pixels high.
+    size: new google.maps.Size(15, 15),
+    // The origin for this image is (0, 0).
+    origin: new google.maps.Point(0, 0),
+    // The anchor for this image is the base of the flagpole at (0, 32).
+    anchor: new google.maps.Point(8, 8)
   };
 
 function addMarker(latLng, map) {
