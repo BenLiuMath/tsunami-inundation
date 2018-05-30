@@ -1388,6 +1388,16 @@ var markerImage = {
     anchor: new google.maps.Point(5, 5)
   };
   
+var markerImage = {
+	url: 'red_dot_hollow.png',
+    // This marker is 20 pixels wide by 32 pixels high.
+    size: new google.maps.Size(15, 15),
+    // The origin for this image is (0, 0).
+    origin: new google.maps.Point(0, 0),
+    // The anchor for this image is the base of the flagpole at (0, 32).
+    anchor: new google.maps.Point(8, 8)
+  };
+  
 function addMarker(latLng, map) {
 	// add the new marker to the given map
 	var marker = new google.maps.Marker({
