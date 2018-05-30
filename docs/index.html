@@ -51,9 +51,9 @@
 		top:0;
 		left:0;
 		width:90%;
-		height:80vh;
+		height:440px;
 		padding:0px;
-		margin:0px 20px 20px auto;
+		margin:0px 20px 15px auto;
 	}
 
 	#flipbookmap {
@@ -403,22 +403,34 @@
 
 		<h3>Seismic Event Types</h3>
 		<p>
-			The tsunamis which affect Crescent City are caused by earthquakes which come in <strong>two flavors</strong>.
-			First, there are the earthquakes originating in the (relatively) nearby <a href="https://en.wikipedia.org/wiki/Cascadia_subduction_zone">Cascadia Subduction Zone</a>, which are referred to as <strong>near-field events</strong>.
-			Since near-field events have a limited geographic area in which they can occur, and also due to the nature of the local tectonic plates, they occur relatively infrequently.
-			According to the simulations they also tend to be extremely damaging. And because they originate nearby, they reach Crescent City quickly, leaving inhabitants less time to evacuate.
+			The tsunamis which affect Crescent City are caused by seismic events which come in <strong>two flavors</strong>.
+			First, there are the <strong>near-field events</strong> originating in the (relatively) nearby <a href="https://en.wikipedia.org/wiki/Cascadia_subduction_zone">Cascadia Subduction Zone</a>.
+			Due to the nature of the local tectonic plates and the fact that these near-field events have a limited geographic area in which they can occur, they occur relatively <i>infrequently</i>.
+			According to the simulations, though, they also tend to be <i>extremely damaging</i>. And because they originate nearby, they reach Crescent City quickly, leaving inhabitants less time to evacuate.
 		</p>
 
 		<p>
-			The complement of near-field events are called <strong>far-field events</strong>. These can occur in a much broader range of locations, and hence are much more common. However, the greater distance of the West Coast from the earthquake's origin means that the resulting tsunamis usually have less severe effects. The far-field events in our simulations come from <a href="https://en.wikipedia.org/wiki/Aleutian_Trench">Alaska and the Aleutian Islands</a>, <a href="https://en.wikipedia.org/wiki/Peru%E2%80%93Chile_Trench">Southern Chile</a>, <a href="https://en.wikipedia.org/wiki/Kuril%E2%80%93Kamchatka_Trench">Kamchatka</a>, <a href="https://en.wikipedia.org/wiki/Kuril%E2%80%93Kamchatka_Trench">the Kuril Islands</a>, and <a href="https://en.wikipedia.org/wiki/Japan_Trench">Tohoku, Japan</a>.
+			The complement of near-field events are called <strong>far-field events</strong>. These can occur in a much broader range of locations, and hence are <i>more frequent</i>.
+			However, the greater distance of the West Coast from the earthquake's origin means that the resulting tsunamis usually have <i>less severe</i> effects. The far-field events in our simulations come from <a href="https://en.wikipedia.org/wiki/Aleutian_Trench">Alaska and the Aleutian Islands</a>, <a href="https://en.wikipedia.org/wiki/Peru%E2%80%93Chile_Trench">Southern Chile</a>, <a href="https://en.wikipedia.org/wiki/Kuril%E2%80%93Kamchatka_Trench">Kamchatka</a>, <a href="https://en.wikipedia.org/wiki/Kuril%E2%80%93Kamchatka_Trench">the Kuril Islands</a>, and <a href="https://en.wikipedia.org/wiki/Japan_Trench">Tohoku, Japan</a>.
 		</p>
 		<p>
-			As described above, near- and far-field events differ in terms of how likely they are to take place. But individual simulated events from the same (or close) locations can also differ in how likely they are to occur, based on properties of the tectonic plates in that location. Associated with each earthquake is its <strong>annual probability</strong> of occurrence. The annual probability of an event describes the odds that the event will happen sometime in a single year. For example, an event with annual probability 1/100 has a 1 in 100 chance of occuring any given year. It does not, however, guarantee that the event will happen in the next 100 years (more on that later). These probabilities are usually not known exactly, and are instead estimated by experts.
+			Even within the categories of near-field and far-field, though, seismic events differ in terms of how likely they are to take place.
+			<!-- But individual simulated events from the same (or close) locations can also differ in how likely they are to occur, based on properties of the tectonic plates in that location.  -->
+			Thus, associated with each simulated earthquake is its <strong>annual probability</strong> of occurrence,
+			an estimate of the chances that that event will happen sometime within a single year.
+			For example, an event with annual probability 1/100 has a 1 in 100 chance of occuring any given year.
+			It does not, however, guarantee that the event will happen in the next 100 years (more on this later). These probabilities are usually not known exactly, and are instead estimated by experts.
 		</p>
 
-		<h3>Inundation Maps</h3>
+		<h3>Aggregate Inundation Maps</h3>
 		<p>
-			Given that we do not know in advance what kind of seismic event will happen next, we would like to combine the information from all the simulations into one aggregate inundation map. We start by picking an annual probability, <em>p</em>, in which we are interested. For each point in a region of the map we then use the results of all the simulations to figure out the maximum amount of flooding that the simulations predict could occur with probability at least <em>p</em>. The result is a map which shows the “worst-case” amount of flooding one would expect to occur with annual probability <em>p</em>. We can vary <em>p</em> to produce more such maps and get an idea of how likely different levels of inundation might be.
+			Given that we do not know in advance what kind of seismic event will happen next, to form an overall picture of tsunami risk
+			we would like to combine the information from all the simulations into one aggregate inundation map.
+			We start by picking an annual probability, <em>p</em>, in which we are interested.
+			For each point in a region of the map we then use the results of all the simulations to figure out the maximum amount of flooding that the
+			simulations predict could occur with probability at least <em>p</em>.
+			The result is a map which shows the “worst-case” amount of flooding one would expect to occur with annual probability <em>p</em>.
+			We can vary <em>p</em> to produce more such maps and get an idea of how likely different levels of inundation might be.
 		</p>
 		<p>
 			We show a collection of these <strong>inundation maps</strong> below. You can modify the probability using the slider. You can also see how the map changes when you restrict to just near-field or just far-field events using different tabs. Some of the individual simulations that informed the inundation map are shown on the right. If you are interested in a particular point, you can click it in the large map and the small maps will shift focus to your point.
