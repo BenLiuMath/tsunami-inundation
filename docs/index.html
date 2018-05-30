@@ -38,6 +38,10 @@
 
 	ul { margin-left: 30px; }
 
+	figcaption {
+    display: block;
+}
+
 	.articletext {
 		font-family: "Avenir Next";
 		/* font-size: 1.8em; */
@@ -402,6 +406,7 @@
 		</p>
 
 		<h3>Seismic Event Types</h3>
+
 		<p>
 			The tsunamis which affect Crescent City are caused by seismic events which come in <strong>two flavors</strong>.
 			First, there are the <strong>near-field events</strong> originating in the (relatively) nearby <a href="https://en.wikipedia.org/wiki/Cascadia_subduction_zone">Cascadia Subduction Zone</a>.
@@ -409,10 +414,19 @@
 			According to the simulations, though, they also tend to be <i>extremely damaging</i>. And because they originate nearby, they reach Crescent City quickly, leaving inhabitants less time to evacuate.
 		</p>
 
+		<figure>
+		<img src="ring_of_fire.png"
+				alt="Ring of Fire"
+				style="width:50%; height:50%; margin: 0px 10px 5px 0px"
+				align="left">
+		<figcaption>test </figcaption>
+		</figure>
+
 		<p>
 			The complement of near-field events are called <strong>far-field events</strong>. These can occur in a much broader range of locations, and hence are <i>more frequent</i>.
 			However, the greater distance of the West Coast from the earthquake's origin means that the resulting tsunamis usually have <i>less severe</i> effects. The far-field events in our simulations come from <a href="https://en.wikipedia.org/wiki/Aleutian_Trench">Alaska and the Aleutian Islands</a>, <a href="https://en.wikipedia.org/wiki/Peru%E2%80%93Chile_Trench">Southern Chile</a>, <a href="https://en.wikipedia.org/wiki/Kuril%E2%80%93Kamchatka_Trench">Kamchatka</a>, <a href="https://en.wikipedia.org/wiki/Kuril%E2%80%93Kamchatka_Trench">the Kuril Islands</a>, and <a href="https://en.wikipedia.org/wiki/Japan_Trench">Tohoku, Japan</a>.
 		</p>
+
 		<p>
 			Even within the categories of near-field and far-field, though, seismic events differ in terms of how likely they are to take place.
 			<!-- But individual simulated events from the same (or close) locations can also differ in how likely they are to occur, based on properties of the tectonic plates in that location.  -->
@@ -1352,8 +1366,7 @@ var markerImage = {
     size: new google.maps.Size(30, 29),
     // The origin for this image is (0, 0).
     origin: new google.maps.Point(0, 0),
-    // The anchor for this image is the base of the flagpole at (0, 32).
-    anchor: new google.maps.Point(14, 16)
+    anchor: new google.maps.Point(10, 10)
   };
 
 function addMarker(latLng, map) {
