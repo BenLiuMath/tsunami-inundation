@@ -1147,7 +1147,7 @@ var styledMapType = new google.maps.StyledMapType(
 
 			svg.append("g")
 			.attr("class", "legendSequential")
-				.attr("transform",`translate(0,${topMargin})`);
+				.attr("transform",`translate(1,${topMargin})`);
 
 			// svg.append("text")
 			// // .attr("class", "legendSequential")
@@ -1185,8 +1185,17 @@ var styledMapType = new google.maps.StyledMapType(
 					.attr("x2",blockWidth)
 					.attr("y1",jj*blockHeight+topMargin)
 					.attr("y2",jj*blockHeight+topMargin)
-					.attr("stroke","black");
+					.attr("stroke","black")
+					.attr("shape-rendering","crispEdges");
 			}
+			svg.append("rect")
+				.attr("x",1)
+				.attr("y",topMargin)
+				.attr("width",blockWidth)
+				.attr("height",(7+1)*blockHeight)
+				.attr("fill","none")
+				.attr("stroke","black")
+				.attr("shape-rendering","crispEdges");
 
 			svg.select(".legendSequential")
 				.attr("opacity",.8)
@@ -1210,7 +1219,7 @@ var styledMapType = new google.maps.StyledMapType(
 
 			svg.append("g")
 				.attr("class", "legendSequential")
-				.attr("transform",`translate(0,${topMargin})`);
+				.attr("transform",`translate(1,${topMargin})`);
 
 			svg.append("text")
 				.attr("class", "legendSequential")
@@ -1242,8 +1251,17 @@ var styledMapType = new google.maps.StyledMapType(
 					.attr("x2",blockWidth)
 					.attr("y1",jj*blockHeight+topMargin)
 					.attr("y2",jj*blockHeight+topMargin)
-					.attr("stroke","black");
+					.attr("stroke","black")
+					.attr("shape-rendering","crispEdges");
 			}
+			svg.append("rect")
+				.attr("x",1)
+				.attr("y",topMargin)
+				.attr("width",blockWidth)
+				.attr("height",(7+1)*blockHeight)
+				.attr("fill","none")
+				.attr("stroke","black")
+				.attr("shape-rendering","crispEdges");
 
 
 			svg.select(".legendSequential")
