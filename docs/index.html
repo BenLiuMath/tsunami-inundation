@@ -1138,7 +1138,7 @@ var styledMapType = new google.maps.StyledMapType(
 				//Math.round(1.0/tsunamiEvents[0].probability)
 				//mults[ii].setGeojson(CSZEvents[ii]);
 				mults[ii].setContourData(eventshuffle[ii].eta_data);
-				mults[ii].setLabelHTML(eventshuffle[ii].full_name+"<br>1 in "+Math.round(1.0/eventshuffle[ii].probability));
+				mults[ii].setLabelHTML(eventshuffle[ii].full_name+"<br>1 in "+Math.round(1.0/eventshuffle[ii].probability)+" chance");
 			}
 		}
 
@@ -1297,6 +1297,16 @@ function deleteMarkers() {
 }
 
 var markerImage = 'Black_star.png';
+var markerImage = {
+    //url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+	url: 'Black_star.png',
+    // This marker is 20 pixels wide by 32 pixels high.
+    size: new google.maps.Size(30, 29),
+    // The origin for this image is (0, 0).
+    origin: new google.maps.Point(0, 0),
+    // The anchor for this image is the base of the flagpole at (0, 32).
+    anchor: new google.maps.Point(14, 16)
+  };
 
 function addMarker(latLng, map) {
 	// add the new marker to the given map
