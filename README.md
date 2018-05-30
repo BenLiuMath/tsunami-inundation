@@ -13,6 +13,7 @@ To effectively communicate the dangers and potential impacts of tsunamis to the 
 **Visualization**: [https://cse512-18s.github.io/tsunami-inundation/](https://cse512-18s.github.io/tsunami-inundation/)
 
 [Report](report/report.pdf)
+
 [Poster](poster/poster.pdf)
 
 ## Work distribution
