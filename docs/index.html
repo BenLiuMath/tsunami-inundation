@@ -1175,7 +1175,8 @@ var styledMapType = new google.maps.StyledMapType(
 		function populateMultiples() {
 
 			var eventshuffle = tsunamiEvents.slice();
-			//shuffle(eventshuffle);
+			shuffle(eventshuffle);
+			eventshuffle = eventshuffle.slice(0,6);
 			eventshuffle.sort( function(a,b) {
 				return a.probability > b.probability;
 			});
