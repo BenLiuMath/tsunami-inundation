@@ -8,7 +8,7 @@
 
 	body {
 		margin: 0 auto 0 auto;
-		padding: 0;
+		padding: 30px;
 		max-width: 100%;
 		font-family: "Avenir", "Avenir Next", Helvetica Neue, Arial;
 		font-size: 0.95em;
@@ -35,6 +35,8 @@
 	h4 { font-size: 12pt; }
 	h5 { font-size: 10pt; }
 	p { margin: 0 0 10px 0; }
+
+	ul { margin-left: 30px; }
 
 	.articletext {
 		font-family: "Avenir Next";
@@ -377,6 +379,7 @@
 			Notice that the simulated tsunamis have vastly different impacts on Crescent City in terms of flooding. In order to understand the “overall” tsunami risk posed to the city, we should take into account the characteristics of each.
 		</p>
 
+		<h3>Seismic Event Types</h3>
 		<p>
 			The tsunamis which affect Crescent City are caused by earthquakes which come in two flavors. First, there are the earthquakes originating in the <a href="https://en.wikipedia.org/wiki/Cascadia_subduction_zone">Cascadia Subduction Zone</a>, which are referred to as <strong>near-field events</strong> (since they occur relatively nearby). Since near-field events have a limited geographic area in which they can occur and due to the nature of the local tectonic plates, they occur relatively infrequently. According to the simulations they also tend to be extremely damaging. And because they originate nearby, they reach Crescent City quickly, leaving inhabitants less time to evacuate.
 		</p>
@@ -384,15 +387,16 @@
 		<p>
 			The complement of near-field events are called <strong>far-field events</strong>. These can occur in a much broader range of locations, and hence are much more common. However, the greater distance of the West Coast from the earthquake's origin means that the resulting tsunamis usually have less severe effects. The far-field events in our simulations come from <a href="https://en.wikipedia.org/wiki/Aleutian_Trench">Alaska and the Aleutian Islands</a>, <a href="https://en.wikipedia.org/wiki/Peru%E2%80%93Chile_Trench">Southern Chile</a>, <a href="https://en.wikipedia.org/wiki/Kuril%E2%80%93Kamchatka_Trench">Kamchatka</a>, <a href="https://en.wikipedia.org/wiki/Kuril%E2%80%93Kamchatka_Trench">the Kuril Islands</a>, and <a href="https://en.wikipedia.org/wiki/Japan_Trench">Tohoku, Japan</a>.
 		</p>
-
 		<p>
 			As described above, near- and far-field events differ in terms of how likely they are to take place. But individual simulated events from the same (or close) locations can also differ in how likely they are to occur, based on properties of the tectonic plates in that location. Associated with each earthquake is its <strong>annual probability</strong> of occurrence. The annual probability of an event describes the odds that the event will happen sometime in a single year. For example, an event with annual probability 1/100 has a 1 in 100 chance of occuring any given year. It does not, however, guarantee that the event will happen in the next 100 years (more on that later). These probabilities are usually not known exactly, and are instead estimated by experts.
 		</p>
+
+		<h3>Inundation Maps</h3>
 		<p>
 			Given that we do not know in advance what kind of seismic event will happen next, we would like to combine the information from all the simulations into one aggregate inundation map. We start by picking an annual probability, <em>p</em>, in which we are interested. For each point in a region of the map we then use the results of all the simulations to figure out the maximum amount of flooding that the simulations predict could occur with probability at least <em>p</em>. The result is a map which shows the “worst-case” amount of flooding one would expect to occur with annual probability <em>p</em>. We can vary <em>p</em> to produce more such maps and get an idea of how likely different levels of inundation might be.
 		</p>
 		<p>
-			We show a collection of these “inundation maps” below. You can modify the probability using the slider. You can also see how the map changes when you restrict to just near-field or just far-field events using different tabs. Some of the individual simulations that informed the inundation map are shown on the right. If you are interested in a particular point, you can click it in the large map and the small maps will shift focus to your point.
+			We show a collection of these <strong>inundation maps</strong> below. You can modify the probability using the slider. You can also see how the map changes when you restrict to just near-field or just far-field events using different tabs. Some of the individual simulations that informed the inundation map are shown on the right. If you are interested in a particular point, you can click it in the large map and the small maps will shift focus to your point.
 
 		</p>
 
@@ -497,9 +501,10 @@
 	</script>
 	<div class="articletext">
 		<p>
-			Write down some takeaways of the above visualization.
+			<strong>***Write down some takeaways of the above visualization.***</strong>
 		</p>
 
+		<h3>Interpreting Annual Probabilities</h3>
 		<p>
 			Annual probabilities can be a bit confusing and/or misleading. Just because an event has an annual probability of 1/100, that does not mean that the event will definitely occur in the next 100 years. It turns out that the probability such an event occurs in the next 100 years is actually lower than 100% (instead it’s about 63.4% likely). A good way to understand this counterintuitive effect is to think about an analogous example: flipping a coin.
 		</p>
@@ -526,7 +531,7 @@
 		</div>
 
 		<p>
-			Make concluding remarks.
+			<strong>***Make concluding remarks.***</strong> Do we need these?
 		</p>
 	</div>
 
@@ -562,8 +567,8 @@
 
 		<h3>Supporting Documents</h3>
 		<ul>
-			<li><a href="../report/report.pdf">Report</a></li>
-			<li><a href="../poster/poster.pdf">Poster</a></li>
+			<li><a href="https://github.com/cse512-18s/tsunami-inundation/tree/master/report/report.pdf">Report</a></li>
+			<li><a href="https://github.com/cse512-18s/tsunami-inundation/tree/master/poster/poster.pdf">Poster</a></li>
 		</ul>
 	</div>
 
