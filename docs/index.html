@@ -357,7 +357,7 @@
 	<div id="flipbookvis">
 		<div id="flipbookmap"></div>
 		<div id="flipbooklegendcomparison" style="vertical-align:bottom; background:none; height:100%; ">
-			<img src="person.png" id="personcomparepicture" style="height:5px; position:absolute; bottom:0px; right:50px; ">
+			<img src="person.png" id="personcomparepicture" style="height:5px; position:absolute; bottom:3px; right:50px; ">
 			<div id="flipcolorlegend" style="display:inline-block; position:absolute; bottom:0px; "></div>
 		</div>
 	</div>
@@ -1209,7 +1209,7 @@ var styledMapType = new google.maps.StyledMapType(
 			var blockHeight = 65;
 
 			var legWidth = 200;
-			var legHeight = blockHeight*8+topMargin+1;
+			var legHeight = blockHeight*8+topMargin;
 
 			var svg = d3.select("#flipcolorlegend")
 					.attr("class","legendQuant")
