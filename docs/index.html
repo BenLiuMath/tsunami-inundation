@@ -23,7 +23,7 @@
 	h1, h2, h3, h4, h5 {
 		color: #492a7c;
 		background-color: inherit;
-		font-weight: normal;
+		font-weight: bold;
 		padding: 0 0 5px 0;
 		margin: 15px 0 0 0;
 		border: none;
@@ -54,14 +54,14 @@
 		position:relative;
 		top:0;
 		left:0;
-		width:90%;
+		width:70%;
 		height:440px;
 		padding:0px;
-		margin:0px 20px 15px auto;
+		margin:0 auto;
 	}
 
 	#flipbookmap {
-		width:65%;
+		width:calc(100% - 160px);
 		height:100%;
 		bottom:0px;
 		border: 1px solid #ccc;
@@ -70,12 +70,11 @@
 
 	#flipbooklegendcomparison {
 		position:relative;
-		display: inline-block;
+		display:inline-block;
 		background:none;
-		height:80%;
-		width:100px;
+		height:100%;
+		width:150px;
 		bottom:5px;
-		margin-left:20px;
 		min-width:100px;
 		vertical-align:bottom;
 	}
@@ -85,18 +84,21 @@
 		top:0;
 		left:0;
 		width:100%;
-		height:500px;
+		height:550px;
 		padding:0px;
 		margin:0px;
 		margin-bottom:20px;
 	}
 
-	#fieldtabs {
-		margin:0px;
+	#topbar {
 		height:40px;
+	}
+	#fieldtabs {
+		position:relative;
+		margin:0px;
+		height:calc(100% - 1px);
 		display:inline-block;
-		z-index: 5; /* Brings buttons in front of map */
-		background-color: #FFFFFF;
+		float: left;
 		text-align: center;
 		overflow: hidden;
 		border: 1px solid #ccc;
@@ -110,14 +112,21 @@
 		vertical-align: top;
 		width:100%;
 		height:calc(100% - 40px);
-		//border: 1px solid #ccc;
+		border: 1px solid #ccc;
 	}
+	
+	#aggregateContainer {
+		position:relative;
+		width:40%;
+		height:100%;
+	}
+	
 	#map {
 		position:absolute;
-		top:0px;
-		left:0px;
-		width:40%;
-		height:calc(100% - 55px);
+		top:3em;
+		left:0;
+		width:100%;
+		height:calc(100% - 7.5em);
 		display:block;
 	}
 
@@ -126,7 +135,7 @@
 		bottom:0px;
 		height:3.5em;
 		left:2%;
-		width:36%;
+		width:96%;
 		z-index: 5; /* Brings slider in front of map */
 	}
 
@@ -134,17 +143,14 @@
 		width: 100%;
 	}
 
-	/*
-	input[type=range]::-webkit-slider-runnable-track {
-		width: 100%;
-		height: 8px;
-		cursor: pointer;
-		box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
-		background: rgb(211,211,211);
+
+	.title {
+		font-size:18pt;
+		text-align:center;
+		line-height:2em;
 	}
-	*/
 
-
+	
 	#individualfocus {
 		position:absolute;
 		top:0px;
@@ -158,17 +164,17 @@
 
 	#smallmultiplescontainer {
 		position:absolute;
-		top:0;
+		top:3em;
 		left:0;
 		width:100%;
-		height:100%;
+		height:calc(100% - 3em);
 	}
 
 	#colorlegend {
-		position:relative;
-		top:00px;
-		left: 100%;
-		width:50px;
+		position:absolute;
+		top:3em;
+		left:102%;
+		width:100px;
 		height:400px;
 		background: rgb(255,255,255,.7);
 		/* border:1px solid black; */
@@ -192,18 +198,9 @@
 		display:block;
 	}
 
-	#resetbutton {
-	    position: absolute;
-	    top:-34px;
-	    left: 330px;
-		width:80px;
-	    z-index: 5; /* Brings buttons in front of map */
-	    background-color: #FFFFFF;
-	    text-align: center;
-	    padding-left: 5px;
-	}
-	#resetbutton input {
-		width:100%;
+	#resetView {
+		margin:10px 20px;
+		width:100px;
 	}
 
 
@@ -299,18 +296,18 @@
 }
 
 
-		#calcContainer {
-			width:50%;
-			border:1px solid black;
-			margin:0 auto;
-			font-size:120%;
-			padding:5px 20px;
-			text-align:center;
-		}
-		#calcContainer input {
-			font-size:110%;
-			text-align:center;
-		}
+	#calcContainer {
+		width:50%;
+		border:1px solid black;
+		margin:0 auto;
+		font-size:120%;
+		padding:5px 20px;
+		text-align:center;
+	}
+	#calcContainer input {
+		font-size:110%;
+		text-align:center;
+	}
 
 </style>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyJ45cnv6HeZr69pu26XSsUF-OMC6cNRU"></script>
@@ -447,7 +444,7 @@
 			We can vary <em>p</em> to produce more such maps and get an idea of how likely different levels of inundation might be.
 		</p>
 		<p>
-			We show a collection of these <strong>inundation maps</strong> below. You can modify the probability using the slider. You can also see how the map changes when you restrict to just near-field or just far-field events using different tabs. Some of the individual simulations that informed the inundation map are shown on the right. If you are interested in a particular point, you can click it in the large map and the small maps will shift focus to your point.
+			We show a collection of these <strong>inundation maps</strong> below. You can modify the probability using the slider. You can also see how the map changes when you restrict to just near-field or just far-field events using different tabs. Some of the individual simulations that informed the inundation map are shown on the right, sorted by their annual probabilities. If you are interested in a particular point, you can click it in the large map and the small maps will shift focus to your point.
 
 		</p>
 
@@ -496,40 +493,43 @@
 
 	<div id="viscontainer">
 		<!-- Buttons for near- and far-field events -->
-		<div id="fieldtabs">
-			<button class="tablinks active" id="switchEvents_near" value="near">Near-field</button>
-			<button class="tablinks" id="switchEvents_far" value="far">Far-field</button>
-			<button class="tablinks" id="switchEvents_both" value="both">Near- and Far-field</button>
+		<div id="topbar">
+			<div id="fieldtabs">
+				<button class="tablinks active" id="switchEvents_near" value="near">Near-field</button>
+				<button class="tablinks" id="switchEvents_far" value="far">Far-field</button>
+				<button class="tablinks" id="switchEvents_both" value="both">Near- and Far-field</button>
+			</div>
+			<input id="resetView" type="button" value="Reset View">
 		</div>
-
 		<div id="tabbedcontent">
-			<div id="map"></div>
-			<div id="colorlegend"></div>
+		
+			<div id="aggregateContainer">
+				<div class="title">Aggregate Probabilities</div>
+				<div id="map"></div>
+				<!-- Slider for probability -->
+				<div id="slidecontainer">
+					<input type="range" min="0" max="6" step="1" class="slider" id="probabilitySlider" list="tickmark">
+					<datalist id="tickmark">
+						<option label="1/50">0</option>
+						<option label="1/100">1</option>
+						<option label="1/200">2</option>
+						<option label="1/500">3</option>
+						<option label="1/1000">4</option>
+						<option label="1/5000">5</option>
+						<option label="1/10000">6</option>
+					</datalist>
+					<output id="output" for="probabilitySlider">Selected annual probability: 1 in 500</output> <!-- Just to display selected value -->
+				</div>
+			</div>
+			
 			<div id="individualfocus">
 				<div class="backdrop"></div>
+				<div class="title">Individual Simulations</div>
 				<div id="smallmultiplescontainer"></div>
 			</div>
-
-
-			<!-- Button to reset view -->
-			<div id="resetbutton">
-				<input id="resetView" type="button" value="Reset View">
-			</div>
-
-			<!-- Slider for probability -->
-			<div id="slidecontainer">
-				<input type="range" min="0" max="6" step="1" class="slider" id="probabilitySlider" list="tickmark">
-				<datalist id="tickmark">
-					<option label="1/50">0</option>
-					<option label="1/100">1</option>
-					<option label="1/200">2</option>
-					<option label="1/500">3</option>
-					<option label="1/1000">4</option>
-					<option label="1/5000">5</option>
-					<option label="1/10000">6</option>
-				</datalist>
-				<output id="output" for="probabilitySlider">Selected annual probability: 1 in 500</output> <!-- Just to display selected value -->
-			</div>
+			
+			<div id="colorlegend"></div>
+			
 		</div>
 	</div>
 
@@ -968,6 +968,7 @@ var styledMapType = new google.maps.StyledMapType(
 		// initialize with near-field data
 		var tsunamiEvents = near_events;
 		var hazard_maps = eta_ps_near;
+		var probIndex = 3;
 
 		// google map background
 		var map = new google.maps.Map(document.getElementById('map'), {
@@ -1164,13 +1165,14 @@ var styledMapType = new google.maps.StyledMapType(
 		var outputSlider = document.getElementById("output");
 		var probSlider = document.getElementById("probabilitySlider");
 		probSlider.addEventListener("change",function() {
-			setProbLevelByIndex(probSlider.value);
+			probIndex = parseInt(probSlider.value);
+			setProbLevelByIndex(probIndex);
 			outputSlider.value="Selected annual probability: 1 in " + pInv[probSlider.value];
 		});
 
 
 		function initPlots() {
-			setProbLevel(1000);
+			setProbLevelByIndex(probIndex);
 			populateMultiples();
 		}
 		setTimeout(initPlots, 100);
@@ -1189,7 +1191,8 @@ var styledMapType = new google.maps.StyledMapType(
 		function populateMultiples() {
 
 			var eventshuffle = tsunamiEvents.slice();
-			//shuffle(eventshuffle);
+			shuffle(eventshuffle);
+			eventshuffle = eventshuffle.slice(0,6);
 			eventshuffle.sort( function(a,b) {
 				return a.probability > b.probability;
 			});
@@ -1269,6 +1272,13 @@ var styledMapType = new google.maps.StyledMapType(
 				.attr("fill","none")
 				.attr("stroke","black")
 				.attr("shape-rendering","crispEdges");
+
+			svg.append("text")
+				.attr("class", "legendSequential")
+				.attr("transform", `translate(${100},200)rotate(-90)`)
+				.text("meters flooded")
+				.attr("font-size","14pt");
+
 
 			svg.select(".legendSequential")
 				.attr("opacity",.8)
