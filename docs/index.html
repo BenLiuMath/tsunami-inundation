@@ -48,15 +48,16 @@
 		position:relative;
 		top:0;
 		left:0;
-		width:80%;
+		width:90%;
 		height:550px;
 		padding:0px;
 		margin:0 auto;
 	}
 
 	#flipbookmap {
-		width:70%;
-		height:100%;
+		width:65%;
+		height:80%;
+		bottom:0px;
 		border: 1px solid #ccc;
 		display: inline-block;
 	}
@@ -65,9 +66,10 @@
 		position:relative;
 		display: inline-block;
 		background:none;
-		height:100%; 
-		width:140px;
-		margin-left:30px;
+		height:80%;
+		width:100px;
+		bottom:5px;
+		margin-left:20px;
 		min-width:100px;
 		vertical-align:bottom;
 	}
@@ -170,12 +172,14 @@
 	#personcomparepicture {
 		position:absolute;
 		bottom:0px;
+		left:10px;
 		right:100px;
 	}
 	#flipcolorlegend {
 		position:absolute;
 		bottom:0px;
 		right:0px;
+		left:40px;
 		display:inline-block;
 		background: rgb(255,255,255,.7);
 		/* border:1px solid black; */
@@ -394,7 +398,7 @@
 
 
 		<!-- Created with SVG-edit - http://svg-edit.googlecode.com/ -->
-		<!-- 
+		<!--
 		<div>
 			<svg width="300" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
 			 <g>
@@ -866,7 +870,7 @@ var styledMapType = new google.maps.StyledMapType(
 		}
 
 		var tsunamiEvents = all_events;
-		
+
 		shuffle(tsunamiEvents);
 		var flipInd = 0;
 		function flipBook() {
@@ -1194,8 +1198,8 @@ var styledMapType = new google.maps.StyledMapType(
 					.attr("transform", `translate(${blockWidth+10},${jj*blockHeight+topMargin+5})`)
 					.text(mylabels[jj]);
 				svg.append("line")
-					.attr("x1",0)
-					.attr("x2",blockWidth)
+					.attr("x1",0+1)
+					.attr("x2",blockWidth+1)
 					.attr("y1",jj*blockHeight+topMargin)
 					.attr("y2",jj*blockHeight+topMargin)
 					.attr("stroke","black")
@@ -1217,17 +1221,18 @@ var styledMapType = new google.maps.StyledMapType(
 
 		function makeFlipLegend() {
 			// draw the legend
-			var topMargin = 20;
+			var topMargin = 15;
+			var bottomMargin = 1;
 			var blockWidth = 25;
-			var blockHeight = 65;
+			var blockHeight = 55;
 
-			var legWidth = 90;
-			var legHeight = blockHeight*8+topMargin;
+			var legWidth = blockWidth+80;
+			var legHeight = blockHeight*8+topMargin+bottomMargin;
 
 			d3.select("#flipcolorlegend")
 				.style("width", legWidth+"px")
 				.style("height", legHeight+"px");
-			
+
 			var svg = d3.select("#flipcolorlegend")
 					.attr("class","legendQuant")
 					.append("svg")
@@ -1240,7 +1245,7 @@ var styledMapType = new google.maps.StyledMapType(
 
 			svg.append("text")
 				.attr("class", "legendSequential")
-				.attr("transform", `translate(${80},320)rotate(-90)`)
+				.attr("transform", `translate(${100},300)rotate(-90)`)
 				.text("meters flooded")
 				.attr("font-size","16pt");
 
@@ -1264,8 +1269,8 @@ var styledMapType = new google.maps.StyledMapType(
 					.attr("transform", `translate(${blockWidth+10},${jj*blockHeight+topMargin})`)
 					.text(mylabels[jj]);
 				svg.append("line")
-					.attr("x1",0)
-					.attr("x2",blockWidth)
+					.attr("x1",0+1)
+					.attr("x2",blockWidth+1)
 					.attr("y1",jj*blockHeight+topMargin)
 					.attr("y2",jj*blockHeight+topMargin)
 					.attr("stroke","black")
