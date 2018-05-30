@@ -954,6 +954,7 @@ var styledMapType = new google.maps.StyledMapType(
 		// initialize with near-field data
 		var tsunamiEvents = near_events;
 		var hazard_maps = eta_ps_near;
+		var probIndex = 3;
 
 		// google map background
 		var map = new google.maps.Map(document.getElementById('map'), {
@@ -1150,13 +1151,14 @@ var styledMapType = new google.maps.StyledMapType(
 		var outputSlider = document.getElementById("output");
 		var probSlider = document.getElementById("probabilitySlider");
 		probSlider.addEventListener("change",function() {
-			setProbLevelByIndex(probSlider.value);
+			probIndex = parseInt(probSlider.value);
+			setProbLevelByIndex(probIndex);
 			outputSlider.value="Selected annual probability: 1 in " + pInv[probSlider.value];
 		});
 
 
 		function initPlots() {
-			setProbLevel(1000);
+			setProbLevelByIndex(probIndex);
 			populateMultiples();
 		}
 		setTimeout(initPlots, 100);
