@@ -489,7 +489,16 @@
 		</p>
 
 		<p>
-			Introduce the ideas behind the probability explorer.
+			Annual probabilities can be a bit confusing and/or misleading. Just because an event has an annual probability of 1/100, that does not mean that the event will definitely occur in the next 100 years. It turns out that the probability such an event occurs in the next 100 years is actually lower than 100% (instead it’s about 63.4% likely). A good way to understand this counterintuitive effect is to think about an analogous example: flipping a coin.
+		</p>
+		<p>
+			Say you have a fair coin, meaning that if you flip it you have a 50% chance of it landing on heads and a 50% chance of it landing on tails. Imagine that, once a year, the coin has the magical ability to predict whether a tsunami strike Crescent City that year. On January 1st if you flip the coin and it lands heads, then Crescent City will be hit with a tsunami that year, and if it lands tails the city will be spared for at least another year. We might then say that the annual probability of a tsunami damaging Crescent City is 1/2, or 0.5. What are the odds the city experiences at least one tsunami in the next two years? It might seem like it should happen with 100% certainty, but that is not the case. In order for a tsunami to strike, at least one of the coin tosses needs to come up heads. In other words, they cannot both come up tails (if both tosses resulted in tails then no tsunamis would occur). The probability that both tosses are tails is easy to compute: it is the probability of tails on the first toss times the probability of tails on the second toss, or (0.5)(0.5) = (0.5)<sup>2</sup> = 0.25. This means that there is a 25% chance that no tsunamis will occur over the next two years. If there is a 25% chance of no tsunamis then there is a 75% chance (100 minus 25) that a tsunami will happen.
+		</p>
+		<p>
+			What if we wanted to know the odds of tsunami taking place in the next three years? For one not to occur, we would have to flip tails three times in a row. Getting three tails in a row has probability (0.5)(0.5)(0.5) = (0.5)<sup>3</sup> = 0.125. So there is a 12.5% chance that no tsunamis will arise, meaning there is a 87.5% chance (100 minus 12.5) that a tsunami will crop up. In general, we can compute the probability of a tsunami happening in the next <i>n</i> years by computing 1 - (0.5)<sup><i>n</i></sup>.
+		</p>
+		<p>
+			To allow you to get a better handle on the odds of events with different annual probabilities occuring in a given time window, we have created an interactive probability explorer. Into it you can enter the window of time in which you are interested as well as an annual probability associated with an event. Try entering some of the annual probabilities from the simulated tsunamis to get an idea for how likely they are to occur in the next few years.
 		</p>
 
 		<div id="calcContainer">
