@@ -1256,6 +1256,13 @@ var styledMapType = new google.maps.StyledMapType(
 				.attr("stroke","black")
 				.attr("shape-rendering","crispEdges");
 
+			svg.append("text")
+				.attr("class", "legendSequential")
+				.attr("transform", `translate(${100},200)rotate(-90)`)
+				.text("meters flooded")
+				.attr("font-size","14pt");
+
+
 			svg.select(".legendSequential")
 				.attr("opacity",.8)
 				.call(legendSequential);
