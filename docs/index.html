@@ -453,26 +453,26 @@
 
 		<h3>Aggregate Inundation Maps</h3>
 		<p>
-			Given that we do not know in advance what kind of seismic event will happen next, to form an overall picture of tsunami risk
-			we would like to combine the information from all the simulations into one aggregate inundation map.
+			Since we do not know when or what type of seismic event will happen next, to form an overall picture of tsunami risk
+			we would like to combine the information from many simulations into a probabilistic inundation map -- an aggregate map that weighs the possible inundations at each point based on how likely each scenario is to occur.
 			We start by picking an annual probability, <em>p</em>, in which we are interested.
-			This probability is not quite the same as the annual probability of a single event. It is more like the probability that any member from a collection of events occurs over the course of a year.
-			For each point in a region of the map we then use the results of all the simulations to figure out the maximum amount of flooding that the
+			This probability is not the same as the annual probability of a single event &mdash; it instead represents the chance that any member from the collection of events occurs over the course of a year.
+			For each point in a region of the map we use the results of all the simulations to figure out the maximum amount of flooding that the
 			simulations predict could occur with probability at least <em>p</em>.
-			The result is a map which shows the “worst-case” amount of flooding one would expect to occur with annual probability <em>p</em>.
-			We can vary <em>p</em> to produce more such maps and get an idea of how likely different levels of inundation might be.
+			The result is a map that shows the “worst-case” amount of flooding one would expect to occur with annual probability <em>p</em>.
+			We can vary <em>p</em> to produce maps for any probability to understand how likely different levels of inundation are.
 		</p>
 		<p>
 			We show a collection of these <strong>inundation maps</strong> below.
 			A random selection of six of the individual simulations that informed the inundation map are also shown on the right, sorted by their annual probabilities. You can interact with the maps as follows:
 			<ul>
-				<li> You can modify the annual probability for the aggregate inundation map using the slider. </li>
+				<li>You can modify the annual probability for the aggregate inundation map using the slider. </li>
 				<li>You can see how the map changes when you restrict to only near-field or only far-field events by clicking on different tabs.</li>
 				<li>Re-clicking on near/far-field tabs will randomly re-select the different individual simulations to show (if more are available).</li>
 				<li>If you are interested in a particular point, you can click it in the large map and the small maps will shift focus to your point.</li>
 			</ul>
-				<strong>Warning</strong>: the data is such that for some sets of events, the aggregate map does not always change when you change the annual probability. 
-				This is not due to an error in the map. It is actually because changing the two annual probabilities result in the same map.
+				<strong>Warning</strong>: the data is limited, so for some sets of events the aggregate map does not always change for different annual probabilities.
+				This is not due to an error in the map; instead it is because two annual probabilities produce nearly the same map.
 
 		</p>
 
@@ -583,7 +583,10 @@
 			One thing you may have noticed is that, for any set of events you choose, the flooding gets <strong>worse and worse</strong>
 			as the annual probability goes down (try moving the slider from left to right to see this effect).
 			This is because the most extreme events tend to have lower annual probabilities, meaning that we can virtually ignore them
-			when considering high-likelihood scenarios. It is certainly good news for Crescent City! </p><p>
+			when considering high-likelihood scenarios. It is certainly good news for Crescent City!
+		</p>
+			
+		<p>
 			Another observation you may have made is that the inundation maps are completely <strong>blank</strong> for some combinations of events and annual probabilities.
 			In particular, when you restrict your attention to just the near-field events and select high annual probabilities (1/50, 1/100, and 1/200),
 			the resulting inundation maps are blank. Because the odds of all the near-field events are so low, the amount of flooding expected with large annual probabilities is zero.
@@ -591,9 +594,9 @@
 
 		<h3>Interpreting Annual Probabilities</h3>
 		<p>
-			Annual probabilities can be a bit confusing and/or misleading.
+			Annual probabilities can be a bit confusing and may seem misleading.
 			Just because a seismic event has an annual probability of 1/100, does not mean that the event will definitely occur in the next 100 years.
-			It turns out that the probability such an event occurs in the next 100 years is actually lower than 100% (instead it’s about 63.4%).
+			It turns out that the probability such an event occurs in the next 100 years is actually lower than 100%  &mdash; instead it’s about 63.4%.
 			A good way to understand this counterintuitive effect is to think about an analogous example: flipping a coin.
 		</p>
 		<p>
