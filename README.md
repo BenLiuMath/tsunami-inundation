@@ -22,7 +22,7 @@ To effectively communicate the dangers and potential impacts of tsunamis to the 
 
 ### Brian de Silva
 1. Data wrangling
-    * Converted the raw simulation data from the 13 simulations into a javascript object
+    * Converted the raw simulation data from the 13 simulations into javascript objects
     * Computed probabilistic inundation maps from the raw simulation data and output them as javascript variables for use by D3
     * Wrote code for finding and outputting contours in the geoJSON format (however, we did not end up using geoJSON to draw the contours in our final visualizations)
 2. Website
@@ -38,3 +38,12 @@ To effectively communicate the dangers and potential impacts of tsunamis to the 
 ### Abe Engle
 
 ### Benjamin Liu
+1. Website layout
+	* Organized elements on the page in a maintainable and semi-responsive manner
+2. D3 and maps, projections
+	* Figured out how to overlay D3.contour maps onto google maps
+	* Developed the linked visualizations, helper methods for switching data
+	
+3. Prototyping encodings for uncertainty
+	* Developed mockups for 'wobbling' contours
+	* Developed 'throbbing contours' prototype
