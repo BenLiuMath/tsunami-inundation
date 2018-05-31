@@ -54,7 +54,7 @@
   caption-side: bottom;
 }
 
-	ul { margin-left: 30px; }
+	ul { margin-left: 30px; margin-bottom:10px;}
 
 	.articletext {
 		font-family: "Avenir Next";
@@ -341,7 +341,7 @@
 
 	<div class="articletext">
 
-		<h1>Estimating the Risks of Tsunamis in Crescent City</h1>
+		<h1>Estimating Tsunami Risk in Crescent City</h1>
 
 		<!-- <p>On the West Coast of the United States, these earthquakes come in two flavors.
 			First, there are the earthquakes occuring in the <strong>Cascadia Subduction Zone</strong>, which are referred to as <strong>near-field</strong> events
@@ -445,8 +445,8 @@
 			Even within the categories of near-field and far-field, though, seismic events differ in terms of how likely they are to take place.
 			<!-- But individual simulated events from the same (or close) locations can also differ in how likely they are to occur, based on properties of the tectonic plates in that location.  -->
 			Thus, associated with each simulated earthquake is its <strong>annual probability</strong> of occurrence,
-			an estimate of the chances that that event will happen sometime within a single year.
-			For example, an event with annual probability 1/100 has a 1 in 100 chance of occuring any given year.
+			an estimate of the chances that the event will happen sometime within the following year.
+			For example, an event with annual probability 1/100 has a 1 in 100 chance of occurring any given year.
 			It does not, however, guarantee that the event will happen in the next 100 years (more on this later). These probabilities are usually not known exactly, and are instead estimated by experts.
 		</p>
 
@@ -462,7 +462,16 @@
 			We can vary <em>p</em> to produce more such maps and get an idea of how likely different levels of inundation might be.
 		</p>
 		<p>
-			We show a collection of these <strong>inundation maps</strong> below. You can modify the probability using the slider. You can also see how the map changes when you restrict to only near-field or only far-field events using different tabs. Some of the individual simulations that informed the inundation map are shown on the right, sorted by their annual probabilities. If you are interested in a particular point, you can click it in the large map and the small maps will shift focus to your point. <strong>Warning</strong>: the data is such that for some sets of events the aggregate map does not change from one selected annual probability to another. This is not due to an error in the map. It is actually because changing the two annual probabilities result in the same map.
+			We show a collection of these <strong>inundation maps</strong> below.
+			A random selection of six of the individual simulations that informed the inundation map are also shown on the right, sorted by their annual probabilities. You can interact with the maps as follows:
+			<ul>
+				<li> You can modify the annual probability for the aggregate inundation map using the slider. </li>
+				<li>You can see how the map changes when you restrict to only near-field or only far-field events by clicking on different tabs.</li>
+				<li>Re-clicking on near/far-field tabs will randomly re-select the different individual simulations to show (if more are available).</li>
+				<li>If you are interested in a particular point, you can click it in the large map and the small maps will shift focus to your point.</li>
+			</ul>
+				<strong>Warning</strong>: the data is such that for some sets of events, the aggregate map does not always change when you change the annual probability. 
+				This is not due to an error in the map. It is actually because changing the two annual probabilities result in the same map.
 
 		</p>
 
@@ -570,12 +579,21 @@
 	</script>
 	<div class="articletext">
 		<p>
-			One thing you may have noticed is that, for any set of events you choose, the flooding gets worse and worse as the annual probability goes down (try moving the slider from left to right to see this effect). This is because the most extreme events tend to have lower annual probabilities, meaning that we can virtually ignore them when considering high-likelihood scenarios. It is certainly good news for Crescent City! Another observation you may have made is that the inundation maps are completely blank for some combinations of events and annual probabilities. In particular, when you restrict your attention to just the near-field events and select high annual probabilities (1/50, 1/100, and 1/200), the resulting inundation maps are blank. Because the odds of all the near-field events are so low, the amount of flooding expected with large annual probabilities is zero.
+			One thing you may have noticed is that, for any set of events you choose, the flooding gets <strong>worse and worse</strong>
+			as the annual probability goes down (try moving the slider from left to right to see this effect).
+			This is because the most extreme events tend to have lower annual probabilities, meaning that we can virtually ignore them
+			when considering high-likelihood scenarios. It is certainly good news for Crescent City! </p><p>
+			Another observation you may have made is that the inundation maps are completely <strong>blank</strong> for some combinations of events and annual probabilities.
+			In particular, when you restrict your attention to just the near-field events and select high annual probabilities (1/50, 1/100, and 1/200),
+			the resulting inundation maps are blank. Because the odds of all the near-field events are so low, the amount of flooding expected with large annual probabilities is zero.
 		</p>
 
 		<h3>Interpreting Annual Probabilities</h3>
 		<p>
-			Annual probabilities can be a bit confusing and/or misleading. Just because a seismic event has an annual probability of 1/100, that does not mean that the event will definitely occur in the next 100 years. It turns out that the probability such an event occurs in the next 100 years is actually lower than 100% (instead it’s about 63.4% likely). A good way to understand this counterintuitive effect is to think about an analogous example: flipping a coin.
+			Annual probabilities can be a bit confusing and/or misleading.
+			Just because a seismic event has an annual probability of 1/100, does not mean that the event will definitely occur in the next 100 years.
+			It turns out that the probability such an event occurs in the next 100 years is actually lower than 100% (instead it’s about 63.4%).
+			A good way to understand this counterintuitive effect is to think about an analogous example: flipping a coin.
 		</p>
 		<p>
 			Say you have a fair coin, meaning that if you flip it you have a 50% chance of it landing on heads and a 50% chance of it landing on tails. Imagine that, once a year, the coin has the magical ability to predict whether a tsunami strike Crescent City that year. On January 1st if you flip the coin and it lands heads, then Crescent City will be hit with a tsunami that year, and if it lands tails the city will be spared for at least another year. We might then say that the annual probability of a tsunami damaging Crescent City is 1/2, or 0.5. What are the odds the city experiences at least one tsunami in the next two years? It might seem like it should happen with 100% certainty, but that is not the case. In order for a tsunami to strike, at least one of the coin tosses needs to come up heads. In other words, they cannot both come up tails (if both tosses resulted in tails then no tsunamis would occur). The probability that both tosses are tails is easy to compute: it is the probability of tails on the first toss times the probability of tails on the second toss, or (0.5)(0.5) = (0.5)<sup>2</sup> = 0.25. This means that there is a 25% chance that no tsunamis will occur over the next two years. If there is a 25% chance of no tsunamis then there is a 75% chance (100 minus 25) that a tsunami will happen.
