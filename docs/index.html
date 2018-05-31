@@ -36,7 +36,25 @@
 	h5 { font-size: 10pt; }
 	p { margin: 0 0 10px 0; }
 
-	ul { margin-left: 30px; }
+	figure {
+  float: right;
+  width: 50%;
+  text-align: center;
+  font-style: italic;
+  font-size: smaller;
+  text-indent: 0;
+  /* border: thin silver solid; */
+  margin: 0px 0px 0px 20px;
+  padding: 0.0em;
+	display: table;
+}
+
+	figcaption {
+	display: table-caption;
+  caption-side: bottom;
+}
+
+	ul { margin-left: 30px; margin-bottom:10px;}
 
 	.articletext {
 		font-family: "Avenir Next";
@@ -112,13 +130,13 @@
 		/*background:rgb(245,245,245);*/
 		padding-bottom:5px;
 	}
-	
+
 	#aggregateContainer {
 		position:relative;
 		width:40%;
 		height:100%;
 	}
-	
+
 	#map {
 		position:absolute;
 		top:3em;
@@ -148,7 +166,7 @@
 		line-height:2em;
 	}
 
-	
+
 	#individualfocus {
 		position:absolute;
 		top:0px;
@@ -323,7 +341,7 @@
 
 	<div class="articletext">
 
-		<h1>Estimating the Risks of Tsunamis in Crescent City</h1>
+		<h1>Estimating Tsunami Risk in Crescent City</h1>
 
 		<!-- <p>On the West Coast of the United States, these earthquakes come in two flavors.
 			First, there are the earthquakes occuring in the <strong>Cascadia Subduction Zone</strong>, which are referred to as <strong>near-field</strong> events
@@ -360,12 +378,14 @@
 			100 cars and 25 large fishing ships crushed; and 60 blocks inundated with water, with 30 blocks beyond repair.
 		</p>
 
-		<div>
+		<figure>
+			<a href="harbor.jpg">
 		<img src="harbor.jpg"
 				alt="Crescent City Harbor"
-				style="width:50%; height:50%; margin: 5px 20px"
-				align="right">
-		</div>
+				style="width:100%; height:100%;"
+				align="right"></a>
+		<figcaption>An aerial view of the Crescent City harbor. (Source: <a href="https://en.wikipedia.org/wiki/Crescent_City,_California">Wikipedia</a>)</figcaption>
+		</figure>
 
 		<p>
 			Due to its offshore geography, <a href="https://en.wikipedia.org/wiki/Crescent_City,_California">Crescent City</a> &mdash; and especially its harbor, shown in the image to the right &mdash; are unusually susceptible to tsunamis.
@@ -408,6 +428,15 @@
 			Due to their proximity, near-field events tend to be <i>extremely damaging</i>. Because they originate nearby, tsunamis arising from near-field events reach Crescent City quickly, leaving inhabitants almost no time to evacuate.
 		</p>
 
+		<figure>
+			<a href="ring_of_fire.png">
+		<img src="ring_of_fire.png"
+				alt="Ring of Fire"
+				style="width:100%; height:100%"></a>
+		<figcaption>Arrow shows the Cascadia Subduction Zone, in the context of other far-field subduction zones.
+			(Source: <a href="http://www.businessinsider.com/the-cascadia-subduction-zone-was-discovered-in-1970-2015-7">Business Insider</a>)</figcaption>
+		</figure>
+
 		<p>
 			Complementing near-field events are <strong>far-field events</strong> &mdash; tsunamis that arise from earthquakes far from Crescent City. These events can occur in a much broader range of locations, and so are <i>more frequent</i>.
 			However, a greater distance to the origin of the earthquake means that the resulting tsunamis usually have <i>less severe</i> effects. The far-field events in our simulations come from <a href="https://en.wikipedia.org/wiki/Aleutian_Trench">Alaska and the Aleutian Islands</a>, <a href="https://en.wikipedia.org/wiki/Peru%E2%80%93Chile_Trench">Southern Chile</a>, <a href="https://en.wikipedia.org/wiki/Kuril%E2%80%93Kamchatka_Trench">Kamchatka</a>, <a href="https://en.wikipedia.org/wiki/Kuril%E2%80%93Kamchatka_Trench">the Kuril Islands</a>, and <a href="https://en.wikipedia.org/wiki/Japan_Trench">Tohoku, Japan</a>.
@@ -419,6 +448,7 @@
 			an estimate of the chances that that event will happen sometime within a single year.
 			For example, an event with annual probability 1/20 has a one in twenty chance of occuring any given year.
 			It does not, however, guarantee that the event will occur in the next 20 years (more on this later). These probabilities are usually not known exactly, and must be estimated by experts.
+
 		</p>
 
 		<h3>Aggregate Inundation Maps</h3>
@@ -433,7 +463,16 @@
 			We can vary <em>p</em> to produce more such maps and get an idea of how likely different levels of inundation might be.
 		</p>
 		<p>
-			We show a collection of these <strong>inundation maps</strong> below. You can modify the probability using the slider. You can also see how the map changes when you restrict to only near-field or only far-field events using different tabs. Some of the individual simulations that informed the inundation map are shown on the right, sorted by their annual probabilities. If you are interested in a particular point, you can click it in the large map and the small maps will shift focus to your point. <strong>Warning</strong>: the data is such that for some sets of events the aggregate map does not change from one selected annual probability to another. This is not due to an error in the map. It is actually because changing the two annual probabilities result in the same map.
+			We show a collection of these <strong>inundation maps</strong> below.
+			A random selection of six of the individual simulations that informed the inundation map are also shown on the right, sorted by their annual probabilities. You can interact with the maps as follows:
+			<ul>
+				<li> You can modify the annual probability for the aggregate inundation map using the slider. </li>
+				<li>You can see how the map changes when you restrict to only near-field or only far-field events by clicking on different tabs.</li>
+				<li>Re-clicking on near/far-field tabs will randomly re-select the different individual simulations to show (if more are available).</li>
+				<li>If you are interested in a particular point, you can click it in the large map and the small maps will shift focus to your point.</li>
+			</ul>
+				<strong>Warning</strong>: the data is such that for some sets of events, the aggregate map does not always change when you change the annual probability. 
+				This is not due to an error in the map. It is actually because changing the two annual probabilities result in the same map.
 
 		</p>
 
@@ -491,7 +530,7 @@
 			<input id="resetView" type="button" value="Reset View">
 		</div>
 		<div id="tabbedcontent">
-		
+
 			<div id="aggregateContainer">
 				<div class="title">Aggregate Probabilities</div>
 				<div id="map"></div>
@@ -510,15 +549,15 @@
 					<output id="output" for="probabilitySlider">Selected annual probability: 1 in 500</output> <!-- Just to display selected value -->
 				</div>
 			</div>
-			
+
 			<div id="individualfocus">
 				<div class="backdrop"></div>
 				<div class="title">Individual Simulations</div>
 				<div id="smallmultiplescontainer"></div>
 			</div>
-			
+
 			<div id="colorlegend"></div>
-			
+
 		</div>
 	</div>
 
@@ -541,12 +580,21 @@
 	</script>
 	<div class="articletext">
 		<p>
-			One thing you may have noticed is that, for any set of events you choose, the flooding gets worse and worse as the annual probability goes down (try moving the slider from left to right to see this effect). This is because the most extreme events tend to have lower annual probabilities, meaning that we can virtually ignore them when considering high-likelihood scenarios. It is certainly good news for Crescent City! Another observation you may have made is that the inundation maps are completely blank for some combinations of events and annual probabilities. In particular, when you restrict your attention to just the near-field events and select high annual probabilities (1/50, 1/100, and 1/200), the resulting inundation maps are blank. Because the odds of all the near-field events are so low, the amount of flooding expected with large annual probabilities is zero.
+			One thing you may have noticed is that, for any set of events you choose, the flooding gets <strong>worse and worse</strong>
+			as the annual probability goes down (try moving the slider from left to right to see this effect).
+			This is because the most extreme events tend to have lower annual probabilities, meaning that we can virtually ignore them
+			when considering high-likelihood scenarios. It is certainly good news for Crescent City! </p><p>
+			Another observation you may have made is that the inundation maps are completely <strong>blank</strong> for some combinations of events and annual probabilities.
+			In particular, when you restrict your attention to just the near-field events and select high annual probabilities (1/50, 1/100, and 1/200),
+			the resulting inundation maps are blank. Because the odds of all the near-field events are so low, the amount of flooding expected with large annual probabilities is zero.
 		</p>
 
 		<h3>Interpreting Annual Probabilities</h3>
 		<p>
-			Annual probabilities can be a bit confusing and/or misleading. Just because a seismic event has an annual probability of 1/100, that does not mean that the event will definitely occur in the next 100 years. It turns out that the probability such an event occurs in the next 100 years is actually lower than 100% (instead it’s about 63.4% likely). A good way to understand this counterintuitive effect is to think about an analogous example: flipping a coin.
+			Annual probabilities can be a bit confusing and/or misleading.
+			Just because a seismic event has an annual probability of 1/100, does not mean that the event will definitely occur in the next 100 years.
+			It turns out that the probability such an event occurs in the next 100 years is actually lower than 100% (instead it’s about 63.4%).
+			A good way to understand this counterintuitive effect is to think about an analogous example: flipping a coin.
 		</p>
 		<p>
 			Say you have a fair coin, meaning that if you flip it you have a 50% chance of it landing on heads and a 50% chance of it landing on tails. Imagine that, once a year, the coin has the magical ability to predict whether a tsunami strike Crescent City that year. On January 1st if you flip the coin and it lands heads, then Crescent City will be hit with a tsunami that year, and if it lands tails the city will be spared for at least another year. We might then say that the annual probability of a tsunami damaging Crescent City is 1/2, or 0.5. What are the odds the city experiences at least one tsunami in the next two years? It might seem like it should happen with 100% certainty, but that is not the case. In order for a tsunami to strike, at least one of the coin tosses needs to come up heads. In other words, they cannot both come up tails (if both tosses resulted in tails then no tsunamis would occur). The probability that both tosses are tails is easy to compute: it is the probability of tails on the first toss times the probability of tails on the second toss, or (0.5)(0.5) = (0.5)<sup>2</sup> = 0.25. This means that there is a 25% chance that no tsunamis will occur over the next two years. If there is a 25% chance of no tsunamis then there is a 75% chance (100 minus 25) that a tsunami will happen.
@@ -1368,7 +1416,7 @@ var markerImage = {
     anchor: new google.maps.Point(8, 8)
   };
 */
-  
+
 var markerImage = {
 	url: 'reddot2.png',
     // This marker is 20 pixels wide by 32 pixels high.
@@ -1378,7 +1426,7 @@ var markerImage = {
     // The anchor for this image is the base of the flagpole at (0, 32).
     anchor: new google.maps.Point(5, 5)
   };
-  
+
 var markerImage = {
 	url: 'red_dot_hollow.png',
     // This marker is 20 pixels wide by 32 pixels high.
@@ -1388,7 +1436,7 @@ var markerImage = {
     // The anchor for this image is the base of the flagpole at (0, 32).
     anchor: new google.maps.Point(8, 8)
   };
-  
+
 function addMarker(latLng, map) {
 	// add the new marker to the given map
 	var marker = new google.maps.Marker({
