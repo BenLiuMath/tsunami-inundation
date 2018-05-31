@@ -48,16 +48,18 @@ To effectively communicate the dangers and potential impacts of tsunamis to the 
     * Set up Overleaf with IEEE Conference template as collaborative tool for report
 
 ### Benjamin Liu
-
 1. Website layout
 	* Organized elements on the page in a maintainable and semi-responsive manner
-2. D3 and maps, projections
-	* Figured out how to overlay D3.contour maps onto google maps
-	* Developed the linked visualizations, helper methods for switching data
-	
+2. Coding and implementation
+	* Wrote geoprojection methods and figured out how to overlay D3.contour maps onto google maps
+	* Developed the linked visualizations, animations, and helper methods for switching data
 3. Prototyping encodings for uncertainty
-	* Developed mockups for 'wobbling' contours
-	* Developed 'throbbing contours' prototype
+	* Developed mockups for 'wobbling contours' -- not used
+	* Developed 'throbbing contours' prototype -- not used
+4. Poster
+	* Layout and formatting
+5. Miscellaneous tasks
+	* Attended meetings with the research team to learn about the problem
 
 
 ## Project process
