@@ -34,7 +34,7 @@ To effectively communicate the dangers and potential impacts of tsunamis to the 
 
 ### Brian de Silva
 1. Data wrangling
-    * Converted the raw simulation data from the 13 simulations into a javascript object
+    * Converted the raw simulation data from the 13 simulations into javascript objects
     * Computed probabilistic inundation maps from the raw simulation data and output them as javascript variables for use by D3
     * Wrote code for finding and outputting contours in the geoJSON format (however, we did not end up using geoJSON to draw the contours in our final visualizations)
 2. Website
@@ -48,5 +48,31 @@ To effectively communicate the dangers and potential impacts of tsunamis to the 
     * Set up a slack workspace for group communication
 
 ### Abe Engle
+1. Data wrangling
+    * Wrote code for outputting contour regions generated from Python to geoJSON files
+2. Website
+    * Helped format, style, and debug elements on page
+    * Wrote and edited latter sections of the website (along with others)
+3. Poster and Report
+    * Developed SVG image for explanation of flood level offshore for the poster 
+    * Wrote and edited latter sections of the report (along with others)
+4. Miscellaneous tasks
+    * Set up Overleaf with IEEE Conference template as collaborative tool for report
 
 ### Benjamin Liu
+1. Website layout
+	* Organized elements on the page in a maintainable and semi-responsive manner
+2. Coding and implementation
+	* Wrote geoprojection methods and figured out how to overlay D3.contour maps onto google maps
+	* Developed the linked visualizations, animations, and helper methods for switching data
+3. Prototyping encodings for uncertainty
+	* Developed mockups for 'wobbling contours' -- not used
+	* Developed 'throbbing contours' prototype -- not used
+4. Poster
+	* Layout and formatting
+5. Miscellaneous tasks
+	* Attended meetings with the research team to learn about the problem
+
+
+## Project process
+Though it took our team a while to settle on a project topic, once we did we met regularly (about twice a week) to discuss ideas, fill others in on our progress, and align and update objectives. We spent the first phase of the project coming up with ideas communicating the uncertainty underlying our data and understanding how to access and manipulate the data. We scheduled a meeting with some of the faculty interested in tsunami hazard map visualization and presented our ideas to them. In fact we met with some of them a few weeks before the final project webpage went up to see whether assisting them would make a suitable project. We used their feedback to refine our ideas and began implementing the basic visualizations needed for our milestone review. Due to our initial unfamiliarity with mapping software and geographical data, it took us some time to get things off the ground. At our milestone review with Professor Heer and Halden we received valuable advice that caused us to abandon some of our ideas for communicating uncertainty (using contours that wiggled) and adopt some others (e.g. embedding our visualizations in an article). After the milestone we implemented the new ideas and iteratively improved the project webpage, splitting up the work fairly evenly.
