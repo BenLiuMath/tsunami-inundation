@@ -19,6 +19,18 @@ To effectively communicate the dangers and potential impacts of tsunamis to the 
 ## Work distribution
 
 ### Kellie MacPhee
+1. Website
+    * Prototyped and edited many components including: legend, markers on maps, bounding box
+    * Layout tweaks
+    * Writing about near-field and far-field events, and editing of other narrative components
+    * Added context images
+2. Poster
+    * Did most of the content organization
+    * Wrote and edited a significant portion of the text
+3. Design
+    * Initial design sketches
+    * Choice of color scheme
+    * General design discussions: recording insights and decisions made, for both internal meetings and those with sponsors/stakeholders
 
 ### Brian de Silva
 1. Data wrangling
