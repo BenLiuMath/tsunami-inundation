@@ -872,6 +872,8 @@ var styledMapType = new google.maps.StyledMapType(
 					"stylers": [{"color": "#C0C0C0"}]
 				}
 			],
+			disableDoubleClickZoom:true,
+			draggable: false,
 			scrollwheel: false,
 			mapTypeControl: true,
 			streetViewControl: false,
@@ -883,6 +885,7 @@ var styledMapType = new google.maps.StyledMapType(
 
 		map.mapTypes.set('styled_map', styledMapType);
         map.setMapTypeId('styled_map');
+        map.setOptions({draggableCursor:'default'});
 
 		// add bounding box
 		var eps = 0.00005;
