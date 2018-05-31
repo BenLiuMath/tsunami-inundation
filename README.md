@@ -36,6 +36,16 @@ To effectively communicate the dangers and potential impacts of tsunamis to the 
     * Set up a slack workspace for group communication
 
 ### Abe Engle
+1. Data wrangling
+    * Wrote code for outputting contour regions generated from Python to geoJSON files
+2. Website
+    * Helped format, style, and debug elements on page
+    * Wrote and edited latter sections of the website (along with others)
+3. Poster and Report
+    * Developed SVG image for explanation of flood level offshore for the poster 
+    * Wrote and edited latter sections of the report (along with others)
+4. Miscellaneous tasks
+    * Set up Overleaf with IEEE Conference template as collaborative tool for report
 
 ### Benjamin Liu
 
