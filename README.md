@@ -37,6 +37,7 @@ To effectively communicate the dangers and potential impacts of tsunamis to the 
     * Converted the raw simulation data from the 13 simulations into javascript objects
     * Computed probabilistic inundation maps from the raw simulation data and output them as javascript variables for use by D3
     * Wrote code for finding and outputting contours in the geoJSON format (however, we did not end up using geoJSON to draw the contours in our final visualizations)
+    * In particular, wrote [generate_inundation_maps.ipynb](ptha_tutorial/Notebooks/generate_inundation_maps.ipynb) and [get_eta.ipynb](ptha_tutorial/Notebooks/get_eta.ipynb)
 2. Website
     * Wrote a considerable amount of the narrative text accompanying our visualizations
 3. Report
